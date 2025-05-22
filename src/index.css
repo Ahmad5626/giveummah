@@ -1,0 +1,35 @@
+@import url(https://fonts.googleapis.com/css?family=Inria+Serif:300,300italic,regular,italic,700,700italic);
+@import url(https://fonts.googleapis.com/css?family=Montserrat:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+@import "tailwindcss";
+@import "tw-animate-css";
+
+
+@theme{
+  --color-darkPinkClr: #fe2690 !important;
+  --color-lightPinkClr: #f7a2d0 !important;
+  --color-darkOrangeClr: #f8bb26 !important;
+  --color-purpleClr: #7c5494 !important;
+  --color-lightPurpleClr: #a49cc4 !important;
+  
+}
+
+body {
+  font-family: 'Inria Serif', serif !important;
+  /* margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: whitesmoke; */
+}
+
+
+
+
+label{
+  padding: 10px 0px;
+}
+.nsm7Bb-HzV7m-LgbsSe {
+    border-radius: 50px !important;
+    /* background-color: #4285f4 !important;
+    color: #fff !important; */
+}
