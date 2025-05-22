@@ -333,7 +333,7 @@ export default function MultiStepForm() {
           <div
             key={index}
             className={`h-1 flex-1 mx-1 rounded-full ${
-              index === currentStep ? "bg-[#fd2598]" : index < currentStep ? "bg-[#000000]" : "bg-gray-200"
+              index === currentStep ? "bg-[#AC6908]" : index < currentStep ? "bg-[#000000]" : "bg-gray-200"
             }`}
           />
         ))}
