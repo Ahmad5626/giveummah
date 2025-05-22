@@ -166,7 +166,7 @@ const allCampaigns = [
                   <span>{campaign.endDate } days left</span>
                 </div>
                 
-                  <Progress value={progress} className=" h-2 bg-gradient-to-r from-[#f7a2d0] to-[#f8bb26] my-4 p-0" />
+                  <Progress value={progress} className=" h-2 bg-gradient-to-r from-[#000000] to-[#f8bb26] my-4 p-0" />
                
                 <div className="flex justify-between items-end ">
                   <div>
@@ -174,7 +174,7 @@ const allCampaigns = [
                     <p className="text-sm text-muted-foreground">funded of ₹1000</p>
                   </div>
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button className="rounded-full px-6 text-lg text-white bg-[#fe278d] hover:bg-green-600 transition-all duration-300">
+                    <Button className="rounded-full px-6 text-lg text-white bg-[#fea000] hover:bg-green-600 transition-all duration-300">
                       Donate
                     </Button>
                   </motion.div>
@@ -190,7 +190,7 @@ const allCampaigns = [
                   </Button>
                 </div>
                 {campaign.isZakatVerified && (
-                  <Badge variant="outline" className="text-[#fd2a9b] border-green-200 bg-green-50 gap-1">
+                  <Badge variant="outline" className="text-[#fea000] border-green-200 bg-green-50 gap-1">
                     Zakat-verified
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                       <path

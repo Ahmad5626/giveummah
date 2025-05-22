@@ -50,7 +50,7 @@ export default function DonationTracker() {
     <div className="w-full max-w-6xl mx-auto px-4">
       <div className="text-center mb-8">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Pulse of the Ummah</h2>
-        <div className="text-4xl md:text-5xl font-bold text-[#fd2a9b] mb-2">₹2,43,800</div>
+        <div className="text-4xl md:text-5xl font-bold text-[#fea000] mb-2">₹2,43,800</div>
         <p className="text-gray-600">raised in the past hour</p>
       </div>
 

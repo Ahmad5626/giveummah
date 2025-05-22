@@ -333,7 +333,7 @@ export default function MultiStepForm() {
           <div
             key={index}
             className={`h-1 flex-1 mx-1 rounded-full ${
-              index === currentStep ? "bg-[#fd2598]" : index < currentStep ? "bg-[#f7a2d0]" : "bg-gray-200"
+              index === currentStep ? "bg-[#fd2598]" : index < currentStep ? "bg-[#000000]" : "bg-gray-200"
             }`}
           />
         ))}
@@ -343,7 +343,7 @@ export default function MultiStepForm() {
       <div className="mb-12">
         {currentStep === 0 && (
           <>
-            <h1 className="text-4xl font-bold text-[#f7a2d0] mb-1">Bismillah.</h1>
+            <h1 className="text-4xl font-bold text-[#000000] mb-1">Bismillah.</h1>
             <h2 className="text-4xl font-bold text-[#f8bb26] mb-4">Let's get started.</h2>
 
             <h3 className="text-2xl font-bold mb-6">
@@ -392,7 +392,7 @@ export default function MultiStepForm() {
 
         {currentStep === 1 && (
           <>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#f7a2d0] to-[#f8bb26] bg-clip-text text-transparent mb-12">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#000000] to-[#f8bb26] bg-clip-text text-transparent mb-12">
               Set a goal and name for your campaign.
             </h2>
 
@@ -443,7 +443,7 @@ export default function MultiStepForm() {
 
         {currentStep === 2 && (
           <>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#f7a2d0] to-[#f8bb26] bg-clip-text text-transparent mb-12">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#000000] to-[#f8bb26] bg-clip-text text-transparent mb-12">
               About your fundraiser
             </h2>
 
@@ -598,7 +598,7 @@ export default function MultiStepForm() {
 
         {currentStep === 3 && (
           <>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#f7a2d0] to-[#f8bb26] bg-clip-text text-transparent mb-12">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#000000] to-[#f8bb26] bg-clip-text text-transparent mb-12">
               Tell your story
             </h2>
 
@@ -637,7 +637,7 @@ export default function MultiStepForm() {
 
         {currentStep === 4 && (
           <>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#f7a2d0] to-[#f8bb26] bg-clip-text text-transparent mb-12">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#000000] to-[#f8bb26] bg-clip-text text-transparent mb-12">
               Terms and Conditions
             </h2>
 
@@ -723,7 +723,7 @@ export default function MultiStepForm() {
 
         {currentStep === 5 && (
           <>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#f7a2d0] to-[#f8bb26] bg-clip-text text-transparent mb-12">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#000000] to-[#f8bb26] bg-clip-text text-transparent mb-12">
               Almost there...
             </h2>
 
@@ -1170,7 +1170,7 @@ export default function MultiStepForm() {
 
         {currentStep === 6 && (
           <>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#f7a2d0] to-[#f8bb26] bg-clip-text text-transparent mb-12">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#000000] to-[#f8bb26] bg-clip-text text-transparent mb-12">
               References
             </h2>
             <p>As part of our verification process, you are requested to submit the following details. Please inform Imam Sahib of the purpose for which you are taking the details.</p>
@@ -1255,7 +1255,7 @@ export default function MultiStepForm() {
 
         {currentStep === 7 && (
           <>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#f7a2d0] to-[#f8bb26] bg-clip-text text-transparent mb-12">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#000000] to-[#f8bb26] bg-clip-text text-transparent mb-12">
               Preview Campaign
             </h2>
 
