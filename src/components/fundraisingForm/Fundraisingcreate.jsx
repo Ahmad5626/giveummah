@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect, use, useContext } from "react"
+import { useState, useEffect, use, useContext, useRef } from "react"
+import JoditEditor from "jodit-react";
 import { ArrowLeft, ArrowRight, Check, Calendar, Upload } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -17,8 +18,30 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { AuthContext } from "@/context/auth-context"
 import { Navbar } from "../header/Navbar"
 import { uploadFile } from "@/services/uploadImg"
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
-
+// Add custom styles for the rich text editor
+const editorStyles = `
+  .ql-editor {
+    min-height: 300px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .ql-toolbar {
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+  }
+  .ql-container {
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+  }
+  .ql-snow .ql-tooltip {
+    z-index: 1000;
+  }
+`
 
 // List of countries for the dropdown
 const countries = [
@@ -174,6 +197,7 @@ const causeOptions = [
 
 
 export default function MultiStepForm() {
+  const editor = useRef(null);
  
   // Initialize form data from localStorage or with default values
   const {formData, setFormData, createCampaign,Toaster,toast}=useContext(AuthContext)
@@ -611,15 +635,20 @@ export default function MultiStepForm() {
                   Tell your story in a way that's clear, concise, and creative. Check our Guidelines for proven tips
                   from other campaigns that have crowdfunded on LaunchGood!
                 </p>
-                <div className="border border-gray-300 rounded-lg p-4 mb-4">
-                  <Textarea
-                    id="story"
-                    value={formData.story}
-                    onChange={(e) => updateFormData("story", e.target.value)}
-                    placeholder="Write your story here..."
-                    className="min-h-[300px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 resize-none"
-                  />
-                </div>
+                <div className="border border-gray-300 rounded-lg overflow-hidden">
+      <JoditEditor
+        ref={editor}
+        value={formData.story}
+       config={{
+        uploader: {
+          insertImageAsBase64URI: true,
+        },
+        height: 400,
+      }}
+        onBlur={newContent => updateFormData("story", newContent)}
+       
+      />
+    </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="zakat-verified"
@@ -756,12 +785,12 @@ export default function MultiStepForm() {
 
                       <div>
                         <Label htmlFor="given-name" className="text-sm text-gray-500">
-                          Given Name
+                          Fisrt Name
                         </Label>
                         <Input
                           id="given-name"
-                          value={formData.givenName}
-                          onChange={(e) => updateFormData("givenName", e.target.value)}
+                          value={formData.firstName}
+                          onChange={(e) => updateFormData("firstName", e.target.value)}
                           placeholder="Given name"
                           className="mt-1"
                         />
@@ -770,12 +799,12 @@ export default function MultiStepForm() {
 
                       <div>
                         <Label htmlFor="family-name" className="text-sm text-gray-500">
-                          Family Name
+                          Last Name
                         </Label>
                         <Input
                           id="family-name"
-                          value={formData.familyName}
-                          onChange={(e) => updateFormData("familyName", e.target.value)}
+                          value={formData.lastName}
+                          onChange={(e) => updateFormData("lastName", e.target.value)}
                           placeholder="Family name"
                           className="mt-1"
                         />
@@ -1319,7 +1348,7 @@ export default function MultiStepForm() {
                 <div className="border p-4 rounded-md mt-4">
                   <h4 className="font-bold mb-2">Story</h4>
                   <div className="prose max-w-none">
-                    <p>{formData.story || "No story provided."}</p>
+                    <p  dangerouslySetInnerHTML={{ __html: formData.story }}></p>
                   </div>
                 </div>
               </div>

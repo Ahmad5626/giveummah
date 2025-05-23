@@ -5,6 +5,7 @@ import Home from './pages/home/Home'
 
 import Fundraisingcreate from './components/fundraisingForm/Fundraisingcreate'
 import Dashboard from './pages/dashboard/Dashboard'
+import Show from './components/joditEditor/Show'
 
 
 
@@ -18,6 +19,7 @@ function App() {
       <Route path="/auth" element={<Authpage />} />
       <Route path="/fundraisingForm" element={<Fundraisingcreate />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/show" element={<Show />} />
     
     
       

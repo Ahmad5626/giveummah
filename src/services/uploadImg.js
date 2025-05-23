@@ -1,5 +1,5 @@
 
-const baseAPI = "http://localhost:9000";
+const baseAPI = "https://giveummahbackend.onrender.com/";
 export const uploadFile = async (file) => {
   const formData = new FormData();
   formData.append("file", file);

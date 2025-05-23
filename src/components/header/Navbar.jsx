@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Menu  } from "lucide-react";
 import { AuthContext } from "@/context/auth-context";
-import img from "../../assets/logo2.png"
+import img from "../../assets/logo.png"
 import AnimatedButton from "../animatedButton";
 export function Navbar({position}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

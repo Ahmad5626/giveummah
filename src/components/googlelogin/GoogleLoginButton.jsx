@@ -8,7 +8,7 @@ const GoogleLoginButton = () => {
 
     try {
       // Send credential to backend
-      const res = await fetch("http://localhost:9000/api/auth/google-login", {
+      const res = await fetch("https://giveummahbackend.onrender.com//api/auth/google-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ credential }),
