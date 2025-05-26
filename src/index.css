@@ -1,20 +1,21 @@
 @import url(https://fonts.googleapis.com/css?family=Inria+Serif:300,300italic,regular,italic,700,700italic);
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
 @import url(https://fonts.googleapis.com/css?family=Montserrat:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
 @import "tailwindcss";
 @import "tw-animate-css";
 
 
 @theme{
-  --color-darkPinkClr: #fe2690 !important;
+  --color-lightYollowClr: #e3be54 !important;
   --color-lightPinkClr: #000000 !important;
-  --color-darkOrangeClr: #f8bb26 !important;
-  --color-purpleClr: #7c5494 !important;
-  --color-lightPurpleClr: #a49cc4 !important;
+  --color-darkBrownClr: #bf6f00 !important;
+  --color-darkYollowClr: #fe9f00 !important;
+ 
   
 }
 
 body {
-  font-family: 'Inria Serif', serif !important;
+  font-family: 'roboto', serif !important;
   /* margin: 0;
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -32,4 +33,18 @@ label{
     border-radius: 50px !important;
     /* background-color: #4285f4 !important;
     color: #fff !important; */
+}
+.searchShadow{
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.new-card:hover img{
+  transform: scale(1.1) ;
+  transition: all 1s ease-in-out;
+}
+.build{
+    font-family: 'Inria Serif', serif !important;
+}
+.button-footer{
+  background: #CF9F3B;
+background: linear-gradient(178deg,rgba(207, 159, 59, 1) 0%, rgba(254, 233, 118, 1) 50%, rgba(205, 151, 56, 1) 100%);
 }

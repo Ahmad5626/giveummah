@@ -44,7 +44,7 @@ function Hero() {
       <div className="relative z-10 text-center max-w-4xl px-6">
         <h1 className="text-5xl md:text-7xl  font-[700] mb-6">
      
-           <span className="bg-gradient-to-r from-black to-amber-500 bg-clip-text text-transparent"> Build the Future</span> <span className="bg-gradient-to-r from-black to-amber-500 bg-clip-text text-transparent">of Deen</span>
+           <span className="bg-gradient-to-r from-black to-amber-500 bg-clip-text text-transparent build "> Build the Future</span> <span className="bg-gradient-to-r from-black to-amber-500 bg-clip-text text-transparent build">of Deen</span>
         </h1>
           
         <p className="text-center ">

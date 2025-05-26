@@ -9,12 +9,12 @@ const JoditComponent = () => {
     <JoditEditor
       ref={editor}
       value={content}
-      config={{
-        uploader: {
-          insertImageAsBase64URI: true,
-        },
-        height: 400,
-      }}
+      // config={{
+      //   uploader: {
+      //     insertImageAsBase64URI: true,
+      //   },
+      //   height: 400,
+      // }}
       onBlur={newContent => setContent(newContent)} // use onBlur instead of onChange
     />
   );

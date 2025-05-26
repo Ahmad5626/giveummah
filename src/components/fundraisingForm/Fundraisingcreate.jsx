@@ -639,12 +639,7 @@ export default function MultiStepForm() {
       <JoditEditor
         ref={editor}
         value={formData.story}
-       config={{
-        uploader: {
-          insertImageAsBase64URI: true,
-        },
-        height: 400,
-      }}
+       
         onBlur={newContent => updateFormData("story", newContent)}
        
       />
@@ -969,50 +964,7 @@ export default function MultiStepForm() {
                         </div>
                       </div>
 
-                      <div>
-                        <Label htmlFor="government-id" className="text-sm text-gray-500">
-                          Your Government Issued ID
-                        </Label>
-                        <div className="border border-gray-300 rounded-lg p-4 mt-1">
-                          {formData.governmentIdUrl ? (
-                            <div className="relative">
-                              <img
-                                src={formData.governmentIdUrl || "/placeholder.svg"}
-                                alt="Government ID"
-                                className="mx-auto max-h-40 object-contain"
-                              />
-                              <Button
-                                variant="destructive"
-                                size="sm"
-                                className="absolute top-2 right-2"
-                                onClick={() => {
-                                  updateFormData("governmentId", null)
-                                  updateFormData("governmentIdUrl", "")
-                                }}
-                              >
-                                Remove
-                              </Button>
-                            </div>
-                          ) : (
-                            <div className="flex items-center justify-center">
-                              <input
-                                id="government-id"
-                                type="file"
-                                accept="image/*,.pdf"
-                                className="hidden"
-                                onChange={(e) => handleFileUpload("governmentId", e)}
-                              />
-                              <Label
-                                htmlFor="government-id"
-                                className="flex items-center space-x-2 cursor-pointer text-emerald-600"
-                              >
-                                <Upload className="h-5 w-5" />
-                                <span>Upload File</span>
-                              </Label>
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                    
                     </div>
                   </AccordionContent>
                 </AccordionItem>
@@ -1182,6 +1134,50 @@ export default function MultiStepForm() {
                               >
                                 <Upload className="h-5 w-5" />
                                 <span>Upload PAN Card</span>
+                              </Label>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                        <div>
+                        <Label htmlFor="government-id" className="text-sm text-gray-500">
+                          Your Government Issued ID
+                        </Label>
+                        <div className="border border-gray-300 rounded-lg p-4 mt-1">
+                          {formData.governmentIdUrl ? (
+                            <div className="relative">
+                              <img
+                                src={formData.governmentIdUrl || "/placeholder.svg"}
+                                alt="Government ID"
+                                className="mx-auto max-h-40 object-contain"
+                              />
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                className="absolute top-2 right-2"
+                                onClick={() => {
+                                  updateFormData("governmentId", null)
+                                  updateFormData("governmentIdUrl", "")
+                                }}
+                              >
+                                Remove
+                              </Button>
+                            </div>
+                          ) : (
+                            <div className="flex items-center justify-center">
+                              <input
+                                id="government-id"
+                                type="file"
+                                accept="image/*,.pdf"
+                                className="hidden"
+                                onChange={(e) => handleFileUpload("governmentId", e)}
+                              />
+                              <Label
+                                htmlFor="government-id"
+                                className="flex items-center space-x-2 cursor-pointer text-emerald-600"
+                              >
+                                <Upload className="h-5 w-5" />
+                                <span>Upload File</span>
                               </Label>
                             </div>
                           )}

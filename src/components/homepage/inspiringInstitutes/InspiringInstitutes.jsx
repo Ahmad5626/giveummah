@@ -1,155 +1,154 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { useState, useRef, useEffect } from "react"
-
-
-// Simple icon components to replace lucide-react
-const ChevronLeft = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="m15 18-6-6 6-6" />
-  </svg>
-)
-
-const ChevronRight = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="m9 18 6-6-6-6" />
-  </svg>
-)
-
+import { useState, useEffect } from "react"
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react"
+import img1 from "../../../assets/unsplash_6Aa4EeZTdqw.png"
 const institutes = [
   {
     id: 1,
     name: "Darul Uloom Deoband",
-    subtitle: "Subtitle",
-    image: "/placeholder.svg?height=200&width=300",
+    category: "Ulama",
+    image: "./assets/unsplash_6Aa4EeZTdqw.png",
   },
   {
     id: 2,
     name: "Khanqah Darul Ehsaan",
-    subtitle: "Subtitle",
-    image: "/placeholder.svg?height=200&width=300",
+    category: "Anweria",
+    image: "./assets/unsplash_0161tDc9kjs.png",
   },
   {
     id: 3,
     name: "Darul Uloom Deoband",
-    subtitle: "Subtitle",
-    image: "/placeholder.svg?height=200&width=300",
+    category: "Ulama",
+    image: "./assets/unsplash_AEaTUnvneik.png",
   },
   {
     id: 4,
     name: "Khanqah Darul Ehsaan",
-    subtitle: "Subtitle",
-    image: "/placeholder.svg?height=200&width=300",
+    category: "Anweria",
+    image: "./assets/unsplash_BCF7cHvc778.png",
   },
   {
     id: 5,
-    name: "Darul Uloom Nadwatul Ulama",
-    subtitle: "Subtitle",
+    name: "Jamia Islamia",
+    category: "Ulama",
     image: "/placeholder.svg?height=200&width=300",
   },
   {
     id: 6,
-    name: "Jamia Millia Islamia",
-    subtitle: "Subtitle",
+    name: "Darul Ifta",
+    category: "Anweria",
     image: "/placeholder.svg?height=200&width=300",
   },
 ]
 
-export default function InstituteSlider() {
+export default function InspiringInstitutes() {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [slidesToShow, setSlidesToShow] = useState(4)
-  const sliderRef = useRef(null)
+  const [itemsPerView, setItemsPerView] = useState(4)
 
-  // Update slides to show based on viewport width
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 640) {
-        setSlidesToShow(1)
+        setItemsPerView(1)
       } else if (window.innerWidth < 768) {
-        setSlidesToShow(2)
+        setItemsPerView(2)
       } else if (window.innerWidth < 1024) {
-        setSlidesToShow(3)
+        setItemsPerView(3)
       } else {
-        setSlidesToShow(4)
+        setItemsPerView(4)
       }
     }
 
-    // Set initial value
     handleResize()
-
-    // Add event listener
     window.addEventListener("resize", handleResize)
-
-    // Clean up
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  const totalSlides = institutes.length
-  const maxIndex = totalSlides - slidesToShow
+  const maxIndex = Math.max(0, institutes.length - itemsPerView)
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1))
+    setCurrentIndex((prev) => Math.min(prev + 1, maxIndex))
   }
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1))
+    setCurrentIndex((prev) => Math.max(prev - 1, 0))
+  }
+
+  const goToSlide = (index) => {
+    setCurrentIndex(Math.min(index, maxIndex))
   }
 
   return (
-    <div className="w-full px-4 py-8">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-3xl font-bold">Inspiring Institutes</h2>
-        <div className="flex gap-2">
-          <Button variant="outline" size="icon" onClick={prevSlide} aria-label="Previous slide">
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="icon" onClick={nextSlide} aria-label="Next slide">
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
+    <div className="w-full max-w-7xl mx-auto px-4 py-8">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Inspiring Institutes</h2>
+        {/* <button className="flex items-center gap-2 text-orange-500 hover:text-orange-600 transition-colors font-medium">
+          View all
+          <ArrowRight className="w-4 h-4" />
+        </button> */}
       </div>
 
-      <div className="overflow-hidden" ref={sliderRef}>
-        <div
-          className="flex transition-transform duration-300 ease-in-out"
-          style={{
-            transform: `translateX(-${currentIndex * (100 / slidesToShow)}%)`,
-            width: `${(totalSlides / slidesToShow) * 100}%`,
-          }}
+      {/* Slider Container */}
+      <div className="relative">
+        {/* Navigation Buttons */}
+        <button
+          onClick={prevSlide}
+          disabled={currentIndex === 0}
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         >
-          {institutes.map((institute) => (
-            <div key={institute.id} className="px-2" style={{ width: `${100 / totalSlides}%` }}>
-              <div className="flex flex-col">
-                <img
-                  src={institute.image || "/placeholder.svg"}
-                  alt={institute.name}
-                  className="w-full h-40 object-cover bg-gray-200 rounded-md mb-2"
-                />
-                <h3 className="font-medium text-base">{institute.name}</h3>
-                <p className="text-sm text-gray-500">{institute.subtitle}</p>
+          <ChevronLeft className="w-5 h-5 text-gray-600" />
+        </button>
+
+        <button
+          onClick={nextSlide}
+          disabled={currentIndex >= maxIndex}
+          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        >
+          <ChevronRight className="w-5 h-5 text-gray-600" />
+        </button>
+
+        {/* Cards Container */}
+        <div className="overflow-hidden">
+          <div
+            className="flex transition-transform duration-300 ease-in-out"
+            style={{
+              transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
+            }}
+          >
+            {institutes.map((institute) => (
+              <div key={institute.id} className="flex-shrink-0 px-2" style={{ width: `${100 / itemsPerView}%` }}>
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
+                  {/* Image */}
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img
+                      src={institute.image || "/placeholder.svg"}
+                      alt={institute.name}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-4">
+                    <h3 className="font-semibold text-gray-900 text-lg mb-1 line-clamp-2">{institute.name}</h3>
+                    <p className="text-gray-500 text-sm">{institute.category}</p>
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Dots Indicator */}
+        <div className="flex justify-center gap-2 mt-6">
+          {Array.from({ length: maxIndex + 1 }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-2 h-2 rounded-full transition-colors ${
+                index === currentIndex ? "bg-orange-500" : "bg-gray-300"
+              }`}
+            />
           ))}
         </div>
       </div>

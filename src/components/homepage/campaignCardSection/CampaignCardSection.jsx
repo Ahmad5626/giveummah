@@ -29,7 +29,7 @@ const allCampaigns = [
     },
     {
       id: 2,
-      aadharImageUrl: "https://pmedia.launchgood.com/307480/give_qurbani_for_orphans_widows__displaced_in_syria__lebanon_IMG_5565-555x370.JPG",
+      aadharImageUrl: "https://pmedia.launchgood.com/306812/give_qurbani_uplift_the_lives_of_orphans_and_widows_in_need_Add%20a%20heading%20%2811%29-493x370.png",
       logo: "/placeholder.svg?height=40&width=40",
       fundType: "Aldar Waqf City",
       tagline: "Provide Housing for Displaced Orphans and Widows in Syria",
@@ -121,7 +121,7 @@ const allCampaigns = [
   }, [])
 
   return (
-    <div className="w-full md:max-w-7xl mx-auto px-4  md:px-20 md:pt-30 pt-40">
+    <div className="w-full  mx-auto px-4  md:px-20 md:pt-10 pt-40">
       <div className="flex items-center justify-center mb-6">
         <div className="text-center">
           <h2 className="text-5xl text-center font-bold py-4 darkPurpleClr">Featured Fundraisers</h2>
@@ -136,21 +136,19 @@ const allCampaigns = [
         {allCampaigns.map((campaign, index) => (
           
             <Card
-              className="h-full overflow-hidden  transition-all duration-300 hover:shadow-lg pt-0 pb-2 rounded-lg border-transparent"
+              className="new-card h-full overflow-hidden  transition-all duration-300 pt-0 pb-2 rounded-lg border-transparent cursor-pointer"
              key={index}
             >
-              <div className="relative overflow-hidden h-48">
+              <div className="relative overflow-hidden h-70">
                 <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out "
-                  style={{
-                    backgroundImage: `url(${campaign.aadharImageUrl })`,
-                    transform: hoveredCard === campaign.id ? "scale(1.05)" : "scale(1)",
-                  }}
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out " 
+                
                 />
+                  <img src={campaign.aadharImageUrl} alt="" className="w-full h-full object-cover  " />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-70" />
               </div>
-              <CardContent className="pt-4">
-                <div className="flex items-center gap-2 mb-3">
+              <CardContent className="">
+                <div className="flex items-center gap-2 my-2 ">
                   {/* <div className="h-8 w-8 rounded-full overflow-hidden border-2 border-primary/20">
                     <img
                       src={campaign.logo || "/placeholder.svg"}
@@ -160,13 +158,15 @@ const allCampaigns = [
                   </div> */}
                   <span className="text-sm font-bold">{campaign.fundType}</span>
                 </div>
-                <h3 className="text-lg font-semibold mb-4 line-clamp-2 h-14">{campaign.tagline}</h3>
+                <h3 className="text-lg font-semibold  line-clamp-2 h-14">{campaign.tagline}</h3>
                 <div className="flex justify-between text-sm text-muted-foreground ">
                   <span>43 goalAmount</span>
                   <span>{campaign.endDate } days left</span>
                 </div>
-                
-                  <Progress value={progress} className=" h-2 bg-gradient-to-r from-[#000000] to-[#f8bb26] my-4 p-0" />
+                 <div className="w-full bg-gray-200 rounded-full h-2 my-2">
+                  <div className="bg-gradient-to-r from-[#000000] to-[#f8bb26] h-2 rounded-full" style={{ width: "90.2%" }}></div>
+                </div>
+                  {/* <Progress value={progress} className=" h-2 bg-gradient-to-r from-[#000000] to-[#f8bb26] my-4 p-0" /> */}
                
                 <div className="flex justify-between items-end ">
                   <div>
@@ -174,7 +174,7 @@ const allCampaigns = [
                     <p className="text-sm text-muted-foreground">funded of ₹1000</p>
                   </div>
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button className="rounded-full px-6 text-lg text-white bg-[#fea000] hover:bg-green-600 transition-all duration-300">
+                    <Button className="rounded-full px-10 py-6 text-xl text-white my-2 bg-[#fea000] hover:bg-green-600 transition-all duration-300">
                       Donate
                     </Button>
                   </motion.div>
@@ -184,7 +184,9 @@ const allCampaigns = [
               </CardContent>
               <CardFooter className="flex justify-between pt-0 ">
                 <div className="flex gap-2">
-                  
+                  {/* <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted/50 transition-all">
+                    <Share2 className="h-5 w-5" />
+                  </Button> */}
                   <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted/50 transition-all">
                     <Share2 className="h-5 w-5" />
                   </Button>

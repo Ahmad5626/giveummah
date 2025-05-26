@@ -1,74 +1,151 @@
-import { Card, CardContent } from "@/components/ui/card"
+"use client"
 
-export default function DonationTracker() {
-  const donations = [
-    {
-      amount: "₹2,000",
-      time: "just now",
-      location: "Mumbai, Maharashtra, India",
-      cause: "Suroth's Destination Dreams",
-    },
-    {
-      amount: "₹12,000",
-      time: "1 minute ago",
-      location: "Delhi, Delhi, India",
-      cause: "Meals for Gaza: Feed a Family",
-    },
-    {
-      amount: "₹5,500",
-      time: "1 minute ago",
-      location: "Hyderabad, Telangana, India",
-      cause: "Sustainable Support for Refugees",
-    },
-    {
-      amount: "₹500",
-      time: "2 minutes ago",
-      location: "Bengaluru, Karnataka, India",
-      cause: "Sponsor Orphans in Gaza",
-    },
-    {
-      amount: "₹2,000",
-      time: "2 minutes ago",
-      location: "Chennai, Tamil Nadu, India",
-      cause: "SISTERS' PROJECT: Emergency Relief",
-    },
-    {
-      amount: "₹1,000",
-      time: "2 minutes ago",
-      location: "Kolkata, West Bengal, India",
-      cause: "Sponsor an Orphan Today",
-    },
-    {
-      amount: "₹10,000",
-      time: "2 minutes ago",
-      location: "Pune, Maharashtra, India",
-      cause: "Suroth's Destination Dreams",
-    },
-  ]
+import { useState, useEffect } from "react"
+import DonationCard from "./DonationCard"
+
+const donations = [
+  {
+    id: 1,
+    amount: 20,
+    time: "just now",
+    donor: "Anonymous kind soul",
+    location: "Rainham, United Nation",
+    destination: "Suroth's Destination",
+  },
+  {
+    id: 2,
+    amount: 120,
+    time: "just now",
+    donor: "Anonymous kind soul",
+    location: "Rainham, United Nation",
+    destination: "Suroth's Destination",
+  },
+  {
+    id: 3,
+    amount: 55,
+    time: "1 min ago",
+    donor: "Anonymous kind soul",
+    location: "Rainham, United Nation",
+    destination: "Suroth's Destination",
+  },
+  {
+    id: 4,
+    amount: 25,
+    time: "2 mins ago",
+    donor: "Anonymous kind soul",
+    location: "Rainham, United Nation",
+    destination: "Suroth's Destination",
+  },
+  {
+    id: 5,
+    amount: 10,
+    time: "3 mins ago",
+    donor: "Anonymous kind soul",
+    location: "Rainham, United Nation",
+    destination: "Suroth's Destination",
+  },
+  {
+    id: 6,
+    amount: 75,
+    time: "5 mins ago",
+    donor: "Anonymous kind soul",
+    location: "Rainham, United Nation",
+    destination: "Suroth's Destination",
+  },
+]
+
+const DonationSlider = () => {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+
+  // Auto-slide functionality
+  useEffect(() => {
+    if (!isAutoPlaying) return
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex === donations.length - 1 ? 0 : prevIndex + 1))
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [isAutoPlaying])
+
+  const goToSlide = (index) => {
+    setCurrentIndex(index)
+  }
+
+  const goToPrevious = () => {
+    setCurrentIndex(currentIndex === 0 ? donations.length - 1 : currentIndex - 1)
+  }
+
+  const goToNext = () => {
+    setCurrentIndex(currentIndex === donations.length - 1 ? 0 : currentIndex + 1)
+  }
+
+  const getVisibleCards = () => {
+    const cards = []
+    for (let i = 0; i < 5; i++) {
+      const index = (currentIndex + i) % donations.length
+      cards.push(donations[index])
+    }
+    return cards
+  }
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Pulse of the Ummah</h2>
-        <div className="text-4xl md:text-5xl font-bold text-[#fea000] mb-2">₹2,43,800</div>
-        <p className="text-gray-600">raised in the past hour</p>
+    <div className="relative">
+      {/* Slider Container */}
+      <div
+        className="flex gap-4 transition-transform duration-500 ease-in-out overflow-hidden"
+        onMouseEnter={() => setIsAutoPlaying(false)}
+        onMouseLeave={() => setIsAutoPlaying(true)}
+      >
+        <div className="flex gap-4 min-w-full">
+          {getVisibleCards().map((donation, index) => (
+            <div
+              key={`${donation.id}-${currentIndex}-${index}`}
+              className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"
+            >
+              <DonationCard donation={donation} />
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {donations.map((donation, index) => (
-          <Card key={index} className="border border-gray-200 hover:shadow-md transition-shadow">
-            <CardContent className="p-4">
-              <div className="flex justify-between items-start mb-2">
-                <div className="text-xl font-bold text-gray-900">{donation.amount}</div>
-                <div className="text-xs text-gray-500">{donation.time}</div>
-              </div>
-              <div className="text-sm text-gray-700 mb-1">Anonymous kind soul</div>
-              <div className="text-xs text-gray-500 mb-2">{donation.location}</div>
-              <div className="text-xs font-medium text-gray-800 truncate">{donation.cause}</div>
-            </CardContent>
-          </Card>
+      {/* Navigation Arrows */}
+      <button
+        onClick={goToPrevious}
+        className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow duration-200 z-10"
+        aria-label="Previous donations"
+      >
+        <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <button
+        onClick={goToNext}
+        className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow duration-200 z-10"
+        aria-label="Next donations"
+      >
+        <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
+      {/* Dots Indicator */}
+      <div className="flex justify-center mt-6 space-x-2">
+        {donations.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={`w-3 h-3 rounded-full transition-colors duration-200 ${
+              index === currentIndex ? "bg-green-500" : "bg-gray-300"
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
         ))}
       </div>
     </div>
   )
 }
+
+export default DonationSlider

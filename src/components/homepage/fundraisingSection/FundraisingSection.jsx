@@ -1,70 +1,82 @@
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
-
+const features = [
+  {
+    img:"./assets/Ulama1.jpg",
+  },
+  {
+    img:"./assets/Ulama2.jpg",
+  },
+  {
+    img:"./assets/Ulama3.jpg",
+  },
+  {
+    img:"./assets/Ulama4.jpg",
+  }
+]
 export default function FundraisingSection() {
   return (
     <div className="min-h-screen  max-w-7xl mx-auto">
       <main className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-12">
           {/* Left Section */}
-          <div className="flex flex-col justify-center space-y-6 p-6 bg-[#f7f2f2]">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
-              Fundraise with a community that believes in giving
+          <div className="flex flex-col justify-center space-y-6 p-10  bg-[#F4F4F4]">
+            <h1 className="text-4xl md:text-4xl  font-bold text-gray-900 leading-tight">
+              Fundraise with Faith, Give with Impact – For the Ummah, By the Ummah!
+
             </h1>
             <p className="text-gray-700 text-lg">
-              LaunchGood is built for Muslim fundraisers, offering{" "}
-              <span className="font-bold">0% platform fees</span> and a network
-              of generous donors. Your cause deserves the best chance—start
-              fundraising now.
+             GiveUmmah is the free crowdfunding platform for Muslims worldwide for students, mosques, madrasas, emergencies or personal need with *no platform fees*. Launch your campaign in minutes and receive 100% donations directly. Start today!
+
             </p>
+            <h4>Your Cause, Our Ummah’s Responsibility.</h4>
             <div className="pt-4">
-              <Button className="rounded-full px-8 py-6 text-base bg-gray-900 hover:bg-gray-800 text-white">
+              <Button className="rounded-full px-8 py-6 text-base bg-gray-900 hover:bg-gray-800 text-white bg-gradient-to-r from-amber-500 to-yellow-400 text-white">
                 Start fundraising today
               </Button>
+              
             </div>
             <div className="pt-6">
               <img
-                src="/placeholder.svg?height=300&width=400"
+                src="./assets/image-1.png"
                 alt="Fundraising dashboard illustration"
-                width={400}
-                height={100}
+               
+               
                 className="object-contain"
               />
             </div>
           </div>
 
           {/* Right Section */}
-          <div className="bg-gradient-to-r from-[#f7d2f5] to-[#f0c7ed]  p-8 rounded-3xl flex flex-col justify-center space-y-8">
+          <div className="bg-gradient-to-r from-[#FDEDFC] to-[#E0E4F3]  p-8 rounded-3xl flex flex-col justify-center space-y-8">
             <div className="space-y-2">
-              <h2 className="text-4xl font-bold text-purple-600">Easy.</h2>
-              <h2 className="text-4xl font-bold text-purple-600">Trusted.</h2>
-              <h2 className="text-4xl font-bold text-purple-600">Inspiring.</h2>
+              <h2 className="text-4xl font-bold text-purple-600">Together We Give</h2>
+              <h2 className="text-4xl font-bold text-purple-600"> Together We Thrive—Trusted</h2>
+              <h2 className="text-4xl font-bold text-purple-600"> Transparent, United.
+</h2>
             </div>
 
             <p className="text-gray-700 text-lg">
-              Give with confidence—every fundraiser is vetted, and making an
-              impact is just a tap away.{" "}
-              <a href="#" className="text-purple-600 underline font-medium">
-                Learn more.
-              </a>
+             When the Ummah unites, miracles happen. GiveUmmah brings us closer—ensuring **every donation is verified, every need is genuine, and every contribution makes a difference. Your generosity uplifts sacred institutions worldwide. Compliance ( url to compliance )
+            
             </p>
 
             <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-gray-800">
-                Trusted by those you trust
+              <h3 className="text-xl font-semibold text-gray-800 font-sans">
+                Trusted by esteemed Ulama. 
+
               </h3>
               <div className="flex flex-wrap gap-3 justify-center">
-                {[1, 2, 3, 4, 5].map((i) => (
+                {features.map((i) => (
                   <div
                     key={i}
-                    className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white overflow-hidden border-2 border-white shadow-sm"
+                    className=" rounded-full bg-white overflow-hidden border-2 border-white shadow-sm"
                   >
                     <img
-                      src={`/placeholder.svg?height=100&width=100`}
+                      src={i.img}
                       alt={`Trusted community member ${i}`}
-                      width={100}
-                      height={100}
-                      className="object-cover w-full h-full"
+                     
+                      className="object-cover w-30 h-40 "
                     />
                   </div>
                 ))}

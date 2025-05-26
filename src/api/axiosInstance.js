@@ -1,7 +1,7 @@
 import axios from "axios";
 
  const axiosInstance = axios.create({
-    baseURL: "https://giveummahbackend.onrender.com/",
+    baseURL: "http://localhost:9000",
 });
 axiosInstance.interceptors.request.use(
   (config) => {
