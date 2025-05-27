@@ -33,7 +33,7 @@ const Authpage = () => {
   function handleTabChange(value) {
     setActiveTab(value);
   }
-console.log(signUpFormdata);
+
 
 
   return (
@@ -113,12 +113,12 @@ console.log(signUpFormdata);
             <TabsContent value="signup">
               <form onSubmit={registerHandleSubmit} className="space-y-4">
                 <div>
-                  <Label>User Name</Label>
+                  <Label>Full Name</Label>
                   <Input
                     type="text"
-                    name="userName"
+                    name="fullName"
                     placeholder="Enter your name"
-                    value={signUpFormdata.userName}
+                    value={signUpFormdata.fullName}
                     onChange={handleChangeSignUpFormdata}
                   />
                 </div>
@@ -158,7 +158,7 @@ console.log(signUpFormdata);
                     </SelectTrigger>
                     <SelectContent className="bg-white">
                       <SelectItem value="Individual">Individual</SelectItem>
-                      <SelectItem value="Madrasa">Madrasa</SelectItem>
+                      <SelectItem value="Institute"> Institute</SelectItem>
 
                     </SelectContent>
                   </Select>

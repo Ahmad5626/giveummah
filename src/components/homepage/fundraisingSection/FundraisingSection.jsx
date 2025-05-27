@@ -67,9 +67,9 @@ export default function FundraisingSection() {
 
               </h3>
               <div className="flex flex-wrap gap-3 justify-center">
-                {features.map((i) => (
+                {features.map((i, index) => (
                   <div
-                    key={i}
+                    key={index}
                     className=" rounded-full bg-white overflow-hidden border-2 border-white shadow-sm"
                   >
                     <img

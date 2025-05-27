@@ -184,9 +184,9 @@ const allCampaigns = [
               </CardContent>
               <CardFooter className="flex justify-between pt-0 ">
                 <div className="flex gap-2">
-                  {/* <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted/50 transition-all">
-                    <Share2 className="h-5 w-5" />
-                  </Button> */}
+                  <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted/50 transition-all">
+                    <Heart className="h-5 w-5" />
+                  </Button>
                   <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted/50 transition-all">
                     <Share2 className="h-5 w-5" />
                   </Button>

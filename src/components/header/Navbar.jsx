@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Menu  } from "lucide-react";
 import { AuthContext } from "@/context/auth-context";
+import { Toaster, toast } from "sonner";
 import img from "../../assets/logo.png"
 import AnimatedButton from "../animatedButton";
 export function Navbar({position}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [checkLogin, setCheckLogin] = useState(false);
   const searchRef = useRef(null);
   const menuRef = useRef(null);
 
@@ -28,9 +30,23 @@ export function Navbar({position}) {
 
   const {userData}=useContext(AuthContext)
 // console.log();
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    setCheckLogin(true);
+  }
+}, []);
+
+function handleLogout() {
+  toast.success("Logout successfully!");
+  localStorage.removeItem("token");
+
+  setCheckLogin(false);
+}
 
   return (
     <>
+    <Toaster position="top-center" />
       <header className={ `${position} top-0 z-40 w-full `}>
         <div className="container mx-auto px-4 md:px-20 py-4">
           <div className="flex items-center justify-between">
@@ -62,7 +78,7 @@ export function Navbar({position}) {
               </Button>
 
               {/* <div className="">
-                {userData.userName}
+                {userData.fullName}
               </div> */}
             
               <Button
@@ -161,11 +177,12 @@ export function Navbar({position}) {
                   <ChevronDown className="h-4 w-4 text-gray-400" />
                 </div> */}
 
-              <Link to="/" className="block py-2 text-sm font-medium text-gray-900">
+              <Link to="/auth" className="block py-2 text-sm font-medium text-gray-900">
                 Sign up
               </Link>
-              <Link to="/auth" className="block py-2 text-sm font-medium text-gray-900">
-                Log in
+              <Link to="/auth" className="block py-2 text-sm font-medium text-gray-900" onClick={handleLogout}>
+              {checkLogin? 'Logout' : 'Login'}
+                
               </Link>
             </div>
 

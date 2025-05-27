@@ -8,6 +8,7 @@ import {
   updateUser,
 } from "@/services/authApi";
 import { campaign, getAllCampaigns } from "@/services/campaign";
+import { uploadFile } from "@/services/uploadImg";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
@@ -19,7 +20,7 @@ export default function AuthProvider({ children }) {
   const [signInFormdata, setSignInFormdata] = useState(initialSignInFormData);
   const [signUpFormdata, setSignUpFormdata] = useState(initialSignUpFormData);
   const [updateUserFormdata, setUpdateUserFormdata] = useState(initialUpdateFormData);
- 
+  const [activeSection, setActiveSection] = useState("dashboard")
   const [allCampaigns, setAllCampaigns] = useState([]);
   const [userData, setUserData] = useState({});
 const navigator = useNavigate();
@@ -35,16 +36,30 @@ const navigator = useNavigate();
     setSignInFormdata({ ...signInFormdata, [name]: value });
   }
   // change update user data
-  function handleChangeUpdateUserFormdata(e) {
-    const { name, value } = e.target;
-    setUpdateUserFormdata({ ...updateUserFormdata, [name]: value });
+async function handleChangeUpdateUserFormdata(e) {
+  const { name, value, files } = e.target;
+
+  if (files && files[0]) {
+    const file = files[0];
+    const uploadedUrl = await uploadFile(file);
+
+    setUpdateUserFormdata({
+      ...updateUserFormdata,
+      [name]: uploadedUrl,
+    });
+  } else {
+    setUpdateUserFormdata({
+      ...updateUserFormdata,
+      [name]: value,
+    });
   }
+}
 
   //   check if signup form is valid
   function checkIfSignUpFormIsValid() {
     return (
       signUpFormdata &&
-      signUpFormdata.userName !== "" &&
+      signUpFormdata.fullName !== "" &&
       signUpFormdata.userEmail !== "" &&
       signUpFormdata.password !== ""
     );
@@ -81,8 +96,9 @@ const navigator = useNavigate();
    if(result?.success){
     toast.success("Login successfully!");
    localStorage.setItem("id", result.data.user._id);
-    
+  
     navigator("/");
+    window.location.reload();
    } else{
     toast.error(result?.message || "Login failed");
    }
@@ -96,7 +112,7 @@ const updateHandleUser =async(e)=>{
   if(result?.success){
     toast.success("User updated successfully!");
     // console.log(resultdata);
-    navigator("/");
+    setActiveSection("dashboard");
   }
   else{
     toast.error(result?.message || "User update failed");
@@ -211,9 +227,11 @@ const updateHandleUser =async(e)=>{
       toast.error(result?.message || "Campaign creation failed");
      }
     }
-console.log(updateUserFormdata);
 
 
+
+  console.log(userData);
+  
   
   return (
     <AuthContext.Provider
@@ -241,7 +259,9 @@ console.log(updateUserFormdata);
         updateUserFormdata,
         setUpdateUserFormdata,
         handleChangeUpdateUserFormdata,
-        updateHandleUser
+        updateHandleUser,
+        setActiveSection,
+        activeSection
       }}
     >
       {children}

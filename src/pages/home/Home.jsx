@@ -98,15 +98,6 @@ export default function Home() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 10v8a2 2 0 002 2h10a2 2 0 002-2v-8" />
         </svg>
       )
-    },
-    {
-      id: 'emergency',
-      name: 'Emergency',
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-        </svg>
-      )
     }
   ];
   //  const categories = [
@@ -131,32 +122,33 @@ export default function Home() {
                     </div>
                     <Button className="bg-gradient-to-r from-amber-500 to-yellow-400 text-white px-4 py-6 text-white text-sm cursor-pointer">Search</Button>
                   </div>
- <div className="max-w-7xl mx-auto pt-6">
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-        {categories.map((category) => (
-          <button
-            key={category.id}
-            onClick={() => setSelectedCategory(category.name)}
-            className={`flex flex-col items-center justify-center p-4 rounded-xl shadow-sm transition-all duration-200 hover:shadow-md min-h-[120px] ${
-              selectedCategory === category.name
-                ? 'border-2 border-blue-400 bg-blue-50'
-                : 'border border-gray-200 bg-white hover:border-gray-300'
-            }`}
-          >
-            <div className={`mb-3 ${
-              selectedCategory === category.name ? 'text-blue-500' : 'text-blue-400'
-            }`}>
-              {category.icon}
+        <div className="max-w-7xl mx-auto pt-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.name)}
+                    className={`flex flex-col items-center justify-center p-4 rounded-xl shadow-sm transition-all duration-200 hover:shadow-md min-h-[120px] ${
+                      selectedCategory === category.name
+                        // ? 'border-2 border-blue-400 bg-blue-50'
+                        ? 'border border-gray-200 bg-white hover:border-gray-300'
+                        : 'border border-gray-200 bg-white hover:border-gray-300'
+                    }`}
+                  >
+                    <div className={`mb-3 ${
+                      selectedCategory === category.name ? 'text-blue-500' : 'text-blue-400'
+                    }`}>
+                      {category.icon}
+                    </div>
+                    <span className={`text-xs font-medium text-center leading-tight ${
+                      selectedCategory === category.name ? 'text-gray-800' : 'text-gray-700'
+                    }`}>
+                      {category.name}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
-            <span className={`text-xs font-medium text-center leading-tight ${
-              selectedCategory === category.name ? 'text-gray-800' : 'text-gray-700'
-            }`}>
-              {category.name}
-            </span>
-          </button>
-        ))}
-      </div>
-    </div>
                 </div>
                 
               </div>

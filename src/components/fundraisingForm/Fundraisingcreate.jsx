@@ -90,16 +90,13 @@ const locations = [
 
 // List of categories
 const categories = [
-  "Support Ummah",
-  "Support Schools",
-  "Support Palestine",
-  "Support Poor",
-  "Emergency Relief",
-  "Medical Aid",
+  "Ulama",
+  "Madrasa",
   "Education",
-  "Orphans & Children",
-  "Masjid & Waqf",
-  "Community",
+  "Poor",
+  "Orphans",
+  "Medical relief",
+  "Masjid"
 ]
 
 // List of states in India
@@ -176,7 +173,7 @@ const districts = [
   "Tiruchirappalli",
 ]
 
-// Gender options
+// gender options
 const genderOptions = ["Male", "Female", "Other"]
 
 // Marital status options
@@ -322,25 +319,29 @@ export default function MultiStepForm() {
       }
     }
   }
-
+const token = localStorage.getItem("token")
   // Check if the current step is valid to enable/disable the Next button
   const isStepValid = () => {
     switch (currentStep) {
       case 0:
         return !!formData.fundType
       case 1:
+        if(!token){
+          toast.error("You are not logged in, please login to create a campaign")
+          return false
+        }
         return !!formData.goalAmount && !!formData.campaignTitle
       case 2:
         return !!formData.featureImageUrl && !!formData.category && !!formData.location && !!formData.endDate
       case 3:
         return !!formData.story
       case 4:
-        return formData.agreePrivacy && formData.agreeTerms && formData.agreePayment
+        return true
       case 5:
         // For step 5, we'll allow proceeding even if not all fields are filled
         return true
       case 6:
-        return true
+        return formData.agreePrivacy && formData.agreeTerms && formData.agreePayment
       default:
         return true
     }
@@ -383,15 +384,15 @@ export default function MultiStepForm() {
               <Card className="border border-[#C3CCDA] rounded-lg py-2 px-4 hover:border-emerald-400 cursor-pointer">
                 <div className="space-x-2">
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="personal" id="personal" className="mt-1" />
+                    <RadioGroupItem value="Personal" id="Personal" className="mt-1" />
 
-                    <Label htmlFor="personal" className="text-lg font-medium">
+                    <Label htmlFor="Personal" className="text-lg font-medium">
                       Myself or someone else
                     </Label>
                   </div>
 
                   <div className="flex-1">
-                    <p className="text-gray-600 pl-4">Funds raised will go to a personal bank account.</p>
+                    <p className="text-gray-600 pl-4">Funds raised will go to a Personal bank account.</p>
                   </div>
                 </div>
               </Card>
@@ -400,13 +401,13 @@ export default function MultiStepForm() {
                 <div className="flex items-start space-x-2">
                   <div className="space-x-2">
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="organization" id="organization" className="mt-1" />
-                      <Label htmlFor="organization" className="text-lg font-medium">
-                        My organization
+                      <RadioGroupItem value="Institute" id="Institute" className="mt-1" />
+                      <Label htmlFor="Institute" className="text-lg font-medium">
+                        My Institute
                       </Label>
                     </div>
 
-                    <p className="text-gray-600 pl-4">Funds raised will go to an organizational bank account.</p>
+                    <p className="text-gray-600 pl-4">Funds raised will go to an Institute bank account.</p>
                   </div>
                 </div>
               </Card>
@@ -462,6 +463,72 @@ export default function MultiStepForm() {
                 {100 - (formData.campaignTitle?.length || 0)} characters remaining.
               </p>
             </div>
+
+             {/* Institute-specific questions */}
+              {formData.fundType === "Institute" && (
+                <div className="mt-8 space-y-6 border-t pt-6">
+                  <h3 className="text-xl font-bold mb-4">Institute Information</h3>
+
+                  {/* Role Selection */}
+                  <div>
+                    <Label className="text-base font-medium mb-3 block">
+                      What's your Role? <span className="text-red-500">*</span>
+                    </Label>
+                    <Select
+                      value={formData.instituteRole}
+                      onValueChange={(value) => updateFormData("instituteRole", value)}
+                    >
+                      <SelectTrigger className="w-full h-14">
+                        <SelectValue placeholder="Select your role" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white">
+                        <SelectItem value="Teacher/Alim">Teacher/Alim</SelectItem>
+                        <SelectItem value="Zimedar/Ameer">Zimedar/Ameer</SelectItem>
+                        <SelectItem value="Imam">Imam</SelectItem>
+                        <SelectItem value="Trustee">Trustee</SelectItem>
+                        <SelectItem value="Operations">Operations</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Anticipated Donations */}
+                  <div>
+                    <Label htmlFor="anticipated-donations" className="text-base font-medium mb-3 block">
+                      How much do you anticopate raising donation the next 12 months?{" "}
+                      <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500">
+                        ₹
+                      </div>
+                      <Input
+                        id="anticipated-donations"
+                        type="text"
+                        value={formData.anticipatedDonations}
+                        onChange={(e) => updateFormData("anticipatedDonations", e.target.value)}
+                        className="pl-8 h-14"
+                        placeholder="Enter amount"
+                        inputMode="numeric"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Spending Plans */}
+                  <div>
+                    <Label htmlFor="spending-plans" className="text-base font-medium mb-3 block">
+                      What are you going to spend the donations on? <span className="text-red-500">*</span>
+                    </Label>
+                    <Textarea
+                      id="spending-plans"
+                      value={formData.spendingPlans}
+                      onChange={(e) => updateFormData("spendingPlans", e.target.value)}
+                      placeholder="Describe how you plan to use the donations..."
+                      className="min-h-24"
+                    />
+                  </div>
+                </div>
+              )}
           </>
         )}
 
@@ -662,99 +729,13 @@ export default function MultiStepForm() {
         {currentStep === 4 && (
           <>
             <h2 className="text-4xl font-bold bg-gradient-to-r from-[#000000] to-[#f8bb26] bg-clip-text text-transparent mb-12">
-              Terms and Conditions
-            </h2>
-
-            <div className="space-y-8">
-              <p className="text-gray-600">By fundraising on LaunchGood, I agree to the following conditions:</p>
-
-              <div className="space-y-4 border rounded-lg p-6">
-                <div className="flex items-center space-x-2">
-                  <Checkbox id="agree-all" checked={formData.agreeAll} onCheckedChange={handleAgreeAllChange} />
-                  <Label htmlFor="agree-all" className="text-lg font-bold">
-                    Agree to all
-                  </Label>
-                </div>
-
-                <div className="pl-6 space-y-3">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="agree-privacy"
-                      checked={formData.agreePrivacy}
-                      onCheckedChange={(checked) => handleIndividualAgreementChange("agreePrivacy", checked)}
-                    />
-                    <Label htmlFor="agree-privacy" className="text-base">
-                      Privacy Policy
-                    </Label>
-                  </div>
-
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="agree-terms"
-                      checked={formData.agreeTerms}
-                      onCheckedChange={(checked) => handleIndividualAgreementChange("agreeTerms", checked)}
-                    />
-                    <Label htmlFor="agree-terms" className="text-base">
-                      Terms of Use
-                    </Label>
-                  </div>
-
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="agree-payment"
-                      checked={formData.agreePayment}
-                      onCheckedChange={(checked) => handleIndividualAgreementChange("agreePayment", checked)}
-                    />
-                    <Label htmlFor="agree-payment" className="text-base">
-                      Payment Policy
-                    </Label>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border rounded-lg p-6">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h3 className="text-lg font-bold">Urgent?</h3>
-                    <p className="text-gray-600">Submit for an expedited review</p>
-                  </div>
-                  <div className="flex items-center h-6">
-                    <input
-                      type="checkbox"
-                      id="urgent-toggle"
-                      checked={formData.isUrgent}
-                      onChange={(e) => updateFormData("isUrgent", e.target.checked)}
-                      className="sr-only"
-                    />
-                    <label
-                      htmlFor="urgent-toggle"
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-950 ${
-                        formData.isUrgent ? "bg-emerald-500" : "bg-gray-200"
-                      }`}
-                    >
-                      <span
-                        className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
-                          formData.isUrgent ? "translate-x-5" : "translate-x-1"
-                        }`}
-                      />
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-
-        {currentStep === 5 && (
-          <>
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#000000] to-[#f8bb26] bg-clip-text text-transparent mb-12">
               Almost there...
             </h2>
 
             <div className="space-y-8">
               <Accordion type="single" collapsible className="w-full">
                 {/* Personal Information Accordion */}
-                <AccordionItem value="personal-info">
+                <AccordionItem value="Personal-info">
                   <AccordionTrigger className="text-lg font-bold py-4">
                     Personal Information
                    
@@ -1193,7 +1174,9 @@ export default function MultiStepForm() {
           </>
         )}
 
-        {currentStep === 6 && (
+        {currentStep === 5 && (
+          
+
           <>
             <h2 className="text-4xl font-bold bg-gradient-to-r from-[#000000] to-[#f8bb26] bg-clip-text text-transparent mb-12">
               References
@@ -1263,17 +1246,94 @@ export default function MultiStepForm() {
                 />
               </div>
 
-            
+             </div>
+          </>
+        )}
 
-            
+        {currentStep === 6 && (
+          
 
-              
+          <>
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-[#000000] to-[#f8bb26] bg-clip-text text-transparent mb-12">
+              Terms and Conditions
+            </h2>
 
-              
+            <div className="space-y-8">
+              <p className="text-gray-600">By fundraising on LaunchGood, I agree to the following conditions:</p>
 
-              
+              <div className="space-y-4 border rounded-lg p-6">
+                <div className="flex items-center space-x-2">
+                  <Checkbox id="agree-all" checked={formData.agreeAll} onCheckedChange={handleAgreeAllChange} />
+                  <Label htmlFor="agree-all" className="text-lg font-bold">
+                    Agree to all
+                  </Label>
+                </div>
 
-              
+                <div className="pl-6 space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="agree-privacy"
+                      checked={formData.agreePrivacy}
+                      onCheckedChange={(checked) => handleIndividualAgreementChange("agreePrivacy", checked)}
+                    />
+                    <Label htmlFor="agree-privacy" className="text-base">
+                      Privacy Policy
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="agree-terms"
+                      checked={formData.agreeTerms}
+                      onCheckedChange={(checked) => handleIndividualAgreementChange("agreeTerms", checked)}
+                    />
+                    <Label htmlFor="agree-terms" className="text-base">
+                      Terms of Use
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="agree-payment"
+                      checked={formData.agreePayment}
+                      onCheckedChange={(checked) => handleIndividualAgreementChange("agreePayment", checked)}
+                    />
+                    <Label htmlFor="agree-payment" className="text-base">
+                      Payment Policy
+                    </Label>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border rounded-lg p-6">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h3 className="text-lg font-bold">Urgent?</h3>
+                    <p className="text-gray-600">Submit for an expedited review</p>
+                  </div>
+                  <div className="flex items-center h-6">
+                    <input
+                      type="checkbox"
+                      id="urgent-toggle"
+                      checked={formData.isUrgent}
+                      onChange={(e) => updateFormData("isUrgent", e.target.checked)}
+                      className="sr-only"
+                    />
+                    <label
+                      htmlFor="urgent-toggle"
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-950 ${
+                        formData.isUrgent ? "bg-emerald-500" : "bg-gray-200"
+                      }`}
+                    >
+                      <span
+                        className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
+                          formData.isUrgent ? "translate-x-5" : "translate-x-1"
+                        }`}
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
           </>
         )}

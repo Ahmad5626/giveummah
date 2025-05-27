@@ -32,7 +32,7 @@
     });
 
     const data = await res.json(); 
-    console.log("Token:", data.data.token);
+    // console.log("login user dara:", data.user);
    
    if (data.data.token) {
       localStorage.setItem("token", data.data.token);
@@ -63,8 +63,8 @@ export async function getAuthenticatedUser() {
 
     const data = await res.json();
     if (data.success) {
-      console.log("Authenticated user:", data.data.user);
-      return data.data.user; // return user data
+      // console.log("Authenticated user:", data.data);
+      return data.data // return user data
     } else {
       console.warn("Authentication failed");
       return null;

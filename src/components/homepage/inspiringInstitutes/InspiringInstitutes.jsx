@@ -79,7 +79,8 @@ export default function InspiringInstitutes() {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-8">
+    <div className="bg-[url('./assets/inspiring.png')]">
+  <div className="w-full max-w-7xl mx-auto px-4 py-8 ">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Inspiring Institutes</h2>
@@ -153,5 +154,7 @@ export default function InspiringInstitutes() {
         </div>
       </div>
     </div>
+    </div>
+  
   )
 }

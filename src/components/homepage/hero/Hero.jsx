@@ -47,7 +47,7 @@ function Hero() {
            <span className="bg-gradient-to-r from-black to-amber-500 bg-clip-text text-transparent build "> Build the Future</span> <span className="bg-gradient-to-r from-black to-amber-500 bg-clip-text text-transparent build">of Deen</span>
         </h1>
           
-        <p className="text-center ">
+        <div className="text-center ">
            <BlurText
   text="Let your voice be heard. It's more than a donation, it's a vote for a better world!"
   delay={150}
@@ -57,7 +57,7 @@ function Hero() {
   className='text-lg  md:text-[23px] mb-10  '
 />
            {/* <span className="text-amber-700">donation</span> */}
-        </p>
+        </div>
         
         <h2 className="text-2xl md:text-3xl font-medium mb-8">Make a Difference Today!</h2>
         

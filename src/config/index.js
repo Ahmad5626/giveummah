@@ -6,7 +6,7 @@ export const initialSignInFormData = {
 };
 
 export const initialSignUpFormData = {
-  userName: "",
+  fullName: "",
   userEmail: "",
   password: "",
   RegisteredType: "",
@@ -14,13 +14,21 @@ export const initialSignUpFormData = {
 };
 export const initialUpdateFormData = {
   
-  Gender : "",
+  gender : "",
   dateOfBirth: "",
   State: "",
   Address: "",
   Pincode: "",
   maritalStatus: "",
   mobileNumber: "",
-  District: "",
+  district: "",
   PANCardNo: "",
+  // instituteName
+  instituteName:"",
+  instituteBio:"",
+  instituteCategory:"",
+  Country:"",
+  websiteUrl:"",
+  profileImage:""
+
 }

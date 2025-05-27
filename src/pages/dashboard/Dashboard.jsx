@@ -1,7 +1,7 @@
 "use client"
 
 import { useContext, useEffect, useState } from "react"
-import { Home, ListOrdered, User, DollarSign, LogOut, ChevronDown, Info } from "lucide-react"
+import { Home, ListOrdered, User, DollarSign, LogOut, ChevronDown, Info, Menu } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
@@ -17,15 +17,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast, Toaster } from "sonner";
 import { Navbar } from "@/components/header/Navbar"
 import { AuthContext } from "@/context/auth-context"
+import { getAuthenticatedUser } from "@/services/authApi"
 
 
 export default function Dashboard() {
- const {userData,updateHandleUser,Toaster,updateUserFormdata,handleChangeUpdateUserFormdata,setUpdateUserFormdata } = useContext(AuthContext)
+ const {userData,updateHandleUser,Toaster,updateUserFormdata,handleChangeUpdateUserFormdata,setUpdateUserFormdata,setActiveSection,
+  activeSection,setUserData } = useContext(AuthContext)
  
- 
+
+
    const [hoveredCard, setHoveredCard] = useState(null)
-  const [activeSection, setActiveSection] = useState("dashboard")
- 
+  
+ const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const currentDate = new Date()
 
@@ -38,6 +41,7 @@ export default function Dashboard() {
   })
 
   
+
 
   // Mock user data
   const userDonationData = {
@@ -200,13 +204,16 @@ const allCampaigns = [
   <Navbar position={"fixed bg-[whitesmoke]"}/>
      <div className="flex min-h-screen bg-background ">
       {/* Organization Selector */}
-      <div className="fixed top-14 left-0 right-0 p-4 bg-muted/40 border-b z-10">
+      {/* <div className={`fixed top-14 ${isDropdownOpen ? "block" : "hidden"} right-0 p-4 bg-muted/40 border-b z-10`}>
       
-      </div>
+      </div> */}
 
       {/* Sidebar */}
-      <div className="fixed top-[80px] bottom-0 w-64 border-r bg-background ">
-        <div className="space-y-1 p-4">
+      <div className={`fixed top-[120px] md:top-[80px] ${isDropdownOpen? "-left-48" : "-left-0"} transition-all  bottom-0 w-64 border-r bg-background `}>
+      <div className=" absolute top-10 md:top-5 right-5 z-30" onClick={(e)=> setIsDropdownOpen(!isDropdownOpen)}>
+          <Menu />
+        </div>
+        <div className="space-y-1 p-4 mt-6">
           <Button
             variant={activeSection === "dashboard" ? "default" : "ghost"}
             className="w-full justify-start font-medium "
@@ -248,16 +255,17 @@ const allCampaigns = [
             Logout
           </Button>
         </div>
+        
       </div>
 
       {/* Main Content */}
-      <div className="ml-64 pt-[73px] flex-1 p-6">
+      <div className={`${isDropdownOpen ? "ml-15" : "ml-70"}  pt-[120px] md:pt-[80px] flex-1 p-6`}>
         <div className="">
           {/* Dashboard Section */}
           {activeSection === "dashboard" && (
             <>
               {/* Date and Welcome */}
-              <div className="my-8">
+              <div className="my-10">
                 <div className="text-sm text-muted-foreground">
                   {formattedDate} 
                 </div>
@@ -267,7 +275,7 @@ const allCampaigns = [
               
 
               {/* Funds Raised */}
-              <div className="my-20">
+              {/* <div className="my-20">
                 <h2 className="text-2xl font-bold">
                   {userDonationData.totalRaised} {userDonationData.currency}
                 </h2>
@@ -277,7 +285,95 @@ const allCampaigns = [
                   <span className="mx-2">·</span>
                   <span>{userDonationData.dateRange}</span>
                 </div>
-              </div>
+              </div> */}
+              <div className="max-w-4xl flex items-center h-auto  flex-wrap mx-auto my-32 lg:my-0">
+
+      
+        <div id="profile"
+            className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-2xl bg-white opacity-75 mx-6 lg:mx-0">
+
+                {userData.RegisteredType == "Institute" ?
+               <>
+                  <div className="p-4 md:p-12 text-center lg:text-left">
+               
+                <div className="block lg:hidden rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-cover bg-center"
+                     style={{backgroundImage:` ${userData.profileImage? `url(${userData.profileImage})` : "url(./assets/user.jpg)"}`}}></div>
+
+                <h1 className="text-3xl font-bold pt-8 lg:pt-0">{userData.instituteName? userData.instituteName : "Institute Name"}</h1>
+                <div className="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-green-500 opacity-25"></div>
+                <p className="pt-4 text-base font-bold flex items-center justify-center lg:justify-start">
+                    <svg className="h-4 fill-current text-green-700 pr-4" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20">
+                        <path
+                            d="M9 12H1v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6h-8v2H9v-2zm0-1H0V5c0-1.1.9-2 2-2h4V2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1h4a2 2 0 0 1 2 2v6h-9V9H9v2zm3-8V2H8v1h4z" />
+                    </svg> {userData.instituteCategory? userData.instituteCategory : "Institute Category"}
+                </p>
+                <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+                    <svg className="h-4 fill-current text-green-700 pr-4" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20">
+                        <path
+                            d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm7.75-8a8.01 8.01 0 0 0 0-4h-3.82a28.81 28.81 0 0 1 0 4h3.82zm-.82 2h-3.22a14.44 14.44 0 0 1-.95 3.51A8.03 8.03 0 0 0 16.93 14zm-8.85-2h3.84a24.61 24.61 0 0 0 0-4H8.08a24.61 24.61 0 0 0 0 4zm.25 2c.41 2.4 1.13 4 1.67 4s1.26-1.6 1.67-4H8.33zm-6.08-2h3.82a28.81 28.81 0 0 1 0-4H2.25a8.01 8.01 0 0 0 0 4zm.82 2a8.03 8.03 0 0 0 4.17 3.51c-.42-.96-.74-2.16-.95-3.51H3.07zm13.86-8a8.03 8.03 0 0 0-4.17-3.51c.42.96.74 2.16.95 3.51h3.22zm-8.6 0h3.34c-.41-2.4-1.13-4-1.67-4S8.74 3.6 8.33 6zM3.07 6h3.22c.2-1.35.53-2.55.95-3.51A8.03 8.03 0 0 0 3.07 6z" />
+                    </svg> {userData.Address? userData.Address : "Address"}
+                </p>
+                <p className="pt-8 text-sm">{userData.instituteBio? userData.instituteBio : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic"}</p>
+
+                {/* <div className="pt-12 pb-8">
+                    <button className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded-full">
+				         Get In Touch
+				     </button>
+                </div> */}
+
+               
+
+                
+
+            </div>
+                </>
+                :
+                <>
+                  <div className="p-4 md:p-12 text-center lg:text-left">
+               
+                <div className="block lg:hidden rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-cover bg-center"
+                     style={{backgroundImage:` ${userData.profileImage? `url(${userData.profileImage})` : "url(./assets/user.jpg)"}`}}></div>
+
+                <h1 className="text-3xl font-bold pt-8 lg:pt-0">{userData.fullName? userData.fullName : "Institute Name"}</h1>
+                <div className="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-green-500 opacity-25"></div>
+               
+                <p className="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
+                    <svg className="h-4 fill-current text-green-700 pr-4" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20">
+                        <path
+                            d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm7.75-8a8.01 8.01 0 0 0 0-4h-3.82a28.81 28.81 0 0 1 0 4h3.82zm-.82 2h-3.22a14.44 14.44 0 0 1-.95 3.51A8.03 8.03 0 0 0 16.93 14zm-8.85-2h3.84a24.61 24.61 0 0 0 0-4H8.08a24.61 24.61 0 0 0 0 4zm.25 2c.41 2.4 1.13 4 1.67 4s1.26-1.6 1.67-4H8.33zm-6.08-2h3.82a28.81 28.81 0 0 1 0-4H2.25a8.01 8.01 0 0 0 0 4zm.82 2a8.03 8.03 0 0 0 4.17 3.51c-.42-.96-.74-2.16-.95-3.51H3.07zm13.86-8a8.03 8.03 0 0 0-4.17-3.51c.42.96.74 2.16.95 3.51h3.22zm-8.6 0h3.34c-.41-2.4-1.13-4-1.67-4S8.74 3.6 8.33 6zM3.07 6h3.22c.2-1.35.53-2.55.95-3.51A8.03 8.03 0 0 0 3.07 6z" />
+                    </svg> {userData.Address? userData.Address : "Address"}
+                </p>
+                <p className="pt-8 text-sm">{userData.instituteBio? userData.instituteBio : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic"}</p>
+
+                {/* <div className="pt-12 pb-8">
+                    <button className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded-full">
+				         Get In Touch
+				     </button>
+                </div> */}
+
+               
+
+                
+
+            </div>
+                </>
+                }
+            
+
+        </div>
+
+    
+        <div className="w-full lg:w-[300px] h-[340px]">
+          {/*  */}
+            <img src={`${userData.profileImage? userData.profileImage : './assets/user.jpg'} `} className="rounded-none lg:rounded-lg shadow-2xl hidden lg:block h-full"/>
+           
+
+        </div>
+        </div>
+        
 
              
 
@@ -387,156 +483,322 @@ const allCampaigns = [
           )}
 
           {/* Profile Section */}
+          {userData.RegisteredType == "Institute" 
+          ?
+          <>
           {activeSection === "profile" && (
-            <>
-              <div className="my-8">
-                <h1 className="text-3xl font-bold">My Profile</h1>
-                <p className="text-muted-foreground mt-2">Manage your personal information</p>
-              </div>
+                      <>
+                        <div className="my-8">
+                          <h1 className="text-3xl font-bold">Institute Profile</h1>
+                          <p className="text-muted-foreground mt-2">Tell me about your Institute</p>
+                        </div>
 
-              <Card>
-                <CardContent className="pt-6">
-                  <form onSubmit={updateHandleUser}>
-                    <div className="grid gap-6 md:grid-cols-2">
-                      <div className="space-y-2">
-                        <Label htmlFor="fullName">Full Name :</Label>
-                        <Input id="fullName"
-                        name="userName"
-                        
-                         defaultValue={userData.userName} 
-                         />
-                      </div>
+                        <Card>
+                          <CardContent className="pt-6">
+                            <form onSubmit={updateHandleUser}>
+                              <div className="grid gap-6 md:grid-cols-2">
+                                <div className="space-y-2">
+                                  <Label htmlFor="fullName">Institute Name :</Label>
+                                  <Input id="fullName"
+                                  name="instituteName"
+                                  
+                                  value={updateUserFormdata.instituteName}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                    
+                                  />
+                                </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email ID</Label>
-                        <Input id="email" defaultValue={userData.userEmail}
-                        name="userEmail"
-                        
-                         />
-                      </div>
+                                
+                                <div className="space-y-2">
+                                  <Label htmlFor="mobile" className="flex items-center">
+                                    Mobile Number <span className="text-red-500 ml-1">*</span>
+                                  </Label>
+                                  <Input id="mobile"
+                                  name="mobileNumber"
+                                  value={updateUserFormdata.mobileNumber}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                    />
+                                </div>
 
-                      <div className="space-y-2 ">
-                        <Label htmlFor="gender" className="flex items-center">
-                          Gender <span className="text-red-500 ml-1">*</span>
-                        </Label>
-                        <Select defaultValue="" className=""
-                        name="maritalStatus"
-                        value={updateUserFormdata.Gender}
-                      onValueChange={(value) =>
-                  setUpdateUserFormdata({ ...updateUserFormdata, Gender: value })
-                }
-                        >
-                          <SelectTrigger className="w-full"   >
-                            <SelectValue placeholder="- Select -" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-white">
-                            <SelectItem value="male">Male</SelectItem>
-                            <SelectItem value="female">Female</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
+                                
+                               <div className="space-y-2 md:col-span-2">
+                                    <Label htmlFor="address">Institute Bio</Label>
+                                    <Textarea id="address" placeholder="About your Institute ..." 
+                                    name="instituteBio"
+                                    value={updateUserFormdata.instituteBio}
+                                    onChange={handleChangeUpdateUserFormdata}
+                                    />
+                                  </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="maritalStatus">Marital Status</Label>
-                        <Select defaultValue=""
-                        name="State"
-                        value={updateUserFormdata.maritalStatus}
-                         onValueChange={(value) =>
-                  setUpdateUserFormdata({ ...updateUserFormdata, maritalStatus: value })
-                }
-                        >
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="- Select -" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-white">
-                            <SelectItem value="single">Single</SelectItem>
-                            <SelectItem value="married">Married</SelectItem>
-                           
-                          </SelectContent>
-                        </Select>
-                      </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="dob">Date of Birth (DD/MM/YYYY)</Label>
-                        <Input id="dob" type={"date"} placeholder="DD/MM/YYYY"
-                        name="dateOfBirth"
-                        value={updateUserFormdata.dateOfBirth}
-                        onChange={handleChangeUpdateUserFormdata}
-                         />
-                      </div>
+                              <div className="space-y-2 ">
+                                  <Label htmlFor="gender" className="flex items-center">
+                                    Which Category best describes your Institute? <span className="text-red-500 ml-1">*</span>
+                                  </Label>
+                                  <Select defaultValue="" className=""
+                                  name="instituteCategory"
+                                  value={updateUserFormdata.instituteCategory}
+                                onValueChange={(value) =>
+                            setUpdateUserFormdata({ ...updateUserFormdata, instituteCategory: value })
+                          }
+                                  >
+                                    <SelectTrigger className="w-full"   >
+                                      <SelectValue placeholder="- Select -" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-white">
+                                      <SelectItem value="Madrasa">Madrasa</SelectItem>
+                                      <SelectItem value="Masjid">Masjid</SelectItem>
+                                      <SelectItem value="Trust/NGO">Trust/NGO</SelectItem>
+                                      <SelectItem value="Khankah">Khankah</SelectItem>
+                                      <SelectItem value="School">School</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="mobile" className="flex items-center">
-                          Mobile Number <span className="text-red-500 ml-1">*</span>
-                        </Label>
-                        <Input id="mobile"
-                        name="mobileNumber"
-                        value={updateUserFormdata.mobileNumber}
-                        onChange={handleChangeUpdateUserFormdata}
-                          />
-                      </div>
+                                <div className="space-y-2">
+                                  <Label htmlFor="dob">Country</Label>
+                                  <Input id="dob" type={"input"} placeholder="Country"
+                                  name="Country"
+                                  value={updateUserFormdata.Country}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                  />
+                                </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="state" className="flex items-center">
-                          State <span className="text-red-500 ml-1">*</span>
-                        </Label>
-                        <Input type={"text"}  placeholder="State"
-                        name="State"
-                        value={updateUserFormdata.State}
-                        onChange={handleChangeUpdateUserFormdata}
-                        />
-                      </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="district" className="flex items-center">
-                          District <span className="text-red-500 ml-1">*</span>
-                        </Label>
-                        <Input type={"text"}  placeholder="District"
-                        name="District"
-                        value={updateUserFormdata.District}
-                        onChange={handleChangeUpdateUserFormdata}
-                        />
-                      </div>
+                                <div className="space-y-2">
+                                  <Label htmlFor="state" className="flex items-center">
+                                    State <span className="text-red-500 ml-1">*</span>
+                                  </Label>
+                                  <Input type={"text"}  placeholder="State"
+                                  name="State"
+                                  value={updateUserFormdata.State}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                  />
+                                </div>
 
-                      <div className="space-y-2 md:col-span-2">
-                        <Label htmlFor="address">Address</Label>
-                        <Textarea id="address" placeholder="Address (max 200 chars)" 
-                        name="Address"
-                        value={updateUserFormdata.Address}
-                        onChange={handleChangeUpdateUserFormdata}
-                        />
-                      </div>
+                                <div className="space-y-2">
+                                  <Label htmlFor="district" className="flex items-center">
+                                    District <span className="text-red-500 ml-1">*</span>
+                                  </Label>
+                                  <Input type={"text"}  placeholder="District"
+                                  name="district"
+                                  value={updateUserFormdata.district}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                  />
+                                </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="pincode">Pincode</Label>
-                        <Input id="pincode" placeholder="Pincode (max 6 chars)"
-                        name="Pincode"
-                        value={updateUserFormdata.Pincode}
-                        onChange={handleChangeUpdateUserFormdata}
-                         />
-                      </div>
+                                <div className="space-y-2 md:col-span-2">
+                                  <Label htmlFor="address">Address</Label>
+                                  <Textarea id="address" placeholder="Address (max 200 chars)" 
+                                  name="Address"
+                                  value={updateUserFormdata.Address}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                  />
+                                </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="panCard">PAN Card No.</Label>
-                        <Input id="panCard"
-                        name="PANCardNo"
-                        value={updateUserFormdata.PANCardNo}
-                        onChange={handleChangeUpdateUserFormdata}
-                         />
-                      </div>
-                    </div>
+                                <div className="space-y-2">
+                                  <Label htmlFor="pincode">Pincode</Label>
+                                  <Input id="pincode" placeholder="Pincode (max 6 chars)"
+                                  name="Pincode"
+                                  value={updateUserFormdata.Pincode}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                  />
+                                </div>
 
-                    <div className="mt-6 flex justify-center">
-                      <Button type="submit" className="bg-[#fea000] hover:bg-green-600 text-white" >
-                        Save & Continue
-                      </Button>
-                    </div>
-                  </form>
-                </CardContent>
-              </Card>
-            </>
-          )}
+                                <div className="space-y-2">
+                                  <Label htmlFor="panCard">website Url</Label>
+                                  <Input id="panCard"
+                                  name="websiteUrl"
+                                  value={updateUserFormdata.websiteUrl}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                  />
+                                </div>
+
+                                <div className="space-y-2">
+                                  <Label htmlFor="dob">Profile Image</Label>
+                                  <Input id="dob" type={"file"} 
+                                  name="profileImage"
+                                  
+                                   onChange={handleChangeUpdateUserFormdata}
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="mt-6 flex justify-center">
+                                <Button type="submit" className="bg-[#fea000] hover:bg-green-600 text-white" >
+                                  Save & Continue
+                                </Button>
+                              </div>
+                            </form>
+                          </CardContent>
+                        </Card>
+                      </>
+                    )}
+                    </>
+                    :
+                    <>
+                  {activeSection === "profile" && (
+                      <>
+                        <div className="my-8">
+                          <h1 className="text-3xl font-bold">My Profile</h1>
+                          <p className="text-muted-foreground mt-2">Manage your personal information</p>
+                        </div>
+
+                        <Card>
+                          <CardContent className="pt-6">
+                            <form onSubmit={updateHandleUser}>
+                              <div className="grid gap-6 md:grid-cols-2">
+                                <div className="space-y-2">
+                                  <Label htmlFor="fullName">Full Name :</Label>
+                                  <Input id="fullName"
+                                  name="fullName"
+                                  
+                                  defaultValue={userData.fullName} 
+                                  />
+                                </div>
+
+                                <div className="space-y-2">
+                                  <Label htmlFor="email">Email ID</Label>
+                                  <Input id="email" defaultValue={userData.userEmail}
+                                  name="userEmail"
+                                  
+                                  />
+                                </div>
+
+                                <div className="space-y-2 ">
+                                  <Label htmlFor="gender" className="flex items-center">
+                                    Gender <span className="text-red-500 ml-1">*</span>
+                                  </Label>
+                                  <Select defaultValue="" className=""
+                                  name="maritalStatus"
+                                  value={updateUserFormdata.gender}
+                                onValueChange={(value) =>
+                            setUpdateUserFormdata({ ...updateUserFormdata, gender: value })
+                          }
+                                  >
+                                    <SelectTrigger className="w-full"   >
+                                      <SelectValue placeholder="- Select -" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-white">
+                                      <SelectItem value="male">Male</SelectItem>
+                                      <SelectItem value="female">Female</SelectItem>
+                                      <SelectItem value="other">Other</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+
+                                <div className="space-y-2">
+                                  <Label htmlFor="maritalStatus">Marital Status</Label>
+                                  <Select defaultValue=""
+                                  name="State"
+                                  value={updateUserFormdata.maritalStatus}
+                                  onValueChange={(value) =>
+                            setUpdateUserFormdata({ ...updateUserFormdata, maritalStatus: value })
+                          }
+                                  >
+                                    <SelectTrigger className="w-full">
+                                      <SelectValue placeholder="- Select -" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-white">
+                                      <SelectItem value="single">Single</SelectItem>
+                                      <SelectItem value="married">Married</SelectItem>
+                                    
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+
+                                <div className="space-y-2">
+                                  <Label htmlFor="dob">Date of Birth (DD/MM/YYYY)</Label>
+                                  <Input id="dob" type={"date"} placeholder="DD/MM/YYYY"
+                                  name="dateOfBirth"
+                                  value={updateUserFormdata.dateOfBirth}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                  />
+                                </div>
+
+                                <div className="space-y-2">
+                                  <Label htmlFor="mobile" className="flex items-center">
+                                    Mobile Number <span className="text-red-500 ml-1">*</span>
+                                  </Label>
+                                  <Input id="mobile"
+                                  name="mobileNumber"
+                                  value={updateUserFormdata.mobileNumber}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                  <Label htmlFor="state" className="flex items-center">
+                                    State <span className="text-red-500 ml-1">*</span>
+                                  </Label>
+                                  <Input type={"text"}  placeholder="State"
+                                  name="State"
+                                  value={updateUserFormdata.State}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                  />
+                                </div>
+
+                                <div className="space-y-2">
+                                  <Label htmlFor="district" className="flex items-center">
+                                    District <span className="text-red-500 ml-1">*</span>
+                                  </Label>
+                                  <Input type={"text"}  placeholder="District"
+                                  name="district"
+                                  value={updateUserFormdata.district}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                  />
+                                </div>
+
+                                <div className="space-y-2 md:col-span-2">
+                                  <Label htmlFor="address">Address</Label>
+                                  <Textarea id="address" placeholder="Address (max 200 chars)" 
+                                  name="Address"
+                                  value={updateUserFormdata.Address}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                  />
+                                </div>
+
+                                <div className="space-y-2">
+                                  <Label htmlFor="pincode">Pincode</Label>
+                                  <Input id="pincode" placeholder="Pincode (max 6 chars)"
+                                  name="Pincode"
+                                  value={updateUserFormdata.Pincode}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                  />
+                                </div>
+
+                                <div className="space-y-2">
+                                  <Label htmlFor="panCard">PAN Card No.</Label>
+                                  <Input id="panCard"
+                                  name="PANCardNo"
+                                  value={updateUserFormdata.PANCardNo}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                  />
+                                </div>
+
+                                <div className="space-y-2">
+                                  <Label htmlFor="dob">Profile Image</Label>
+                                  <Input id="dob" type={"file"} 
+                                  name="profileImage"
+                                  
+                                   onChange={handleChangeUpdateUserFormdata}
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="mt-6 flex justify-center">
+                                <Button type="submit" className="bg-[#fea000] hover:bg-green-600 text-white" >
+                                  Save & Continue
+                                </Button>
+                              </div>
+                            </form>
+                          </CardContent>
+                        </Card>
+                      </>
+                    )}
+                    </>
+          }
+          
 
           {/* Donations Section */}
           {activeSection === "donations" && (
@@ -546,13 +808,13 @@ const allCampaigns = [
                 <p className="text-muted-foreground mt-2">Track all your donation activities</p>
               </div>
 
-              <Card>
+              <Card className=" overflow-hidden w-full">
                 <CardHeader>
                   <CardTitle>Donation History</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="rounded-md border">
-                    <div className="grid grid-cols-5 bg-muted p-4 font-medium">
+                <CardContent className="overflow-auto w-[500px] md:w-full" >
+                  <div className="rounded-md border ">
+                    <div className="grid grid-cols-5 bg-muted p-4 font-medium ">
                       <div>ID</div>
                       <div>Fundraiser</div>
                       <div>Amount</div>
