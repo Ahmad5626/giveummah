@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import { AuthContext } from '@/context/auth-context';
+import React, { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const GivingAmount = () => {
+  const {allCampaigns, CampaignDetails, setCampaignDetails} = useContext(AuthContext)
+  const { id } = useParams();
   const [customAmount, setCustomAmount] = useState('20.00');
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [currency, setCurrency] = useState('USD');
@@ -18,6 +22,7 @@ const GivingAmount = () => {
   const maxMessageLength = 500;
 
   const handleTipSelect = (amount) => {
+     
     setSelectedTip(amount);
     setCustomTip('');
     setShowCustomAmount(false);
@@ -53,6 +58,15 @@ const GivingAmount = () => {
     return selectedLevel ? selectedLevel.amount.toFixed(2) : customAmount;
   };
 
+
+   useEffect(() => {
+        allCampaigns.map( (campaign) => {
+          if (campaign._id === id) {
+            
+            setCampaignDetails(campaign);
+          }
+        });
+      })
   return (
     <>
 
@@ -66,7 +80,7 @@ const GivingAmount = () => {
             <p className="text-sm text-gray-600">
               Support{' '}
               <span className="font-semibold text-gray-800 underline cursor-pointer">
-                Give Qurbani, Uplift the Lives of Orphans and Widows in Need
+                {CampaignDetails.campaignTitle}
               </span>
             </p>
             <p className="text-sm text-blue-600">

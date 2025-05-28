@@ -1,7 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { Share2, Heart, ChevronLeft, ChevronRight } from "lucide-react"
+import React, { useContext, useEffect, useState } from 'react'
+import { Share2, Heart, ChevronLeft, ChevronRight ,   MapPin, Gift, Shield, Play} from "lucide-react"
+import { AuthContext } from '@/context/auth-context'
+import { Link, useParams } from 'react-router-dom'
+
 
 function GivenOption() {
+    const {allCampaigns, CampaignDetails, setCampaignDetails} = useContext(AuthContext)
+    const { id } = useParams();
+
+    
+    // console.log(id);
+    useEffect(() => {
+      allCampaigns.map( (campaign) => {
+        if (campaign._id === id) {
+          
+          setCampaignDetails(campaign);
+        }
+      });
+    })
+    
+    console.log(CampaignDetails);
+    
+    
   const donationTiers = [
     {
       amount: 10,
@@ -45,12 +65,7 @@ function GivenOption() {
     { name: "Anonymous", amount: "$25.00", time: "9 hours ago" },
   ]
 
-  const communities = [
-    { name: "Palestine", image: "/placeholder.svg?height=40&width=40" },
-    { name: "Zakat Picks", image: "/placeholder.svg?height=40&width=40" },
-    { name: "Ramadan Challenge Central Ontario Picks", image: "/placeholder.svg?height=40&width=40" },
-  ]
-
+  
   const reviews = [
     {
       id: 1,
@@ -120,8 +135,121 @@ function GivenOption() {
   const prevReview = () => {
     setCurrentReview((prev) => (prev - 1 + reviews.length) % reviews.length)
   }
+
+   const funded=1000
   return (
     <>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-900 text-center mb-4 bg-gradient-to-r from-black to-amber-500 bg-clip-text text-transparent">
+            {CampaignDetails.campaignTitle}
+          </h1>
+          <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+            <div className="w-6 h-6 bg-darkBrownClr rounded-full flex items-center justify-center">
+              <div className="w-3 h-3 bg-darkYollowClr rounded-full"></div>
+            </div>
+            <span>Organized by</span>
+            <span className="text-blue-600 font-medium">Good Planet International</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Content - Campaign Image and Details */}
+          <div className="lg:col-span-2">
+            <div className="relative bg-white rounded-lg shadow-lg overflow-hidden">
+              {/* Hero Image */}
+              <div className="relative">
+                <img
+                  src={CampaignDetails.featureImageUrl}
+                  alt="Children accessing clean water from a well"
+                  className="w-full h-64 md:h-124 object-cover"
+                />
+               
+                
+               
+              </div>
+            </div>
+          </div>
+
+          {/* Right Sidebar - Donation Info */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg shadow-lg p-6 sticky top-4">
+              {/* LaunchGood Branding */}
+              <div className="text-right mb-6">
+                <span className="text-gray-400 font-light text-lg">GiveUmmah</span>
+              </div>
+
+              {/* Fundraising Progress */}
+              <div className="mb-6">
+                <div className="text-3xl md:text-4xl font-bold text-darkBrownClr mb-2">₹{CampaignDetails.goalAmount}</div>
+                <div className="text-sm text-gray-600 mb-4">funded of {funded}</div>
+
+                {/* Progress Bar */}
+                <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+                  <div className="bg-gradient-to-r from-[#000000] to-[#f8bb26] h-2 rounded-full" style={{ width: `${Math.min((funded / CampaignDetails.goalAmount) * 100, 100)}%` }}></div>
+                </div>
+
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>
+                    <strong>1696</strong> Donors
+                  </span>
+                  
+                     <span>
+                  {Math.max(Math.ceil((new Date(CampaignDetails.endDate) - new Date()) / (1000 * 60 * 60 * 24)), 0)} days left
+                </span>
+                  
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="space-y-3 mb-6">
+                <button className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
+                  <Share2 className="w-4 h-4" />
+                  Share
+                </button>
+                <button className="w-full bg-darkBrownClr text-white py-3 px-4 rounded-lg font-medium hover:bg-darkYollowClr transition-colors" >
+                <Link to={`/donation/${CampaignDetails._id}`}>
+                  
+                  Donate
+                </Link>
+                </button>
+              </div>
+
+              {/* Additional Info */}
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center gap-2">
+                  <Heart className="w-4 h-4 text-gray-400" />
+                  <span className="text-green-600">Zakat-verified</span>
+                  <Shield className="w-4 h-4 text-gray-400" />
+                </div>
+
+                <div className="flex items-center gap-2 text-gray-600">
+                  <MapPin className="w-4 h-4" />
+                  <span>Impact: Bangladesh</span>
+                </div>
+
+                <div className="flex items-center gap-2 text-gray-600">
+                  <Gift className="w-4 h-4" />
+                  <span>UK Gift Aid</span>
+                </div>
+
+                <div className="flex items-center gap-2 text-gray-600">
+                  <Shield className="w-4 h-4" />
+                  <span>Verified for authenticity</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+    </div>
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto p-4 lg:p-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -130,28 +258,22 @@ function GivenOption() {
             {/* Header */}
             <div className="space-y-4">
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
-                For $3 a Meal, we can Feed, Hydrate and help deliver much needed items for a family in Palestine. Take part in this legacy today!
+                {CampaignDetails.tagline}
               </h1>
             </div>
 
             {/* Support Section */}
             <div className="space-y-4">
-              <h2 className="text-xl md:text-2xl font-bold text-gray-900">
-                Support Palestinian families to ensure they have what they need to combat starvation.
-              </h2>
+              <div
+              className="prose prose-gray max-w-none leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: CampaignDetails.story }}
+            />
               
-              <div className="space-y-3 text-gray-700">
-                <p className="font-semibold">The people of Palestine are running out of time.</p>
-                <p>
-                  For too long, families in Palestine have endured conflict, hunger, and displacement. Children go to sleep hungry, parents are helpless, 
-                  and communities are holding on by a thread.
-                </p>
-                <p className="font-semibold">You can change that.</p>
-              </div>
+              
             </div>
 
             {/* Images */}
-            <div className="space-y-6">
+            {/* <div className="space-y-6">
               <div className="rounded-lg overflow-hidden">
                 <img 
                   src="https://pmedia.launchgood.com/259915%2Fbody%2FUntitled_design_%2869%29.png" 
@@ -174,7 +296,7 @@ function GivenOption() {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Donation Panel */}
@@ -233,37 +355,9 @@ function GivenOption() {
           {/* Main Content */}
           <div className="lg:col-span-2 bg-white rounded-lg shadow-sm p-6">
             {/* Header */}
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                100% of Your Donation Goes Directly to the Effort
-              </h1>
-              <p className="text-gray-700 leading-relaxed">
-                Every single dollar you donate is used to deliver immediate, life-saving aid. No admin fees, no
-                cuts—just pure impact. Your generosity goes directly to the families who need it most.
-              </p>
-              <p className="text-gray-600 mt-2 text-sm">Here's how your $1 makes a difference for survival:</p>
-            </div>
+           
 
-            {/* Impact Description */}
-            <div className="mb-6 bg-gray-50 p-4 rounded-lg">
-              <p className="text-sm text-gray-700 leading-relaxed">
-                <strong>Goal 1:</strong> Delivering basic food donations provides a warm, nourishing meal for a family
-                fighting hunger.
-              </p>
-              <p className="text-sm text-gray-700 leading-relaxed mt-2">
-                <strong>Goal 2:</strong> Providing clean water. For families without a supply of safe, drinkable water
-                for hydration and cooking—essential for survival.
-              </p>
-            </div>
-
-            {/* Main Image */}
-            <div className="mb-6">
-              <img
-                src="https://pmedia.launchgood.com/259915%2Fbody%2FWhatsApp_Image_2025-03-30_at_04_57_34.jpeg"
-                alt="Volunteers in high-visibility vests serving food to families in need"
-                className="w-full h-auto rounded-lg shadow-md"
-              />
-            </div>
+          
           </div>
 
           {/* Sidebar */}
@@ -364,7 +458,7 @@ function GivenOption() {
                   </div>
                 </div>
               </div>
-            </div>
+      </div>
     </>
   )
 }

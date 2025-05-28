@@ -2,7 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import ImproveRightImg from "../../../assets/Improve-right-img.png";
+import { AuthContext } from "@/context/auth-context";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 export default function Improve() {
+  const {buttonData}=useContext(AuthContext)
   return (
     <section className=" rounded-md   bg-[url('./assets/Improve-bg.png')]">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center relative">
@@ -16,7 +20,10 @@ export default function Improve() {
 
           </p>
           <Button className="bg-black text-white hover:bg-gray-800 bg-gradient-to-b from-[#CF9F3B] to-[#FEE976] text-[balck] font-bold font-sans rounded-full  px-8 py-6 mt-6">
+            <Link to={buttonData.honorTheirButton}>
+
             Donate Now
+            </Link>
           </Button>
         </div>
 

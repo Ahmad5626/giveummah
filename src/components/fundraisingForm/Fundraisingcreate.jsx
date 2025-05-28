@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Card } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -18,6 +17,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { AuthContext } from "@/context/auth-context"
 import { Navbar } from "../header/Navbar"
 import { uploadFile } from "@/services/uploadImg"
+import { ComprehensiveEditor } from "@/components/ckediter/Ckediter"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Save, FileText, Download } from "lucide-react"
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -194,6 +196,27 @@ const causeOptions = [
 
 
 export default function MultiStepForm() {
+// text editor start
+  const [content, setContent] = useState("")
+
+
+  const handleSave = () => {
+    console.log("Saved content:", content)
+    // Here you would typically save to your backend
+    alert("Content saved successfully!")
+  }
+
+  const handleExport = () => {
+    const blob = new Blob([content], { type: "text/html" })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "document.html"
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  // text editor end
   const editor = useRef(null);
  
   // Initialize form data from localStorage or with default values
@@ -334,7 +357,7 @@ const token = localStorage.getItem("token")
       case 2:
         return !!formData.featureImageUrl && !!formData.category && !!formData.location && !!formData.endDate
       case 3:
-        return !!formData.story
+        return true
       case 4:
         return true
       case 5:
@@ -434,7 +457,7 @@ const token = localStorage.getItem("token")
                   </div>
                   <Input
                     id="goal-amount"
-                    type="text"
+                    type="number"
                     value={formData.goalAmount}
                     onChange={(e) => updateFormData("goalAmount", e.target.value)}
                     className="pl-8 h-14 text-lg"
@@ -703,13 +726,42 @@ const token = localStorage.getItem("token")
                   from other campaigns that have crowdfunded on LaunchGood!
                 </p>
                 <div className="border border-gray-300 rounded-lg overflow-hidden">
-      <JoditEditor
+                 <div className="container mx-auto p-6 max-w-7xl">
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-center">
+            <CardTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5" />
+              Comprehensive Rich Text Editor
+            </CardTitle>
+            <div className="flex gap-2">
+              <Button onClick={handleSave} className="flex items-center gap-2">
+                <Save className="h-4 w-4" />
+                Save
+              </Button>
+              <Button variant="outline" onClick={handleExport} className="flex items-center gap-2">
+                <Download className="h-4 w-4" />
+                Export HTML
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <ComprehensiveEditor
+            value={formData.story}
+            onChange={(newContent) => updateFormData("story", newContent)}
+            placeholder="Start writing your amazing content here..."
+          />
+        </CardContent>
+      </Card>
+    </div>
+      {/* <JoditEditor
         ref={editor}
         value={formData.story}
        
         onBlur={newContent => updateFormData("story", newContent)}
        
-      />
+      /> */}
     </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox
@@ -767,7 +819,7 @@ const token = localStorage.getItem("token")
                           id="given-name"
                           value={formData.firstName}
                           onChange={(e) => updateFormData("firstName", e.target.value)}
-                          placeholder="Given name"
+                          placeholder="First name"
                           className="mt-1"
                         />
                         <p className="text-xs text-gray-500 mt-1">The minimum length is 2 characters.</p>
@@ -781,7 +833,7 @@ const token = localStorage.getItem("token")
                           id="family-name"
                           value={formData.lastName}
                           onChange={(e) => updateFormData("lastName", e.target.value)}
-                          placeholder="Family name"
+                          placeholder="Last name"
                           className="mt-1"
                         />
                         <p className="text-xs text-gray-500 mt-1">The minimum length is 2 characters.</p>
@@ -933,13 +985,14 @@ const token = localStorage.getItem("token")
 
                         <div>
                           <Label htmlFor="postal-code" className="text-sm text-gray-500">
-                            Postal Code
+                            Pin Code
                           </Label>
                           <Input
+                          name="pincode"
                             id="postal-code"
-                            value={formData.address.postalCode}
-                            onChange={(e) => updateNestedFormData("address", "postalCode", e.target.value)}
-                            placeholder="Postal Code"
+                            value={formData.address.pincode}
+                            onChange={(e) => updateNestedFormData("address", "pincode", e.target.value)}
+                            placeholder="Pin Code"
                             className="mt-1"
                           />
                         </div>

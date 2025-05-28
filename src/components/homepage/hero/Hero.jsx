@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import leaf1 from '../../../assets/leaf1.png'
 import leaf2 from '../../../assets/leaf2.png'
 import leaf4 from '../../../assets/leaf4.png'
 import leaf5 from '../../../assets/leaf5.png'
 import BlurText from "../../textMotion/BlurText";
 import AnimatedContent from '../../textMotion/AnimatedContent'
+import { AuthContext } from '@/context/auth-context'
+import { Link } from 'react-router-dom'
 
 function Hero() {
+  const {buttonData}=useContext(AuthContext)
   const handleAnimationComplete = () => {
-  console.log('Animation completed!');
 };
   return (
    <>
@@ -62,7 +64,10 @@ function Hero() {
         <h2 className="text-2xl md:text-3xl font-medium mb-8">Make a Difference Today!</h2>
         
         <button className="px-8 py-3 bg-gradient-to-r from-amber-500 to-yellow-400 text-white font-medium rounded-full hover:shadow-lg transition-all duration-300 hover:from-amber-600 hover:to-yellow-500">
+        <Link to={buttonData.heroSectionButton}>
+
           Contribute Now
+        </Link>
         </button>
       </div>
     </div>

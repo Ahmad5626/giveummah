@@ -1,5 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { AuthContext } from "@/context/auth-context";
 import { ArrowUpRight } from "lucide-react";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 const features = [
   {
     img:"./assets/Ulama1.jpg",
@@ -15,6 +18,7 @@ const features = [
   }
 ]
 export default function FundraisingSection() {
+  const {buttonData}=useContext(AuthContext)
   return (
     <div className="min-h-screen  max-w-7xl mx-auto">
       <main className="container mx-auto">
@@ -32,7 +36,10 @@ export default function FundraisingSection() {
             <h4>Your Cause, Our Ummah’s Responsibility.</h4>
             <div className="pt-4">
               <Button className="rounded-full px-8 py-6 text-base bg-gray-900 hover:bg-gray-800 text-white bg-gradient-to-r from-amber-500 to-yellow-400 text-white">
+                <Link to={buttonData.fundraiseWithFaithButton}>
+
                 Start fundraising today
+                </Link>
               </Button>
               
             </div>

@@ -1,9 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react"
 import img1 from "../../../assets/unsplash_6Aa4EeZTdqw.png"
-const institutes = [
+import { AuthContext } from "@/context/auth-context"
+import { Link } from "react-router-dom"
+const inspiringInstitutesData = [
   {
     id: 1,
     name: "Darul Uloom Deoband",
@@ -43,6 +45,7 @@ const institutes = [
 ]
 
 export default function InspiringInstitutes() {
+  const {inspiringInstitutesData} = useContext(AuthContext)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [itemsPerView, setItemsPerView] = useState(4)
 
@@ -64,7 +67,7 @@ export default function InspiringInstitutes() {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  const maxIndex = Math.max(0, institutes.length - itemsPerView)
+  const maxIndex = Math.max(0, inspiringInstitutesData.length - itemsPerView)
 
   const nextSlide = () => {
     setCurrentIndex((prev) => Math.min(prev + 1, maxIndex))
@@ -117,24 +120,26 @@ export default function InspiringInstitutes() {
               transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
             }}
           >
-            {institutes.map((institute) => (
-              <div key={institute.id} className="flex-shrink-0 px-2" style={{ width: `${100 / itemsPerView}%` }}>
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
+            {inspiringInstitutesData.map((institute) => (
+              <div key={institute._id} className="flex-shrink-0 px-2" style={{ width: `${100 / itemsPerView}%` }}>
+               <Link to={institute.url} >
+                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
                   {/* Image */}
                   <div className="aspect-[4/3] overflow-hidden">
                     <img
-                      src={institute.image || "/placeholder.svg"}
-                      alt={institute.name}
+                      src={institute.instituteImage || "/placeholder.svg"}
+                      alt={institute.headline}
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
                   </div>
 
                   {/* Content */}
                   <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 text-lg mb-1 line-clamp-2">{institute.name}</h3>
-                    <p className="text-gray-500 text-sm">{institute.category}</p>
+                    <h3 className="font-semibold text-gray-900 text-lg mb-1 line-clamp-2">{institute.headline}</h3>
+                    <p className="text-gray-500 text-sm">{institute.subHeadline}</p>
                   </div>
                 </div>
+               </Link>
               </div>
             ))}
           </div>

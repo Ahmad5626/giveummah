@@ -7,7 +7,9 @@ import {
   registerService,
   updateUser,
 } from "@/services/authApi";
+import getButtons from "@/services/buttons";
 import { campaign, getAllCampaigns } from "@/services/campaign";
+import getAllInspiringInstitutes from "@/services/institutes";
 import { uploadFile } from "@/services/uploadImg";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +25,10 @@ export default function AuthProvider({ children }) {
   const [activeSection, setActiveSection] = useState("dashboard")
   const [allCampaigns, setAllCampaigns] = useState([]);
   const [userData, setUserData] = useState({});
-const navigator = useNavigate();
+  const [buttonData, setButtonData] = useState({});
+  const [inspiringInstitutesData, setInspiringInstitutesData] = useState([]);
+  const [CampaignDetails, setCampaignDetails] = useState({});
+  const navigator = useNavigate();
   // change signup form data
   function handleChangeSignUpFormdata(e) {
     const { name, value } = e.target;
@@ -131,6 +136,17 @@ const updateHandleUser =async(e)=>{
       const compaignData = await getAllCampaigns();
       if (compaignData) setAllCampaigns(compaignData.data);
     })();
+
+    (async () => {
+      const data = await getButtons();
+      if (data) setButtonData(data);
+    })();
+    (async () => {
+      const institutesData = await getAllInspiringInstitutes();
+     
+      
+      if (institutesData) setInspiringInstitutesData(institutesData.data);
+    })();
   }, []);
  
   
@@ -166,8 +182,8 @@ const updateHandleUser =async(e)=>{
               isUrgent: false,
               // Step 6 - Personal Info
               email: "",
-              givenName: "",
-              familyName: "",
+              firstName: "",
+              lastName: "",
               dateOfBirth: {
                 day: "",
                 month: "",
@@ -230,7 +246,7 @@ const updateHandleUser =async(e)=>{
 
 
 
-  console.log(userData);
+  // console.log();
   
   
   return (
@@ -261,7 +277,11 @@ const updateHandleUser =async(e)=>{
         handleChangeUpdateUserFormdata,
         updateHandleUser,
         setActiveSection,
-        activeSection
+        activeSection,
+        buttonData,
+        inspiringInstitutesData,
+        CampaignDetails,
+        setCampaignDetails
       }}
     >
       {children}
