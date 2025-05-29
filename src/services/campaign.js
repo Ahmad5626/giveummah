@@ -1,4 +1,4 @@
-  const baseAPI = "http://localhost:9000";
+  const baseAPI = "https://giveummahbackend.onrender.com";
  const token = localStorage.getItem("token");
   export const campaign=async(formData)=>{
     
@@ -31,6 +31,24 @@
 
   export const  getAllCampaigns=async()=>{
     const res=await fetch(`${baseAPI}/v1/api/get-all-campaigns`,{
+      method:"GET",
+      headers: {
+        'authorization': `Bearer ${token}`,
+      },
+    });
+    const data=await res.json();
+    if(data.success){
+      // console.log("Campaigns fetched successfully:", data.data.campaigns);
+      return data; // return campaign data
+    }else{
+      console.warn("Campaign fetch failed");
+      return data.err;
+    }
+ 
+  }
+
+ export const getSingleCampaign=async()=>{
+    const res=await fetch(`${baseAPI}/v1/api/get-login-user-campaigns`,{
       method:"GET",
       headers: {
         'authorization': `Bearer ${token}`,

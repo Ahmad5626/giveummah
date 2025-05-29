@@ -8,7 +8,7 @@ import {
   updateUser,
 } from "@/services/authApi";
 import getButtons from "@/services/buttons";
-import { campaign, getAllCampaigns } from "@/services/campaign";
+import { campaign, getAllCampaigns, getSingleCampaign } from "@/services/campaign";
 import getAllInspiringInstitutes from "@/services/institutes";
 import { uploadFile } from "@/services/uploadImg";
 import { createContext, useEffect, useState } from "react";
@@ -28,6 +28,7 @@ export default function AuthProvider({ children }) {
   const [buttonData, setButtonData] = useState({});
   const [inspiringInstitutesData, setInspiringInstitutesData] = useState([]);
   const [CampaignDetails, setCampaignDetails] = useState({});
+  const [userCampaignData, setUserCampaignData] = useState([]);
   const navigator = useNavigate();
   // change signup form data
   function handleChangeSignUpFormdata(e) {
@@ -147,6 +148,14 @@ const updateHandleUser =async(e)=>{
       
       if (institutesData) setInspiringInstitutesData(institutesData.data);
     })();
+
+
+    (async () => {
+      const loignInstitutesData = await getSingleCampaign();
+     
+      
+      if (loignInstitutesData) setUserCampaignData(loignInstitutesData.data);
+    })();
   }, []);
  
   
@@ -246,7 +255,7 @@ const updateHandleUser =async(e)=>{
 
 
 
-  // console.log();
+  // console.log(userCampaignData);
   
   
   return (
@@ -281,7 +290,8 @@ const updateHandleUser =async(e)=>{
         buttonData,
         inspiringInstitutesData,
         CampaignDetails,
-        setCampaignDetails
+        setCampaignDetails,
+        userCampaignData
       }}
     >
       {children}

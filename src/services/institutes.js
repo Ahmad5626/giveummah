@@ -1,4 +1,4 @@
-const baseAPI="http://localhost:9000";
+const baseAPI="https://giveummahbackend.onrender.com";
 
 const getAllInspiringInstitutes=async()=>{
  try {
