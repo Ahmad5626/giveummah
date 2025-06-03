@@ -196,7 +196,7 @@ export function ComprehensiveEditor({ content = "", onChange, placeholder = "Sta
             </style>
           </head>
           <body>
-            <div class="prose">${editor.getHTML()}</div>
+            <div className="prose">${editor.getHTML()}</div>
           </body>
         </html>
       `)

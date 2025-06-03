@@ -10,6 +10,11 @@ import Show from './components/joditEditor/Show'
 import CampaignDetailsPage from './pages/campaignDetailsPage/CampaignDetailsPage'
 import Donation from './pages/donation/Donation'
 import TextEditor from './components/ckediter/Texteditor'
+import About from './pages/about/About'
+import PrivacyPolicy from './pages/privacyPolicy/PrivacyPolicy'
+import TermsConditions from './pages/terms&conditions/Terms&Conditions'
+import Profile from './pages/profile/Profile'
+import SecurityCompliance from './pages/security&Compliance/Security&Compliance'
 
 
 
@@ -23,10 +28,15 @@ function App() {
       <Route path="/auth" element={<Authpage />} />
       <Route path="/fundraisingForm" element={<Fundraisingcreate />} />
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/show" element={<Show />} />
+      <Route path="/profile/:id" element={<Profile />} />
       <Route path="/campaignDetails/:id" element={<CampaignDetailsPage />} />
       <Route path="/donation/:id" element={<Donation />} />
-      <Route path="/ckeditor" element={<TextEditor />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+      <Route path="/terms&conditions" element={<TermsConditions />} />
+      <Route path="/security&compliance" element={<SecurityCompliance />} />
+      {/* <Route path="/ckeditor" element={<TextEditor />} /> */}
+      {/* <Route path="/show" element={<Show />} /> */}
     
     
       

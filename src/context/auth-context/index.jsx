@@ -3,13 +3,15 @@
 import { initialSignInFormData, initialSignUpFormData,initialUpdateFormData } from "@/config";
 import {
   getAuthenticatedUser,
+  getData,
   loginUser,
   registerService,
   updateUser,
 } from "@/services/authApi";
 import getButtons from "@/services/buttons";
-import { campaign, getAllCampaigns, getSingleCampaign } from "@/services/campaign";
+import { campaign, createComment, getAllCampaigns, getSingleCampaign } from "@/services/campaign";
 import getAllInspiringInstitutes from "@/services/institutes";
+import { getAllRecommendedCauses } from "@/services/recommendedCauses";
 import { uploadFile } from "@/services/uploadImg";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -27,8 +29,11 @@ export default function AuthProvider({ children }) {
   const [userData, setUserData] = useState({});
   const [buttonData, setButtonData] = useState({});
   const [inspiringInstitutesData, setInspiringInstitutesData] = useState([]);
-  const [CampaignDetails, setCampaignDetails] = useState({});
+  const [campaignDetails, setCampaignDetails] = useState({});
   const [userCampaignData, setUserCampaignData] = useState([]);
+  const [recommendedCauses, setRecommendedCauses] = useState([]);
+   const [allUserData, setAllUserData]=useState([]) 
+   const [givingLevels, setGivingLevels] = useState([]);
   const navigator = useNavigate();
   // change signup form data
   function handleChangeSignUpFormdata(e) {
@@ -156,6 +161,20 @@ const updateHandleUser =async(e)=>{
       
       if (loignInstitutesData) setUserCampaignData(loignInstitutesData.data);
     })();
+
+
+    (async () => {
+      const RecommendedCauses = await getAllRecommendedCauses();
+     
+      
+      if (RecommendedCauses) setRecommendedCauses(RecommendedCauses.data);
+    })();
+
+
+    (async () => {
+      const getAllUserData = await getData();
+     if (getAllUserData) setAllUserData(getAllUserData.data);
+    })();
   }, []);
  
   
@@ -255,7 +274,19 @@ const updateHandleUser =async(e)=>{
 
 
 
-  // console.log(userCampaignData);
+  // console.log(allUserData);
+  const handleCreateComment=async(formData,id)=>{
+    const data=await createComment(formData,id);
+    if(data?.success){
+      console.log("Comment created successfully:", data);
+      toast.success("Thanks for your comment!");
+      return data; // return campaign data
+    }else{
+      console.warn(  data);
+      
+      return data.err;
+    }
+  }
   
   
   return (
@@ -289,9 +320,14 @@ const updateHandleUser =async(e)=>{
         activeSection,
         buttonData,
         inspiringInstitutesData,
-        CampaignDetails,
+        campaignDetails,
         setCampaignDetails,
-        userCampaignData
+        userCampaignData,
+        recommendedCauses,
+        allUserData,
+        handleCreateComment,
+        givingLevels,
+        setGivingLevels
       }}
     >
       {children}

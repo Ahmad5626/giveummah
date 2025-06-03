@@ -1,5 +1,6 @@
 import { Phone, Mail, Instagram, Facebook, Youtube, Linkedin } from "lucide-react"
 import logo from "../../assets/logo.png"
+import { Link } from "react-router-dom"
 const Footer = () => {
   return (
     <footer className="bg-cover bg-center bg-no-repeat" style={{
@@ -81,19 +82,24 @@ const Footer = () => {
                 <h3 className="text-lg font-semibold text-gray-800 mb-6">About GiveUmmah</h3>
                 <ul className="space-y-4">
                   <li>
-                    <a href="#" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
+                    <Link to="/about" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
                       About Us
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="#" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
-                      Safety & Compliance
-                    </a>
+                    <Link to="/privacypolicy" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
+                      Privacy Policy
+                    </Link>
                   </li>
                   <li>
-                    <a href="#" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
-                      Contact Us
-                    </a>
+                    <Link to="/terms&conditions" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
+                      Terms & Conditions
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/security&compliance" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
+                      Security & Compliance
+                    </Link>
                   </li>
                 </ul>
               </div>

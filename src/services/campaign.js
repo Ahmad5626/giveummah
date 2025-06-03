@@ -1,4 +1,4 @@
-  const baseAPI = "https://giveummahbackend.onrender.com";
+  const baseAPI = "https://give-v59n.onrender.com";
  const token = localStorage.getItem("token");
   export const campaign=async(formData)=>{
     
@@ -63,4 +63,27 @@
       return data.err;
     }
  
+  }
+
+  export const createComment=async(formData,id)=>{
+ try {
+     const response =await fetch(`${baseAPI}/v1/api/create-comment/${id}`,{
+      method:"POST",
+      headers: {
+        'Content-Type': 'application/json',
+        
+      },
+      body:JSON.stringify(formData)
+     })
+     const data=await response.json();
+     if(data.success){
+      console.log("Comment created successfully:", data.data.comment);
+      return data; // return campaign data
+    }else{
+      console.warn("Comment creation failed");
+      return data.err;
+    }
+ } catch (error) {
+  return error
+ }
   }

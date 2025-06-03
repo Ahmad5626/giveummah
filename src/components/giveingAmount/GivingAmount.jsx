@@ -1,24 +1,25 @@
 import { AuthContext } from '@/context/auth-context';
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 const GivingAmount = () => {
-  const {allCampaigns, CampaignDetails, setCampaignDetails} = useContext(AuthContext)
+  const {allCampaigns, campaignDetails, setCampaignDetails,allUserData,handleCreateComment,givingLevels,setGivingLevels} = useContext(AuthContext)
   const { id } = useParams();
   const [customAmount, setCustomAmount] = useState('20.00');
   const [selectedLevel, setSelectedLevel] = useState(null);
-  const [currency, setCurrency] = useState('USD');
+  const [currency, setCurrency] = useState('INR');
   const [isZakat, setIsZakat] = useState(false);
-  const [tip, setTip] = useState(3.00);
- const [selectedTip, setSelectedTip] = useState(null);
+  const [selectedTip, setSelectedTip] = useState(null);
+  const [tip, setTip] = useState(0);
   const [customTip, setCustomTip] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('googlepay');
   const [shareEmail, setShareEmail] = useState(false);
   const [newsletter, setNewsletter] = useState(true);
   const [supportMessage, setSupportMessage] = useState('');
   const [showCustomAmount, setShowCustomAmount] = useState(false);
-
+  
   const tipAmounts = [5, 10, 15, 20];
+  const [totalAmount, setTotalAmount] = useState(0);
   const maxMessageLength = 500;
 
   const handleTipSelect = (amount) => {
@@ -32,31 +33,38 @@ const GivingAmount = () => {
     setShowCustomAmount(true);
     setSelectedTip(null);
   };
-  const givingLevels = [
-    {
-      id: 1,
-      amount: 21,
-      title: 'Fresh Meat Shadaqah 1 Family',
-      description: 'Alhamdulillah, may Allah reward you with the best of rewards and grant you Jannatul Firdaus!',
-      claimed: 0
-    },
-    {
-      id: 2,
-      amount: 101,
-      title: 'Fresh Meat Shadaqah 5 Families',
-      description: 'Alhamdulillah, may Allah reward you with the best of rewards and grant you Jannatul Firdaus!',
-      claimed: 1
-    }
-  ];
+  // const givingLevels = [
+  //   {
+  //     id: 1,
+  //     amount: 21,
+  //     headline: 'Fresh Meat Shadaqah 1 Family',
+  //     subHeadline: 'Alhamdulillah, may Allah reward you with the best of rewards and grant you Jannatul Firdaus!',
+      
+  //   },
+  //   {
+  //     id: 2,
+  //     amount: 101,
+  //     headline: 'Fresh Meat Shadaqah 5 Families',
+  //     subHeadline: 'Alhamdulillah, may Allah reward you with the best of rewards and grant you Jannatul Firdaus!',
+     
+  //   }
+  // ];
 
   const calculateTotal = () => {
     const amount = selectedLevel ? selectedLevel.amount : parseFloat(customAmount) || 0;
-    return (amount + tip).toFixed(2);
+    const total = (amount + tip).toFixed(2);
+    
+    return total
   };
 
   const getDisplayAmount = () => {
     return selectedLevel ? selectedLevel.amount.toFixed(2) : customAmount;
   };
+
+  const location =useLocation();
+  const state = location.state;
+  console.log(state);
+  
 
 
    useEffect(() => {
@@ -66,7 +74,17 @@ const GivingAmount = () => {
             setCampaignDetails(campaign);
           }
         });
-      })
+        setGivingLevels(campaignDetails.givenAmount);
+        setTip(selectedTip || 0);
+       
+      }, [allCampaigns, campaignDetails, id, selectedTip]);
+      
+
+  
+   
+   
+     
+      
   return (
     <>
 
@@ -80,11 +98,14 @@ const GivingAmount = () => {
             <p className="text-sm text-gray-600">
               Support{' '}
               <span className="font-semibold text-gray-800 underline cursor-pointer">
-                {CampaignDetails.campaignTitle}
+                {campaignDetails.campaignTitle}
               </span>
             </p>
-            <p className="text-sm text-blue-600">
-              Organized by Human Initiative Australia
+            <p className="text-sm ">
+             <span>Organized by  </span> 
+              {allUserData.filter((user) => user._id === campaignDetails.createdBy).map((user) => (
+              <Link to={`/profile/${user._id}` } key={user._id} className="text-blue-600 font-medium text-blue-600">{user.instituteName? user.instituteName : user.fullName}</Link>
+            ))}
             </p>
           </div>
 
@@ -98,7 +119,7 @@ const GivingAmount = () => {
                 <span className="px-4 py-3 text-lg font-medium text-gray-700 bg-gray-50">₹</span>
                 <input
                   type="number"
-                  value={customAmount}
+                  value={state? state.tierId :customAmount}
                   onChange={(e) => {
                     setCustomAmount(e.target.value);
                     setSelectedLevel(null);
@@ -117,25 +138,25 @@ const GivingAmount = () => {
             <h3 className="text-lg font-semibold text-gray-800">Or select a giving level</h3>
             
             <div className="space-y-3">
-              {givingLevels.map((level) => (
+              {givingLevels?.map((level) => (
                 <div
-                  key={level.id}
+                  key={level._id}
                   onClick={() => {
                     setSelectedLevel(level);
                     setCustomAmount(level.amount.toString());
                   }}
                   className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                    selectedLevel?.id === level.id
+                    selectedLevel?._id === level._id
                       ? 'border-blue-500 bg-blue-50'
                       : 'border-gray-300 hover:border-gray-400'
                   }`}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <h4 className="text-xl font-bold text-gray-800">${level.amount}</h4>
+                    <h4 className="text-xl font-bold text-gray-800">₹{level.amount}</h4>
                   </div>
-                  <h5 className="font-semibold text-gray-800 mb-2">{level.title}</h5>
-                  <p className="text-sm text-blue-600 mb-2">{level.description}</p>
-                  <p className="text-sm text-gray-500">{level.claimed} claimed</p>
+                  <h5 className="font-semibold text-gray-800 mb-2">{level.headline}</h5>
+                  <p className="text-sm text-blue-600 mb-2">{level.subHeadline}</p>
+                  {/* <p className="text-sm text-gray-500">{level.claimed} claimed</p> */}
                 </div>
               ))}
             </div>
@@ -154,7 +175,7 @@ const GivingAmount = () => {
         
         {/* Tip Amount Buttons */}
         <div className="flex flex-wrap gap-3 mb-3">
-          {tipAmounts.map((amount) => (
+          {tipAmounts?.map((amount) => (
             <button
               key={amount}
               onClick={() => handleTipSelect(amount)}
@@ -222,18 +243,18 @@ const GivingAmount = () => {
 
       {/* Give Button */}
       <div className="space-y-4">
-        <button className="w-full  bg-darkBrownClr hover:bg-darkYollowClr   text-white font-semibold py-4 px-6 rounded-lg ">
+        <button className="w-full  bg-darkBrownClr hover:bg-darkYollowClr   text-white font-semibold py-4 px-6 rounded-lg " onClick={() => handleCreateComment({ comment: supportMessage }, campaignDetails._id)}>
           GIVE NOW
         </button>
         
         <div className="text-center space-y-1">
           <p className="text-xs text-gray-500">
-            🔒 Checking out? <span className="text-blue-600 hover:underline cursor-pointer">See our terms and conditions</span>
+            🔒 Checking out? <Link to="/terms&conditions" className="text-blue-600 hover:underline cursor-pointer">See our terms and conditions</Link>
           </p>
           <p className="text-xs text-gray-500">
             By continuing, you agree to LaunchGood's{' '}
-            <span className="text-blue-600 hover:underline cursor-pointer">Terms of Service</span> and{' '}
-            <span className="text-blue-600 hover:underline cursor-pointer">Privacy Policy</span>
+            <Link to="/terms&conditions" className="text-blue-600 hover:underline cursor-pointer">Terms of Service</Link> and{' '}
+            <Link to="/privacypolicy" className="text-blue-600 hover:underline cursor-pointer">Privacy Policy</Link>
           </p>
         </div>
       </div>
@@ -275,19 +296,19 @@ const GivingAmount = () => {
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">Your giving amount</span>
-                <span className="font-medium">${getDisplayAmount()}</span>
+                <span className="font-medium">₹{getDisplayAmount()}</span>
               </div>
               
               <div className="flex justify-between">
                 <span className="text-gray-600">Giveummah tip</span>
-                <span className="font-medium">${tip.toFixed(2)}</span>
+                <span className="font-medium">₹{tip}.00</span>
               </div>
               
               <hr className="border-gray-200" />
               
               <div className="flex justify-between font-semibold">
                 <span className="text-gray-800">Your total ({currency})</span>
-                <span className="text-gray-800">${calculateTotal()}</span>
+                <span className="text-gray-800">₹{calculateTotal()}</span>
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-const baseAPI="https://giveummahbackend.onrender.com";
+const baseAPI="https://give-v59n.onrender.com";
 
 const getAllInspiringInstitutes=async()=>{
  try {

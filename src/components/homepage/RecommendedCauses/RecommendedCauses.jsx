@@ -1,9 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { AuthContext } from "@/context/auth-context"
+import { Link } from "react-router-dom"
 
 const RecommendedCauses = () => {
+  const {recommendedCauses}=useContext(AuthContext)
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const causes = [
@@ -17,11 +20,11 @@ const RecommendedCauses = () => {
   ]
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1 >= causes.length - 3 ? 0 : prevIndex + 1))
+    setCurrentIndex((prevIndex) => (prevIndex + 1 >= recommendedCauses.length - 3 ? 0 : prevIndex + 1))
   }
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? Math.max(0, causes.length - 4) : prevIndex - 1))
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? Math.max(0, recommendedCauses.length - 4) : prevIndex - 1))
   }
 
   return (
@@ -37,9 +40,10 @@ const RecommendedCauses = () => {
               transform: `translateX(-${currentIndex * (100 / 4)}%)`,
             }}
           >
-            {causes.map((cause, index) => (
+            {recommendedCauses.map((cause, index) => (
               <div key={index} className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 xl:w-1/5">
-                <div
+               <Link to={cause.url}>
+                 <div
                   className="relative h-48 sm:h-56 lg:h-64 rounded-2xl overflow-hidden cursor-pointer group"
                   style={{
                     background: `linear-gradient(135deg, #E9D8A0 0%, #E2C782 50%, #C4B48A 100%)`,
@@ -71,7 +75,7 @@ const RecommendedCauses = () => {
                   {/* Content */}
                   <div className="relative z-10 p-6 h-full flex flex-col justify-between">
                     <div>
-                      <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">{cause.title}</h3>
+                      <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">{cause.headline}</h3>
                     </div>
 
                     {/* Arrow icon */}
@@ -82,6 +86,7 @@ const RecommendedCauses = () => {
                     </div>
                   </div>
                 </div>
+               </Link>
               </div>
             ))}
           </div>
@@ -100,7 +105,7 @@ const RecommendedCauses = () => {
           <button
             onClick={nextSlide}
             className="w-12 h-12 border-2 border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 hover:bg-gray-50 transition-all duration-200"
-            disabled={currentIndex >= causes.length - 4}
+            disabled={currentIndex >= recommendedCauses.length - 4}
           >
             <ChevronRight className="w-5 h-5 text-gray-600" />
           </button>

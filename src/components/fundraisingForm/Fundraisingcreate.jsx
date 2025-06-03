@@ -851,7 +851,7 @@ const token = localStorage.getItem("token")
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="Day" />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent className="bg-white">
                               {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
                                 <SelectItem key={day} value={day.toString()}>
                                   {day}
@@ -867,7 +867,7 @@ const token = localStorage.getItem("token")
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="Month" />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent className="bg-white">
                               {[
                                 "January",
                                 "February",
@@ -896,7 +896,7 @@ const token = localStorage.getItem("token")
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="Year" />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent className="bg-white">
                               {Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i).map((year) => (
                                 <SelectItem key={year} value={year.toString()}>
                                   {year}

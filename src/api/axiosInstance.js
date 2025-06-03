@@ -1,7 +1,7 @@
 import axios from "axios";
 
  const axiosInstance = axios.create({
-    baseURL: "https://giveummahbackend.onrender.com",
+    baseURL: "https://give-v59n.onrender.com",
 });
 axiosInstance.interceptors.request.use(
   (config) => {

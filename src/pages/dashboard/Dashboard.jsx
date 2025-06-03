@@ -1,7 +1,7 @@
 "use client"
 
 import { useContext, useEffect, useState } from "react"
-import { Home, ListOrdered, User, DollarSign, LogOut, ChevronDown, Info, Menu } from "lucide-react"
+import { Home, ListOrdered, User, DollarSign, LogOut, ChevronDown, Info, Menu, Heart } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
@@ -18,6 +18,7 @@ import { toast, Toaster } from "sonner";
 import { Navbar } from "@/components/header/Navbar"
 import { AuthContext } from "@/context/auth-context"
 import { getAuthenticatedUser } from "@/services/authApi"
+import { Link } from "react-router-dom"
 
 
 export default function Dashboard() {
@@ -25,7 +26,7 @@ export default function Dashboard() {
  const {userData,updateHandleUser,Toaster,updateUserFormdata,handleChangeUpdateUserFormdata,setUpdateUserFormdata,setActiveSection,
   activeSection,setUserData } = useContext(AuthContext)
  
-
+ const funded=1000
 
    const [hoveredCard, setHoveredCard] = useState(null)
   
@@ -396,50 +397,53 @@ export default function Dashboard() {
                 <p className="text-muted-foreground mt-2">Manage and track your fundraising campaigns</p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-           {allCampaigns.map((campaign) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+           {userCampaignData.map((campaign, index) => (
           
             <Card
-              className="h-full overflow-hidden  transition-all duration-300 hover:shadow-lg pt-0 pb-2 rounded-lg border-transparent"
-             
+              className="new-card h-full overflow-hidden  transition-all duration-300 pt-0 pb-2 rounded-lg border-transparent cursor-pointer"
+             key={index}
             >
-              <div className="relative overflow-hidden h-48">
+             <Link to={`/campaignDetails/${campaign._id}`}>
+               <div className="relative overflow-hidden h-70">
                 <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out"
-                  style={{
-                    backgroundImage: `url(${campaign.aadharImageUrl })`,
-                    transform: hoveredCard === campaign.id ? "scale(1.05)" : "scale(1)",
-                  }}
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out " 
+                
                 />
+                  <img src={campaign.featureImageUrl} alt="" className="w-full h-full object-cover  " />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-70" />
               </div>
-              <CardContent className="pt-4">
-                <div className="flex items-center gap-2 mb-3">
-                  {/* <div className="h-8 w-8 rounded-full overflow-hidden border-2 border-primary/20">
+              <CardContent className="">
+                <div className="flex items-center gap-2 my-2 ">
+                   {/* <div className="h-6 w-6 rounded-full overflow-hidden border-2 border-primary/20">
                     <img
                       src={campaign.logo || "/placeholder.svg"}
                       alt={campaign.fundType}
                       className="h-full w-full object-cover"
                     />
-                  </div> */}
+                  </div>  */}
                   <span className="text-sm font-bold">{campaign.fundType}</span>
                 </div>
-                <h3 className="text-lg font-semibold mb-4 line-clamp-2 h-14">{campaign.tagline}</h3>
-                <div className="flex justify-between text-sm text-muted-foreground ">
-                  <span>43 goalAmount</span>
-                  <span>{campaign.endDate } days left</span>
+                <h3 className="text-lg font-semibold  line-clamp-2 h-14">{campaign.campaignTitle}</h3>
+                <div className="flex justify-between text-sm text-muted-foreground py-2 ">
+                  <span>43 Donors</span>
+                  <span>
+                  {Math.max(Math.ceil((new Date(campaign.endDate) - new Date()) / (1000 * 60 * 60 * 24)), 0)} days left
+                </span>
                 </div>
-                
-                  <Progress value={progress} className=" h-2 bg-gradient-to-r from-[#000000] to-[#f8bb26] my-4 p-0" />
+                 <div className="w-full bg-gray-200 rounded-full h-2 my-2">
+                  <div className="bg-gradient-to-r from-[#000000] to-[#f8bb26] h-2 rounded-full" style={{ width: `${Math.min((funded / campaign.goalAmount) * 100, 100)}%` }}></div>
+                </div>
+                  {/* <Progress value={progress} className=" h-2 bg-gradient-to-r from-[#000000] to-[#f8bb26] my-4 p-0" /> */}
                
                 <div className="flex justify-between items-end ">
                   <div>
                     <p className="text-2xl font-bold">₹{campaign.goalAmount}</p>
-                    <p className="text-sm text-muted-foreground">funded of ₹1000</p>
+                    <p className="text-sm text-muted-foreground">funded of ₹{funded}</p>
                   </div>
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button className="rounded-full px-6 text-lg text-white bg-[#fea000] hover:bg-green-600 transition-all duration-300">
-                      Manage
+                    <Button className="rounded-full px-10 py-6 text-xl text-white my-2 bg-[#fea000] hover:bg-green-600 transition-all duration-300">
+                      Donate
                     </Button>
                   </motion.div>
                 </div>
@@ -448,7 +452,9 @@ export default function Dashboard() {
               </CardContent>
               <CardFooter className="flex justify-between pt-0 ">
                 <div className="flex gap-2">
-                  
+                  <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted/50 transition-all">
+                    <Heart className="h-5 w-5" />
+                  </Button>
                   <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted/50 transition-all">
                     <Share2 className="h-5 w-5" />
                   </Button>
@@ -474,6 +480,7 @@ export default function Dashboard() {
                   </Badge>
                 )}
               </CardFooter>
+             </Link>
             </Card>
       
         ))}

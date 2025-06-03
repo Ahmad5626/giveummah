@@ -13,12 +13,15 @@ import { Link } from "react-router-dom"
 export default function FundraisingGrid() {
   const {allCampaigns} = useContext(AuthContext)
   const [hoveredCard, setHoveredCard] = useState(null)
+  // const newAllCampaigns=allCampaigns.find((el)=>el.status==="Active")
+  // console.log(typeof newAllCampaigns);
+  
 
 
 // const allCampaigns = [
 //     {
 //       id: 1,
-//       aadharImageUrl: "https://pmedia.launchgood.com/261067/urgent_need_for_a_field_hospital_for_palestinian_patients_RADS%201446%20Cover%20Image%20-%202025-05-17T040928.885-493x370.png",
+//       featureImageUrl: "https://pmedia.launchgood.com/261067/urgent_need_for_a_field_hospital_for_palestinian_patients_RADS%201446%20Cover%20Image%20-%202025-05-17T040928.885-493x370.png",
 //       logo: "/placeholder.svg?height=40&width=40",
 //       fundType: "MATW Project",
 //       tagline: "Give Qurbani in Gaza and Around the World",
@@ -30,7 +33,7 @@ export default function FundraisingGrid() {
 //     },
 //     {
 //       id: 2,
-//       aadharImageUrl: "https://pmedia.launchgood.com/306812/give_qurbani_uplift_the_lives_of_orphans_and_widows_in_need_Add%20a%20heading%20%2811%29-493x370.png",
+//       featureImageUrl: "https://pmedia.launchgood.com/306812/give_qurbani_uplift_the_lives_of_orphans_and_widows_in_need_Add%20a%20heading%20%2811%29-493x370.png",
 //       logo: "/placeholder.svg?height=40&width=40",
 //       fundType: "Aldar Waqf City",
 //       tagline: "Provide Housing for Displaced Orphans and Widows in Syria",
@@ -42,7 +45,7 @@ export default function FundraisingGrid() {
 //     },
 //     {
 //       id: 3,
-//       aadharImageUrl: "https://launchgood.s3.amazonaws.com/sponsor/14938/qurbani_to_gaza_and_beyond_with_matw_project_1000753009-493x370.jpg",
+//       featureImageUrl: "https://launchgood.s3.amazonaws.com/sponsor/14938/qurbani_to_gaza_and_beyond_with_matw_project_1000753009-493x370.jpg",
 //       logo: "/placeholder.svg?height=40&width=40",
 //       fundType: "The Noor Project",
 //       tagline: "Provide Meals & Life Essentials to Orphans in Pakistan",
@@ -54,7 +57,7 @@ export default function FundraisingGrid() {
 //     },
 //     {
 //       id: 4,
-//       aadharImageUrl: "https://pmedia.launchgood.com/307292/qurbani_for_gaza_hope_with_every_sacrifice_WhatsApp%20Image%202025-05-13%20at%2017.19.55-493x370.jpeg",
+//       featureImageUrl: "https://pmedia.launchgood.com/267289/sponsor_300_refugee_orphans_now_photo_2025-04-17_20-14-21-493x370.jpg",
 //       logo: "/placeholder.svg?height=40&width=40",
 //       fundType: "Islamic Relief",
 //       tagline: "Emergency Response: Flood Relief in Bangladesh",
@@ -66,7 +69,7 @@ export default function FundraisingGrid() {
 //     },
 //     {
 //       id: 5,
-//       aadharImageUrl: "https://pmedia.launchgood.com/262319/mothers_and_newborns_at_risk_in_syria_RADS%201446%20Cover%20Image%20-%202025-05-17T043631.564-493x370.png",
+//       featureImageUrl: "https://pmedia.launchgood.com/262319/mothers_and_newborns_at_risk_in_syria_RADS%201446%20Cover%20Image%20-%202025-05-17T043631.564-493x370.png",
 //       logo: "/placeholder.svg?height=40&width=40",
 //       fundType: "Charity Water",
 //       tagline: "Clean Water Wells for Communities in Somalia",
@@ -78,7 +81,7 @@ export default function FundraisingGrid() {
 //     },
 //     {
 //       id: 6,
-//       aadharImageUrl: "https://pmedia.launchgood.com/307099/water_for_sindh_pakistan_LG%20B%201-1-493x370.jpg",
+//       featureImageUrl: "https://hindudonations.com/HD/img/Bhumi_Puja.jpg",
 //       logo: "/placeholder.svg?height=40&width=40",
 //       fundType: "Penny Appeal",
 //       tagline: "Build a School for Orphans in Yemen",
@@ -90,7 +93,7 @@ export default function FundraisingGrid() {
 //     },
 //     {
 //       id: 7,
-//       aadharImageUrl: "https://pmedia.launchgood.com/257719/sponsor_100_palestinian__lebanese_orphans_1446%20Cover%20Images%20%2860%29-493x370.png",
+//       featureImageUrl: "https://pmedia.launchgood.com/257719/sponsor_100_palestinian__lebanese_orphans_1446%20Cover%20Images%20%2860%29-493x370.png",
 //       logo: "/placeholder.svg?height=40&width=40",
 //       fundType: "Human Appeal",
 //       tagline: "Winter Emergency: Warm Clothing for Refugees",
@@ -102,7 +105,7 @@ export default function FundraisingGrid() {
 //     },
 //     {
 //       id: 8,
-//       aadharImageUrl: "https://pmedia.launchgood.com/260675/support_free_education_for_syrias_forgotten_children_DJI_0628-490x370.JPG",
+//       featureImageUrl: "https://pmedia.launchgood.com/260675/support_free_education_for_syrias_forgotten_children_DJI_0628-490x370.JPG",
 //       logo: "/placeholder.svg?height=40&width=40",
 //       fundType: "Muslim Hands",
 //       tagline: "Feed the Fasting: Ramadan Food Packages",
@@ -129,10 +132,12 @@ export default function FundraisingGrid() {
         </Button> */}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {allCampaigns.map((campaign, index) => (
-          
-            <Card
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> 
+{/* {allCampaigns.map((campaign,index) => ( */}
+   {allCampaigns.filter((campaign) => campaign.status === "Active").sort((a, b) => a.ranking - b.ranking).map((campaign,index) => (
+  
+
+           <Card
               className="new-card h-full overflow-hidden  transition-all duration-300 pt-0 pb-2 rounded-lg border-transparent cursor-pointer"
              key={index}
             >
@@ -174,9 +179,9 @@ export default function FundraisingGrid() {
                     <p className="text-sm text-muted-foreground">funded of ₹{funded}</p>
                   </div>
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button className="rounded-full px-10 py-6 text-xl text-white my-2 bg-[#fea000] hover:bg-green-600 transition-all duration-300">
+                    <Link to={`/donation/${campaign._id}`} className="rounded-full px-10 py-2 text-xl text-white my-2 bg-[#fea000] hover:bg-green-600 transition-all duration-300">
                       Donate
-                    </Button>
+                    </Link>
                   </motion.div>
                 </div>
 
@@ -214,8 +219,12 @@ export default function FundraisingGrid() {
               </CardFooter>
              </Link>
             </Card>
+))}
+        {/* {allCampaigns.map((campaign, index) => (
+          
+            
       
-        ))}
+        ))} */}
       </div>
     </div>
   )

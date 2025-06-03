@@ -1,8 +1,4 @@
-
-
-
-
-  const baseAPI = "https://giveummahbackend.onrender.com";
+const baseAPI = "https://give-v59n.onrender.com";
        const token = localStorage.getItem("token");
  export async function registerService(formData) {
   try {
@@ -101,3 +97,15 @@ export async function updateUser(formData){
   }
 }
 
+
+export  async function getData(){
+         try{
+           const response=await fetch(`${baseAPI}/auth/get-user-data`)
+           const data=await response.json()
+          
+           return data
+         }catch(err){
+           console.log(err)
+         }
+        }
+        

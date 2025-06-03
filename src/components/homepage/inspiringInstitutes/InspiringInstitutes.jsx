@@ -5,44 +5,44 @@ import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react"
 import img1 from "../../../assets/unsplash_6Aa4EeZTdqw.png"
 import { AuthContext } from "@/context/auth-context"
 import { Link } from "react-router-dom"
-const inspiringInstitutesData = [
-  {
-    id: 1,
-    name: "Darul Uloom Deoband",
-    category: "Ulama",
-    image: "./assets/unsplash_6Aa4EeZTdqw.png",
-  },
-  {
-    id: 2,
-    name: "Khanqah Darul Ehsaan",
-    category: "Anweria",
-    image: "./assets/unsplash_0161tDc9kjs.png",
-  },
-  {
-    id: 3,
-    name: "Darul Uloom Deoband",
-    category: "Ulama",
-    image: "./assets/unsplash_AEaTUnvneik.png",
-  },
-  {
-    id: 4,
-    name: "Khanqah Darul Ehsaan",
-    category: "Anweria",
-    image: "./assets/unsplash_BCF7cHvc778.png",
-  },
-  {
-    id: 5,
-    name: "Jamia Islamia",
-    category: "Ulama",
-    image: "/placeholder.svg?height=200&width=300",
-  },
-  {
-    id: 6,
-    name: "Darul Ifta",
-    category: "Anweria",
-    image: "/placeholder.svg?height=200&width=300",
-  },
-]
+// const inspiringInstitutesData = [
+//   {
+//     id: 1,
+//     name: "Darul Uloom Deoband",
+//     category: "Ulama",
+//     image: "./assets/unsplash_6Aa4EeZTdqw.png",
+//   },
+//   {
+//     id: 2,
+//     name: "Khanqah Darul Ehsaan",
+//     category: "Anweria",
+//     image: "./assets/unsplash_0161tDc9kjs.png",
+//   },
+//   {
+//     id: 3,
+//     name: "Darul Uloom Deoband",
+//     category: "Ulama",
+//     image: "./assets/unsplash_AEaTUnvneik.png",
+//   },
+//   {
+//     id: 4,
+//     name: "Khanqah Darul Ehsaan",
+//     category: "Anweria",
+//     image: "./assets/unsplash_BCF7cHvc778.png",
+//   },
+//   {
+//     id: 5,
+//     name: "Jamia Islamia",
+//     category: "Ulama",
+//     image: "/placeholder.svg?height=200&width=300",
+//   },
+//   {
+//     id: 6,
+//     name: "Darul Ifta",
+//     category: "Anweria",
+//     image: "/placeholder.svg?height=200&width=300",
+//   },
+// ]
 
 export default function InspiringInstitutes() {
   const {inspiringInstitutesData} = useContext(AuthContext)
