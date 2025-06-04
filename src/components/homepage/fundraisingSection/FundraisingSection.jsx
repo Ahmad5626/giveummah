@@ -30,12 +30,12 @@ export default function FundraisingSection() {
 
             </h1>
             <p className="text-gray-700 text-lg">
-             GiveUmmah is the free crowdfunding platform for Muslims worldwide for students, mosques, madrasas, emergencies or personal need with *no platform fees*. Launch your campaign in minutes and receive 100% donations directly. Start today!
+            GiveUmmah is the free crowdfunding platform for Indians for students, teachers, schools, emergencies or personal need with no platform fees. Launch your campaign in minutes and receive 100% donations directly. Start today!
 
             </p>
             <h4>Your Cause, Our Ummah’s Responsibility.</h4>
             <div className="pt-4">
-              <Button className="rounded-full px-8 py-6 text-base bg-gray-900 hover:bg-gray-800 text-white bg-gradient-to-r from-amber-500 to-yellow-400 text-white">
+              <Button className="rounded-full px-8 py-6 text-base bg-gray-900 hover:bg-gray-800 text-white cta text-white">
                 <Link to={buttonData.fundraiseWithFaithButton}>
 
                 Start fundraising today

@@ -1,5 +1,5 @@
 
-const baseAPI = "https://give-v59n.onrender.com";
+const baseAPI = "http://localhost:9000";
 export const uploadFile = async (file) => {
   const formData = new FormData();
   formData.append("file", file);

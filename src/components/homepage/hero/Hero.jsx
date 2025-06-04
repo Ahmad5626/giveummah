@@ -44,26 +44,27 @@ function Hero() {
       
       {/* Main content */}
       <div className="relative z-10 text-center max-w-4xl px-6">
-        <h1 className="text-5xl md:text-7xl  font-[700] mb-6">
+        <h1 className="text-5xl md:text-7xl  font-[700] mb-6   build ">
      
-           <span className="bg-gradient-to-r from-black to-amber-500 bg-clip-text text-transparent build "> Build the Future</span> <span className="bg-gradient-to-r from-black to-amber-500 bg-clip-text text-transparent build">of India</span>
+        Build the Future of India
+           {/* <span className="bg-gradient-to-r from-black to-amber-500 bg-clip-text text-transparent build "> Build the Future</span> <span className="bg-gradient-to-r from-black to-amber-500 bg-clip-text text-transparent build">of India</span> */}
         </h1>
           
         <div className="text-center ">
            <BlurText
-  text="Let your voice be heard. It's more than a donation, it's a vote for a better world!"
-  delay={150}
-  animateBy="words"
-  direction="top"
-  onAnimationComplete={handleAnimationComplete}
-  className='text-lg  md:text-[23px] mb-10  '
-/>
+          text="Let your voice be heard. It's more than a donation, it's a vote for a better world!"
+          delay={150}
+          animateBy="words"
+          direction="top"
+          onAnimationComplete={handleAnimationComplete}
+          className='text-lg  md:text-[23px] mb-10  '
+        />
            {/* <span className="text-amber-700">donation</span> */}
         </div>
         
         <h2 className="text-2xl md:text-3xl font-medium mb-8">Make a Difference Today!</h2>
-        
-        <button className="px-8 py-3 bg-gradient-to-r from-amber-500 to-yellow-400 text-white font-medium rounded-full hover:shadow-lg transition-all duration-300 hover:from-amber-600 hover:to-yellow-500">
+        {/* cta */}
+        <button className=" cta px-8 py-3  text-white font-medium rounded-full hover:shadow-lg transition-all duration-300 hover:from-amber-600 hover:to-yellow-500">
         <Link to={buttonData.heroSectionButton}>
 
           Contribute Now

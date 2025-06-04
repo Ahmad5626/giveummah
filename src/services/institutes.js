@@ -1,4 +1,4 @@
-const baseAPI="https://give-v59n.onrender.com";
+const baseAPI="http://localhost:9000";
 
 const getAllInspiringInstitutes=async()=>{
  try {

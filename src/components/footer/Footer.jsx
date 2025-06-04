@@ -50,7 +50,7 @@ const Footer = () => {
                   </div>
                   <div className="flex items-center gap-3 text-gray-700">
                     <Mail className="w-5 h-5 text-orange-600" />
-                    <span className="text-sm">ganalwali@gmail.com</span>
+                    <span className="text-sm">tariq@giveummah.com</span>
                   </div>
                 </div>
               </div>
@@ -153,7 +153,7 @@ const Footer = () => {
         {/* Copyright Section */}
         <div className="button-footer py-4 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
-            <p className="text-black text-sm font-medium">Copyright 2025 Day Translations, Inc | All Rights Reserved</p>
+            <p className="text-black text-sm font-medium">Copyright 2025 GiveUmmah private limited | All Rights Reserved</p>
           </div>
         </div>
       </div>

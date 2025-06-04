@@ -6,17 +6,17 @@ import { AuthContext } from "@/context/auth-context"
 import { Link } from "react-router-dom"
 
 const RecommendedCauses = () => {
-  const {recommendedCauses}=useContext(AuthContext)
+  // const {recommendedCauses}=useContext(AuthContext)
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  const causes = [
-    { title: "Livelihood for Ulama"},
-    { title: "Construction Support for Madrasas" },
-    { title: "Student Education"},
-    { title: "Help Poor"},
-    { title: "Help Orphans"},
-    { title: "Medical Relief" },
-    { title: "Construction Support for Masjids." },
+  const recommendedCauses = [
+    { headline: "Livelihood for Ulama"},
+    { headline: "Construction Support for Madrasas" },
+    { headline: "Student Education"},
+    { headline: "Help Poor"},
+    { headline: "Help Orphans"},
+    { headline: "Medical Relief" },
+    { headline: "Construction Support for Masjids." },
   ]
 
   const nextSlide = () => {

@@ -131,7 +131,7 @@ export default function Home() {
                       <Search className="mr-2 h-10 w-4" />
                       <input type="text" placeholder="Search" className="text-zinc-600 placeholder:text-zinc-600 focus:outline-none" />
                     </div>
-                    <Button className="bg-gradient-to-r from-amber-500 to-yellow-400 text-white px-4 py-6 text-white text-sm cursor-pointer">Search</Button>
+                    <Button className="cta text-white px-4 py-6 text-white text-sm cursor-pointer">Search</Button>
                   </div>
         <div className="max-w-7xl mx-auto pt-6">
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">

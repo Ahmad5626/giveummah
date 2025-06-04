@@ -43,6 +43,14 @@ label{
 }
 .build{
     font-family: 'Inria Serif', serif !important;
+      font-size: 72px;
+  background: -webkit-linear-gradient(#000, oklch(76.9% 0.188 70.08));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.cta{
+  background: #CF9F3B;
+background: linear-gradient(to right, oklch(76.9% 0.188 70.08)0%,  oklch(79.5% 0.184 86.047) 100%);
 }
 .button-footer{
   background: #CF9F3B;
