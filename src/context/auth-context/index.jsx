@@ -228,6 +228,8 @@ const updateHandleUser =async(e)=>{
               },
               governmentId: null,
               governmentIdUrl: "", // For preview
+              supportingDocumentsId: null,
+              supportingDocumentsIdUrl: "",
               // Bank Info
               accountHolderName: "",
               accountNumber: "",
@@ -248,6 +250,10 @@ const updateHandleUser =async(e)=>{
               maritalStatus: "",
               emailId: "",
               mobileNumber: "",
+              instituteName: "",
+              instituteBio: "",
+              anticipatedDonations: "",
+              spendingPlans: "",
               state: "",
               district: "",
               addressDetails: "",
@@ -256,13 +262,14 @@ const updateHandleUser =async(e)=>{
       }
       return {}
     })
-
+const navigate=useNavigate();
    const createCampaign =async(e)=> {
   
      const result = await campaign(formData);
      if(result?.success){
       
       localStorage.removeItem("campaignData");
+      navigate("/");
       window.location.reload();
       toast.success("Campaign created successfully!");
       
@@ -286,8 +293,13 @@ const updateHandleUser =async(e)=>{
       
       return data.err;
     }
+
+    // payment 
+    
+
   }
   
+ 
   
   return (
     <AuthContext.Provider

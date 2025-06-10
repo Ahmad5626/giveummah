@@ -258,13 +258,10 @@ function GivenOption() {
 
                   <div className="flex items-center gap-2 text-gray-600">
                     <MapPin className="w-4 h-4" />
-                    <span>Impact: Bangladesh</span>
+                    <span>Impact: {campaignDetails.location}</span>
                   </div>
 
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <Gift className="w-4 h-4" />
-                    <span>UK Gift Aid</span>
-                  </div>
+                  
 
                   <div className="flex items-center gap-2 text-gray-600">
                     <Shield className="w-4 h-4" />

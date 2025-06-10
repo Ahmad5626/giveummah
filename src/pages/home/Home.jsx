@@ -141,8 +141,8 @@ export default function Home() {
                     onClick={() => setSelectedCategory(category.name)}
                     className={`flex flex-col items-center justify-center p-4 rounded-xl shadow-sm transition-all duration-200 hover:shadow-md min-h-[120px] ${
                       selectedCategory === category.name
-                        // ? 'border-2 border-blue-400 bg-blue-50'
-                        ? 'border border-gray-200 bg-white hover:border-gray-300'
+                        ? 'border-2 border-blue-400 bg-blue-50'
+                        // ? 'border border-gray-200 bg-white hover:border-gray-300'
                         : 'border border-gray-200 bg-white hover:border-gray-300'
                     }`}
                   >

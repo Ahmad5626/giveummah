@@ -79,17 +79,9 @@ const GivingAmount = () => {
        
       }, [allCampaigns, campaignDetails, id, selectedTip]);
       
-
-  
-   
-   
-     
-      
-  return (
+return (
     <>
-
-   
-    <div className="max-w-7xl mx-auto mt-10 p-10 md:py-10 md:px-0 bg-white">
+  <div className="max-w-7xl mx-auto mt-10 p-10 md:py-10 md:px-0 bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left Column - Donation Form */}
         <div className="lg:col-span-1 space-y-6">
@@ -119,7 +111,7 @@ const GivingAmount = () => {
                 <span className="px-4 py-3 text-lg font-medium text-gray-700 bg-gray-50">₹</span>
                 <input
                   type="number"
-                  value={state? state.tierId :customAmount}
+                  value={customAmount}
                   onChange={(e) => {
                     setCustomAmount(e.target.value);
                     setSelectedLevel(null);
@@ -155,7 +147,7 @@ const GivingAmount = () => {
                     <h4 className="text-xl font-bold text-gray-800">₹{level.amount}</h4>
                   </div>
                   <h5 className="font-semibold text-gray-800 mb-2">{level.headline}</h5>
-                  <p className="text-sm text-blue-600 mb-2">{level.subHeadline}</p>
+                  {/* <p className="text-sm text-blue-600 mb-2">{level.subHeadline}</p> */}
                   {/* <p className="text-sm text-gray-500">{level.claimed} claimed</p> */}
                 </div>
               ))}
@@ -196,7 +188,7 @@ const GivingAmount = () => {
         {/* Custom Amount */}
         {showCustomAmount ? (
           <div className="flex items-center space-x-2 mb-3">
-            <span className="text-sm text-gray-600">$</span>
+            <span className="text-sm text-gray-600">₹</span>
             <input
               type="number"
               value={customTip}
@@ -204,7 +196,7 @@ const GivingAmount = () => {
               placeholder="Enter amount"
               className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-32"
             />
-            <span className="text-sm text-gray-600">USD</span>
+            <span className="text-sm text-gray-600">INR</span>
           </div>
         ) : (
           <button

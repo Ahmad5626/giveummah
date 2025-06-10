@@ -57,9 +57,9 @@ export default function FundraisingSection() {
           {/* Right Section */}
           <div className="bg-gradient-to-r from-[#FDEDFC] to-[#E0E4F3]  p-8 rounded-3xl flex flex-col justify-center space-y-8">
             <div className="space-y-2">
-              <h2 className="text-4xl font-bold text-purple-600">Together We Give</h2>
-              <h2 className="text-4xl font-bold text-purple-600"> Together We Thrive—Trusted</h2>
-              <h2 className="text-4xl font-bold text-purple-600"> Transparent, United.
+              <h2 className="text-4xl font-bold bg-gradient-to-r from-[#CF9F3B] to-[#FEE976] text-transparent bg-clip-text">Together We Give</h2>
+              <h2 className="text-4xl font-bold bg-gradient-to-r from-[#CF9F3B] to-[#FEE976] text-transparent bg-clip-text"> Together We Thrive—Trusted</h2>
+              <h2 className="text-4xl font-bold bg-gradient-to-r from-[#CF9F3B] to-[#FEE976] text-transparent bg-clip-text"> Transparent, United.
 </h2>
             </div>
 

@@ -75,7 +75,7 @@ const RecommendedCauses = () => {
                   {/* Content */}
                   <div className="relative z-10 p-6 h-full flex flex-col justify-between">
                     <div>
-                      <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">{cause.headline}</h3>
+                      <h3 className="text-xl sm:text-3xl font-bold text-gray-800 mb-1">{cause.headline}</h3>
                     </div>
 
                     {/* Arrow icon */}

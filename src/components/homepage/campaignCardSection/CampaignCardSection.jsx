@@ -11,7 +11,7 @@ import { Link } from "react-router-dom"
 
 
 export default function FundraisingGrid() {
-  const {allCampaigns} = useContext(AuthContext)
+  const {allCampaigns,allUserData} = useContext(AuthContext)
   const [hoveredCard, setHoveredCard] = useState(null)
   // const newAllCampaigns=allCampaigns.find((el)=>el.status==="Active")
   // console.log(typeof newAllCampaigns);
@@ -150,8 +150,9 @@ export default function FundraisingGrid() {
                   <img src={campaign.featureImageUrl} alt="" className="w-full h-full object-cover  " />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-70" />
               </div>
+              </Link>
               <CardContent className="">
-                <div className="flex items-center gap-2 my-2 ">
+                <div className="flex items-center gap-2  ">
                    {/* <div className="h-6 w-6 rounded-full overflow-hidden border-2 border-primary/20">
                     <img
                       src={campaign.logo || "/placeholder.svg"}
@@ -159,9 +160,19 @@ export default function FundraisingGrid() {
                       className="h-full w-full object-cover"
                     />
                   </div>  */}
-                  <span className="text-sm font-bold">{campaign.fundType}</span>
+
+                  {allUserData.filter((user) => user._id === campaign.createdBy).map((user) =>{
+                    return(
+                      <>
+                        <span className="text-sm  mb-2">{user.instituteName ? user.instituteName : user.fullName}</span>
+                      </>
+                    )
+                  })}
+                  
                 </div>
-                <h3 className="text-lg font-semibold  line-clamp-2 h-14">{campaign.campaignTitle}</h3>
+                <Link to={`/campaignDetails/${campaign._id}`} className="Hover:text-primary">
+                  <h3 className="text-lg font-semibold  line-clamp-2 h-14">{campaign.campaignTitle}</h3>
+                </Link>
                 <div className="flex justify-between text-sm text-muted-foreground py-2 ">
                   <span>43 Donors</span>
                   <span>
@@ -196,8 +207,8 @@ export default function FundraisingGrid() {
                     <Share2 className="h-5 w-5" />
                   </Button>
                 </div>
-                {campaign.isZakatVerified && (
-                  <Badge variant="outline" className="text-[#fea000] border-green-200 bg-green-50 gap-1">
+                {campaign.zakatVerified && (
+                  <Badge variant="outline" className="text-[#fea000] border-green-200 bg-green-50 gap-1 mt-2">
                     Zakat-verified
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                       <path
@@ -217,7 +228,7 @@ export default function FundraisingGrid() {
                   </Badge>
                 )}
               </CardFooter>
-             </Link>
+             
             </Card>
 ))}
         {/* {allCampaigns.map((campaign, index) => (

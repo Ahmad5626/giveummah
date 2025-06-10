@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useContext } from "react";
 import { Heart, Search, Settings, X, Globe, Home, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu  } from "lucide-react";
 import { AuthContext } from "@/context/auth-context";
 import { Toaster, toast } from "sonner";
@@ -14,6 +14,14 @@ export function Navbar({position}) {
   const [checkLogin, setCheckLogin] = useState(false);
   const searchRef = useRef(null);
   const menuRef = useRef(null);
+    const [isSearchPage,setIsSearchPage] = useState(false)
+const navigate=useNavigate()
+const location=useLocation()
+const searchPage=(e)=>{
+  e.preventDefault()
+  navigate("/search")
+  setIsSearchPage("search")
+}
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -26,10 +34,18 @@ export function Navbar({position}) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
+  
+      
+   
   }, []);
 
+  useEffect(()=>{
+        const isSearch = location.pathname === "/search"
+        setIsSearchPage(isSearch)
+    },[location])
+
   const {userData}=useContext(AuthContext)
-// console.log();
+
 useEffect(() => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -59,16 +75,37 @@ function handleLogout() {
             </Link>
 
             {/* Search Bar */}
-            <div className="mx-4 hidden  md:block px-8" >
-              <div className="relative">
+          {isSearchPage?
+          (
+              <div className="mx-4 hidden  md:block px-8" >
+              <div className="relative" >
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                 <Input
                   type="text"
                   placeholder="Discover inspiring causes"
+                  
+                  autoFocus
                   className="w-full rounded-full border-gray-300 pl-10 pr-44 py-4  focus-visible:ring-[#AC6908] "
                 />
               </div>
             </div>
+          )
+          :
+          (
+              <div className="mx-4 hidden  md:block px-8" >
+              <div className="relative border-2 border-gray-300 rounded-full" onClick={(e)=>searchPage(e)}>
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <div
+                  type="text"
+                  placeholder="Discover inspiring causes"
+                  className="w-full rounded-full text-gray-300 pl-8 pr-44 py-1   "
+                >
+                Discover inspiring causes
+                </div>
+              </div>
+            </div>
+          )
+          }
 
             {/* Desktop Navigation */}
             <div className="flex items-center gap-3">

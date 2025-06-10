@@ -15,6 +15,9 @@ import PrivacyPolicy from './pages/privacyPolicy/PrivacyPolicy'
 import TermsConditions from './pages/terms&conditions/Terms&Conditions'
 import Profile from './pages/profile/Profile'
 import SecurityCompliance from './pages/security&Compliance/Security&Compliance'
+import Search from './pages/search/Search'
+import Pay from './pages/pay/Pay'
+import Status from './pages/pay/Status'
 
 
 
@@ -35,6 +38,9 @@ function App() {
       <Route path="/privacypolicy" element={<PrivacyPolicy />} />
       <Route path="/terms&conditions" element={<TermsConditions />} />
       <Route path="/security&compliance" element={<SecurityCompliance />} />
+      <Route path="/search" element={<Search />} />
+      <Route path="/pay" element={<Pay />} />
+      <Route path="/status/:merchantTx" element={<Status />} />
       {/* <Route path="/ckeditor" element={<TextEditor />} /> */}
       {/* <Route path="/show" element={<Show />} /> */}
     

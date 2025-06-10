@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar as CalendarComponent } from "@/components/ui/calendar"
-import { format } from "date-fns"
+import { differenceInDays, format, addDays } from "date-fns";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { AuthContext } from "@/context/auth-context"
 import { Navbar } from "../header/Navbar"
@@ -196,9 +196,36 @@ const causeOptions = [
 
 
 export default function MultiStepForm() {
+  const {userData}=useContext(AuthContext)
 // text editor start
   const [content, setContent] = useState("")
+// Detect user's location on load
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        updateFormData("latitude", latitude);
+        updateFormData("longitude", longitude);
 
+        const res = await fetch(
+          `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`
+        );
+        const data = await res.json();
+
+        const { city, state, country } = data.address;
+        const detectedLocation = `${city || state}, ${country}`;
+        updateFormData("location", detectedLocation);
+      },
+      async () => {
+        const res = await fetch("https://ipapi.co/json/");
+        const data = await res.json();
+        const detectedLocation = `${data.city}, ${data.region}, ${data.country_name}`;
+        updateFormData("location", detectedLocation);
+        updateFormData("latitude", data.latitude);
+        updateFormData("longitude", data.longitude);
+      }
+    );
+  }, []);
 
   const handleSave = () => {
     console.log("Saved content:", content)
@@ -339,6 +366,9 @@ export default function MultiStepForm() {
       } else if (field === "governmentId") {
         updateFormData("governmentId", file)
         updateFormData("governmentIdUrl", uploadedUrl)
+      }else if (field === "supportingDocumentsId") {
+        updateFormData("supportingDocumentsId", file)
+        updateFormData("supportingDocumentsUrl", uploadedUrl)
       }
     }
   }
@@ -492,6 +522,28 @@ const token = localStorage.getItem("token")
                 <div className="mt-8 space-y-6 border-t pt-6">
                   <h3 className="text-xl font-bold mb-4">Institute Information</h3>
 
+                  {/* Institute Name */}
+                   <div>
+                    <Label htmlFor="anticipated-donations" className="text-base font-medium mb-3 block">
+                      Institute Name
+                      <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="">
+                      
+                      <Input
+                        id="anticipated-donations"
+                        type="text"
+                        defaultValue={userData.instituteName}
+
+                        value={formData.instituteName}
+                        onChange={(e) => updateFormData("instituteName", e.target.value)}
+                        className=" h-14"
+                        placeholder="Institute Name"
+                        
+                      />
+                    </div>
+                  </div>
+
                   {/* Role Selection */}
                   <div>
                     <Label className="text-base font-medium mb-3 block">
@@ -504,13 +556,13 @@ const token = localStorage.getItem("token")
                       <SelectTrigger className="w-full h-14">
                         <SelectValue placeholder="Select your role" />
                       </SelectTrigger>
-                      <SelectContent className="bg-white">
-                        <SelectItem value="Teacher/Alim">Teacher/Alim</SelectItem>
-                        <SelectItem value="Zimedar/Ameer">Zimedar/Ameer</SelectItem>
-                        <SelectItem value="Imam">Imam</SelectItem>
-                        <SelectItem value="Trustee">Trustee</SelectItem>
-                        <SelectItem value="Operations">Operations</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
+                      <SelectContent className="bg-white ">
+                        <SelectItem value="Teacher/Alim" className={"hover:bg-gray-200"}>Teacher/Alim</SelectItem>
+                        <SelectItem value="Zimedar/Ameer" className={"hover:bg-gray-200"}>Zimedar/Ameer</SelectItem>
+                        <SelectItem value="Imam" className={"hover:bg-gray-200"}>Imam</SelectItem>
+                        <SelectItem value="Trustee" className={"hover:bg-gray-200"}>Trustee</SelectItem>
+                        <SelectItem value="Operations" className={"hover:bg-gray-200"}>Operations</SelectItem>
+                        <SelectItem value="Other" className={"hover:bg-gray-200"}>Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -518,7 +570,7 @@ const token = localStorage.getItem("token")
                   {/* Anticipated Donations */}
                   <div>
                     <Label htmlFor="anticipated-donations" className="text-base font-medium mb-3 block">
-                      How much do you anticopate raising donation the next 12 months?{" "}
+                      How much do you anticipate  raising donation the next 12 months?{" "}
                       <span className="text-red-500">*</span>
                     </Label>
                     <div className="relative">
@@ -632,7 +684,7 @@ const token = localStorage.getItem("token")
                   </SelectTrigger>
                   <SelectContent className="bg-white">
                     {categories.map((category) => (
-                      <SelectItem key={category} value={category}>
+                      <SelectItem key={category} value={category} className={"hover:bg-gray-200"}>
                         {category}
                       </SelectItem>
                     ))}
@@ -641,71 +693,65 @@ const token = localStorage.getItem("token")
               </div>
 
               {/* Location */}
-              <div>
-                <Label htmlFor="location" className="text-xl font-bold block mb-2">
-                  Location<span className="text-red-500">*</span>
-                </Label>
-                <p className="text-gray-600 mb-3">Where is the impact of your campaign?</p>
-                <div className="relative">
-                  <Input
-                    id="location"
-                    value={formData.location}
-                    onChange={(e) => handleLocationChange(e.target.value)}
-                    placeholder="Start typing a location..."
-                    className="h-14 text-base"
-                  />
-                  {showLocationDropdown && filteredLocations.length > 0 && (
-                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
-                      {filteredLocations.map((loc, index) => (
-                        <div
-                          key={index}
-                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                          onClick={() => {
-                            updateFormData("location", loc)
-                            setShowLocationDropdown(false)
-                          }}
-                        >
-                          {loc}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
+             <div>
+      <Label htmlFor="location" className="text-xl font-bold block mb-2">
+        Location<span className="text-red-500">*</span>
+      </Label>
+      <p className="text-gray-600 mb-3">Where is the impact of your campaign?</p>
+      <div className="relative">
+        <Input
+          id="location"
+          value={formData.location}
+          onChange={(e) => handleLocationChange(e.target.value)}
+          placeholder="Start typing a location..."
+          className="h-14 text-base"
+        />
+      </div>
+
+    
+    </div>
 
               {/* End Date */}
               <div>
-                <Label htmlFor="end-date" className="text-xl font-bold block mb-2">
-                  End date<span className="text-red-500">*</span>
-                </Label>
-                <p className="text-gray-600 mb-3">
-                  Most fundraisers average 30 days.
-                  <br />
-                  Yours is set to end on{" "}
-                  {formData.endDate
-                    ? format(new Date(formData.endDate), "EEEE, MMMM d, yyyy h:mm a 'India Standard Time'")
-                    : "Saturday, June 14, 2025 5:30 AM India Standard Time"}
-                </p>
-                <div className="flex gap-4">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline" className="w-full justify-start text-left font-normal h-14">
-                        <Calendar className="mr-2 h-4 w-4" />
-                        {formData.endDate ? format(new Date(formData.endDate), "PPP") : "Select date"}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <CalendarComponent
-                        className="bg-white"
-                        mode="single"
-                        selected={formData.endDate ? new Date(formData.endDate) : undefined}
-                        onSelect={(date) => updateFormData("endDate", date?.toISOString())}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
+              <Label htmlFor="end-date" className="text-xl font-bold block mb-2">
+                End date<span className="text-red-500">*</span>
+              </Label>
+              <p className="text-gray-600 mb-3">
+                Most fundraisers average 30 days.
+                <br />
+                {/* Yours is set to end on{" "} */}
+                {/* {formData.endDate
+                  ? format(new Date(formData.endDate), "EEEE, MMMM d, yyyy h:mm a 'India Standard Time'")
+                  : "Saturday, June 14, 2025 5:30 AM India Standard Time"} */}
+              </p>
+              <div className="flex gap-4">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className="w-full justify-start text-left font-normal h-14">
+                      <Calendar className="mr-2 h-4 w-4" />
+                      {formData.endDate ? format(new Date(formData.endDate), "PPP") : "Select date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <CalendarComponent
+                      className="bg-white"
+                      mode="single"
+                      selected={formData.endDate ? new Date(formData.endDate) : undefined}
+                      onSelect={(date) => {
+                        const minDate = addDays(new Date(), 30);
+                        if (date && date < minDate) {
+                          alert("Please select a date at least 30 days from today.");
+                          return;
+                        }
+                        updateFormData("endDate", date?.toISOString());
+                      }}
+                      disabled={(date) => date < addDays(new Date(), 30)}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
               </div>
+            </div>
             </div>
           </>
         )}
@@ -723,7 +769,7 @@ const token = localStorage.getItem("token")
                 </Label>
                 <p className="text-gray-600 mb-3">
                   Tell your story in a way that's clear, concise, and creative. Check our Guidelines for proven tips
-                  from other campaigns that have crowdfunded on LaunchGood!
+                  from other campaigns that have crowdfunded on GiveUmmah!
                 </p>
                 <div className="border border-gray-300 rounded-lg overflow-hidden">
                  <div className="container mx-auto p-6 max-w-7xl">
@@ -793,7 +839,7 @@ const token = localStorage.getItem("token")
                    
                   </AccordionTrigger>
                   <AccordionContent>
-                    <div className="space-y-4 py-4">
+                    <div className="space-y-4 py-4 px-4">
                       <p className="text-sm text-gray-600">
                         All fields are required. You can save your progress at any point by clicking Save below.
                       </p>
@@ -853,7 +899,7 @@ const token = localStorage.getItem("token")
                             </SelectTrigger>
                             <SelectContent className="bg-white">
                               {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-                                <SelectItem key={day} value={day.toString()}>
+                                <SelectItem key={day} value={day.toString()} className="hover:bg-gray-200">
                                   {day}
                                 </SelectItem>
                               ))}
@@ -867,7 +913,7 @@ const token = localStorage.getItem("token")
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="Month" />
                             </SelectTrigger>
-                            <SelectContent className="bg-white">
+                            <SelectContent className="bg-white hover:cursor-pointer ">
                               {[
                                 "January",
                                 "February",
@@ -882,7 +928,7 @@ const token = localStorage.getItem("token")
                                 "November",
                                 "December",
                               ].map((month, index) => (
-                                <SelectItem key={month} value={(index + 1).toString()}>
+                                <SelectItem key={month} value={(index + 1).toString()} className="hover:bg-gray-200">
                                   {month}
                                 </SelectItem>
                               ))}
@@ -898,7 +944,7 @@ const token = localStorage.getItem("token")
                             </SelectTrigger>
                             <SelectContent className="bg-white">
                               {Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i).map((year) => (
-                                <SelectItem key={year} value={year.toString()}>
+                                <SelectItem key={year} value={year.toString()} className="hover:bg-gray-200">
                                   {year}
                                 </SelectItem>
                               ))}
@@ -911,15 +957,23 @@ const token = localStorage.getItem("token")
                         <Label htmlFor="phone" className="text-sm text-gray-500">
                           Phone Number
                         </Label>
-                        <Input
+                       <Input
                           id="phone"
+                          type="text"
+                          inputMode="numeric" // shows number pad on mobile
                           value={formData.phone}
-                          onChange={(e) => updateFormData("phone", e.target.value)}
+                          maxLength={10}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, ""); // remove non-digits
+                            if (value.length <= 10) {
+                              updateFormData("phone", value);
+                            }
+                          }}
                           placeholder="Phone number"
                           className="mt-1"
                         />
                         <p className="text-xs text-gray-500 mt-1">
-                          Please include your international dialing code and the minimum length is 7 characters.
+                          Please include your international dialing code and the minimum length is 10 characters.
                         </p>
                       </div>
 
@@ -933,9 +987,9 @@ const token = localStorage.getItem("token")
                           <SelectTrigger>
                             <SelectValue placeholder="Select country" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent className={"bg-white"}>
                             {countries.map((country) => (
-                              <SelectItem key={country} value={country}>
+                              <SelectItem key={country} value={country} className={"hover:bg-gray-200"}>
                                 {country}
                               </SelectItem>
                             ))}
@@ -1034,10 +1088,17 @@ const token = localStorage.getItem("token")
                         <Label htmlFor="account-number" className="text-sm text-gray-500">
                           Recipient Account Number <span className="text-red-500">*</span>
                         </Label>
-                        <Input
+                       <Input
                           id="account-number"
+                          type="text" 
+                          inputMode="numeric" 
                           value={formData.accountNumber}
-                          onChange={(e) => updateFormData("accountNumber", e.target.value)}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, ""); // remove non-digit characters
+                            if (value.length <= 18) {
+                              updateFormData("accountNumber", value);
+                            }
+                          }}
                           placeholder="Account number"
                           className="mt-1"
                         />
@@ -1060,13 +1121,20 @@ const token = localStorage.getItem("token")
                         <Label htmlFor="ifsc-code" className="text-sm text-gray-500">
                           IFSC Code <span className="text-red-500">*</span>
                         </Label>
-                        <Input
-                          id="ifsc-code"
-                          value={formData.ifscCode}
-                          onChange={(e) => updateFormData("ifscCode", e.target.value)}
-                          placeholder="IFSC code"
-                          className="mt-1"
-                        />
+                      <Input
+                        id="ifsc-code"
+                        type="text"
+                        value={formData.ifscCode}
+                        onChange={(e) => {
+                          const value = e.target.value.toUpperCase(); // Convert to uppercase
+                          const regex = /^[A-Z]{0,4}0?[A-Z0-9]{0,6}$/; // Live format check (partial)
+                          if (value.length <= 11 && regex.test(value)) {
+                            updateFormData("ifscCode", value);
+                          }
+                        }}
+                        placeholder="IFSC code"
+                        className="mt-1"
+                      />
                       </div>
                     </div>
                   </AccordionContent>
@@ -1099,7 +1167,7 @@ const token = localStorage.getItem("token")
                               <Button
                                 variant="destructive"
                                 size="sm"
-                                className="absolute top-2 right-2"
+                                className="absolute top-2 right-2 bg-amber-300"
                                 onClick={() => {
                                   updateFormData("aadharImage", null)
                                   updateFormData("aadharImageUrl", "")
@@ -1144,7 +1212,7 @@ const token = localStorage.getItem("token")
                               <Button
                                 variant="destructive"
                                 size="sm"
-                                className="absolute top-2 right-2"
+                                className="absolute top-2 right-2 bg-amber-300"
                                 onClick={() => {
                                   updateFormData("panImage", null)
                                   updateFormData("panImageUrl", "")
@@ -1188,7 +1256,7 @@ const token = localStorage.getItem("token")
                               <Button
                                 variant="destructive"
                                 size="sm"
-                                className="absolute top-2 right-2"
+                                className="absolute top-2 right-2 bg-amber-300"
                                 onClick={() => {
                                   updateFormData("governmentId", null)
                                   updateFormData("governmentIdUrl", "")
@@ -1208,6 +1276,52 @@ const token = localStorage.getItem("token")
                               />
                               <Label
                                 htmlFor="government-id"
+                                className="flex items-center space-x-2 cursor-pointer text-emerald-600"
+                              >
+                                <Upload className="h-5 w-5" />
+                                <span>Upload File</span>
+                              </Label>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+
+                      <div>
+                        <Label htmlFor="government-id" className="text-sm text-gray-500">
+                         Upload supporting documents
+                        </Label>
+                        <div className="border border-gray-300 rounded-lg p-4 mt-1">
+                          {formData.supportingDocumentsUrl ? (
+                            <div className="relative">
+                              <img
+                                src={formData.supportingDocumentsUrl || "/placeholder.svg"}
+                                alt="supporting documents"
+                                className="mx-auto max-h-40 object-contain"
+                              />
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                className="absolute top-2 right-2 bg-amber-300"
+                                onClick={() => {
+                                  updateFormData("supportingDocumentsId", null)
+                                  updateFormData("supportingDocumentsUrl", "")
+                                }}
+                              >
+                                Remove
+                              </Button>
+                            </div>
+                          ) : (
+                            <div className="flex items-center justify-center">
+                              <input
+                                id="supporting-documents"
+                                type="file"
+                                accept="image/*,.pdf"
+                                className="hidden"
+                                onChange={(e) => handleFileUpload("supportingDocumentsId", e)}
+                              />
+                              <Label
+                                htmlFor="supporting-documents"
                                 className="flex items-center space-x-2 cursor-pointer text-emerald-600"
                               >
                                 <Upload className="h-5 w-5" />
@@ -1274,10 +1388,18 @@ const token = localStorage.getItem("token")
                   </Label>
                   <Input
                    
-                    type="number"
-                    min="0"
+                    type="text"
+                    inputMode="numeric" // shows number pad on mobile
+                    max="10"
                     value={formData.numberOfImamSahab}
-                    onChange={(e) => updateFormData("numberOfImamSahab", e.target.value)}
+
+                     onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, ""); // remove non-digits
+                            if (value.length <= 10) {
+                              updateFormData("numberOfImamSahab", value);
+                            }
+                          }}
+                    
                     placeholder="0"
                     className="mt-1"
                   />
@@ -1286,7 +1408,7 @@ const token = localStorage.getItem("token")
 
               <div>
                 <Label htmlFor="full-name-aadhar" className="text-base font-medium">
-                  Imam Sahab Email <span className="text-red-500">*</span>
+                  Imam Sahab Email <span className="text-red-500"></span>
                 </Label>
                 <Input
                   id="full-name-aadhar"
