@@ -26,7 +26,7 @@ import { uploadFile } from "@/services/uploadImg"
 export default function Dashboard() {
   const { userCampaignData } = useContext(AuthContext)
   const { userData, updateHandleUser, Toaster, updateUserFormdata, handleChangeUpdateUserFormdata, setUpdateUserFormdata, setActiveSection,
-    activeSection, setUserData, uploadingHero, setUploadingHero } = useContext(AuthContext)
+    activeSection, setUserData, uploadingHero, setUploadingHero ,uploadingHero,setUploadingHero} = useContext(AuthContext)
 
 
 
@@ -97,7 +97,9 @@ export default function Dashboard() {
   const handleChangenUpdates = async (e) => {
     // If files exist (image upload)
     const { name, value, files } = e.target
-    if (files && files.length > 0) {
+   try {
+     if (files && files.length > 0) {
+      setUploadingHero(true)
       const uploadedUrls = [];
 
       for (let i = 0; i < files.length; i++) {
@@ -115,6 +117,12 @@ export default function Dashboard() {
         [name]: value,
       }));
     }
+   } catch (error) {
+    console.log(error);
+    
+   }finally{
+    setUploadingHero(false)
+   }
   }
 
   const handleAddGivenAmount = () => {
@@ -1498,14 +1506,22 @@ export default function Dashboard() {
                                 </div>
                                 <div>
                                   <label className="block text-sm font-medium text-gray-700 mb-1">Images</label>
-                                  <input
+                                 {uploadingHero ? (
+                                  <>
+                                     <Loader2 className="w-8 h-8 mb-4 text-blue-500 animate-spin" />
+                                  <p className="mb-2 text-sm text-blue-600 font-semibold">Uploading ...</p>
+                                  </>
+                                 ):
+                                 (
+                                  <> <input
                                     type="file"
                                     multiple
                                     name="images"
                                     className="w-full p-2 border border-gray-300 rounded-md"
 
                                     onChange={handleChangenUpdates}
-                                  />
+                                  /></>
+                                 )}
                                 </div>
                                 <div>
                                   <label className="block text-sm font-medium text-gray-700 mb-1">Video URl</label>

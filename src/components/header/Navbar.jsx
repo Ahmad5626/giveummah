@@ -188,10 +188,10 @@ function handleLogout() {
             <div className="p-4">
               <div className="mb-3 text-sm font-medium text-gray-600">START</div>
 
-              <Link to="#" className="flex items-center py-2 text-sm font-medium text-gray-900">
-                {/* <Home className="mr-2 h-4 w-4 text-gray-400" /> */}
+              {/* <Link to="#" className="flex items-center py-2 text-sm font-medium text-gray-900">
+                <Home className="mr-2 h-4 w-4 text-gray-400" />
                 Support
-              </Link>
+              </Link> */}
 
                 {/* <div className="flex items-center justify-between py-2 text-sm font-medium text-gray-900">
                   <div className="flex items-center">
