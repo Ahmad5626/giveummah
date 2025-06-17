@@ -2,11 +2,13 @@
 
 import Footer from "@/components/footer/Footer"
 import { Navbar } from "@/components/header/Navbar"
+import UpperPage from "@/components/upperpage/UpperPage"
 import { FileText, Shield, AlertTriangle, Users, CreditCard, Scale, Eye, Lock, Globe, Mail } from "lucide-react"
 
 export default function TermsConditions() {
   return (
    <>
+   <UpperPage/>
    <Navbar/>
      <div className="min-h-screen bg-gradient-to-br from-[#e3be50]/10 to-[#fe9f00]/10">
       {/* Header */}

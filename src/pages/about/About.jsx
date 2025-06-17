@@ -1,11 +1,13 @@
 import Footer from "@/components/footer/Footer"
 import { Navbar } from "@/components/header/Navbar"
+import UpperPage from "@/components/upperpage/UpperPage"
 import { ExternalLink, Heart, Shield, Users, Target, CheckCircle, Globe, Handshake } from "lucide-react"
 
 
 export default function AboutUs() {
   return (
     <>
+    <UpperPage/>
     <Navbar/>
         <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 ">
       {/* Hero Section */}

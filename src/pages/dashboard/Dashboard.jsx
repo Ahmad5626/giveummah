@@ -26,7 +26,7 @@ import { uploadFile } from "@/services/uploadImg"
 export default function Dashboard() {
   const { userCampaignData } = useContext(AuthContext)
   const { userData, updateHandleUser, Toaster, updateUserFormdata, handleChangeUpdateUserFormdata, setUpdateUserFormdata, setActiveSection,
-    activeSection, setUserData, uploadingHero, setUploadingHero ,uploadingHero,setUploadingHero} = useContext(AuthContext)
+    activeSection, setUserData, uploadingHero, setUploadingHero } = useContext(AuthContext)
 
 
 
@@ -1660,7 +1660,17 @@ export default function Dashboard() {
 
                                 maxLength={10}
                                 value={updateUserFormdata.mobileNumber}
-                                onChange={handleChangeUpdateUserFormdata}
+                                 onChange={(e) => {
+                                      const value = e.target.value;
+                                      const regex = /^[6-9]\d{0,9}$/; // Allow typing up to 10 digits starting with 6-9
+
+                                      if (value === '' || regex.test(value)) {
+                                        handleChangeUpdateUserFormdata(e); // Update state
+                                       
+                                      } 
+                                    }}
+                                    maxLength={10}
+                              
                               />
                             </div>
 
@@ -1745,7 +1755,17 @@ export default function Dashboard() {
                               <Input id="pincode" placeholder="Pincode (max 6 chars)"
                                 name="Pincode"
                                 value={updateUserFormdata.Pincode}
-                                onChange={handleChangeUpdateUserFormdata}
+                                onChange={(e) => {
+                                      const value = e.target.value;
+                                      const regex = /^[0-9]\d{0,6}$/; // Allow typing up to 10 digits starting with 6-9
+
+                                      if (value === '' || regex.test(value)) {
+                                        handleChangeUpdateUserFormdata(e); // Update state
+                                       
+                                      } 
+                                    }}
+                                    maxLength={6}
+                              
                               />
                             </div>
 
@@ -1811,7 +1831,7 @@ export default function Dashboard() {
 
                             <div className="space-y-2">
                               <Label htmlFor="email">Email ID</Label>
-                              <Input id="email" defaultValue={userData.userEmail}
+                              <Input id="email" type={"email"} defaultValue={userData.userEmail}
                                 name="userEmail"
 
                               />
@@ -1832,9 +1852,9 @@ export default function Dashboard() {
                                   <SelectValue placeholder="- Select -" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white">
-                                  <SelectItem value="male">Male</SelectItem>
-                                  <SelectItem value="female">Female</SelectItem>
-                                  <SelectItem value="other">Other</SelectItem>
+                                  <SelectItem value="male hover:bg-gray-200">Male</SelectItem>
+                                  <SelectItem value="female hover:bg-gray-200">Female</SelectItem>
+                                  <SelectItem value="other hover:bg-gray-200">Other</SelectItem>
                                 </SelectContent>
                               </Select>
                             </div>
@@ -1852,8 +1872,8 @@ export default function Dashboard() {
                                   <SelectValue placeholder="- Select -" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white">
-                                  <SelectItem value="single">Single</SelectItem>
-                                  <SelectItem value="married">Married</SelectItem>
+                                  <SelectItem value="single hover:bg-gray-200">Single</SelectItem>
+                                  <SelectItem value="married hover:bg-gray-200">Married</SelectItem>
 
                                 </SelectContent>
                               </Select>
@@ -1875,7 +1895,16 @@ export default function Dashboard() {
                               <Input id="mobile"
                                 name="mobileNumber"
                                 value={updateUserFormdata.mobileNumber}
-                                onChange={handleChangeUpdateUserFormdata}
+                                 onChange={(e) => {
+                                      const value = e.target.value;
+                                      const regex = /^[6-9]\d{0,9}$/; // Allow typing up to 10 digits starting with 6-9
+
+                                      if (value === '' || regex.test(value)) {
+                                        handleChangeUpdateUserFormdata(e); // Update state
+                                       
+                                      } 
+                                    }}
+                                    maxLength={10}
                               />
                             </div>
 
@@ -1915,7 +1944,17 @@ export default function Dashboard() {
                               <Input id="pincode" placeholder="Pincode (max 6 chars)"
                                 name="Pincode"
                                 value={updateUserFormdata.Pincode}
-                                onChange={handleChangeUpdateUserFormdata}
+                                 onChange={(e) => {
+                                      const value = e.target.value;
+                                      const regex = /^[0-9]\d{0,6}$/; // Allow typing up to 10 digits starting with 6-9
+
+                                      if (value === '' || regex.test(value)) {
+                                        handleChangeUpdateUserFormdata(e); // Update state
+                                       
+                                      } 
+                                    }}
+                                    maxLength={6}
+                              
                               />
                             </div>
 

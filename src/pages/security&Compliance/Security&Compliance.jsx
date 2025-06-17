@@ -2,6 +2,7 @@
 
 import Footer from "@/components/footer/Footer"
 import { Navbar } from "@/components/header/Navbar"
+import UpperPage from "@/components/upperpage/UpperPage"
 import {
   Shield,
   Lock,
@@ -18,6 +19,7 @@ import {
 export default function SecurityCompliance() {
   return (
   <>
+  <UpperPage/>
   <Navbar/>
       <div className="min-h-screen bg-gradient-to-br from-[#e3be50]/10 to-[#fe9f00]/10">
       {/* Header */}

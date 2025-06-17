@@ -2,6 +2,7 @@
 
 import Footer from "@/components/footer/Footer"
 import { Navbar } from "@/components/header/Navbar"
+import UpperPage from "@/components/upperpage/UpperPage"
 import { Shield, Lock, Eye, AlertCircle, FileText, Mail } from "lucide-react"
 
 export default function PrivacyPolicy() {
@@ -9,6 +10,7 @@ export default function PrivacyPolicy() {
    <>
 
    <Navbar/>
+   <UpperPage/>
      <div className="min-h-screen bg-gradient-to-br from-[#e3be50]/10 to-[#fe9f00]/10">
       {/* Header */}
       <div className="bg-gradient-to-r from-darkBrownClr to-lightYollowClr text-white py-16">
