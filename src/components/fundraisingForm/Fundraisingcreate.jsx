@@ -371,7 +371,7 @@ export default function MultiStepForm() {
       }
 
       updateFormData("supportingDocumentsId", [
-        ...formData.supportingDocumentsId,
+        ...[...(formData.supportingDocumentsId || [])],
         ...uploadedFiles,
       ]);
       updateFormData("supportingDocumentsUrl", [
