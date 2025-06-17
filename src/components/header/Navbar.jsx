@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useContext } from "react";
 import { Heart, Search, Settings, X, Globe, Home, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link,  useNavigate } from "react-router-dom";
 import { Menu  } from "lucide-react";
 import { AuthContext } from "@/context/auth-context";
 import { Toaster, toast } from "sonner";
@@ -14,14 +14,16 @@ export function Navbar({position}) {
   const [checkLogin, setCheckLogin] = useState(false);
   const searchRef = useRef(null);
   const menuRef = useRef(null);
-    const [isSearchPage,setIsSearchPage] = useState(false)
+   const inputRef = useRef();
 const navigate=useNavigate()
-const location=useLocation()
-const searchPage=(e)=>{
-  e.preventDefault()
-  navigate("/search")
-  setIsSearchPage("search")
-}
+
+ const handleSearch = (e) => {
+    e.preventDefault();
+    const query = inputRef.current.value.trim();
+    if (query) {
+      navigate(`/search?query=${encodeURIComponent(query)}`);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -39,10 +41,7 @@ const searchPage=(e)=>{
    
   }, []);
 
-  useEffect(()=>{
-        const isSearch = location.pathname === "/search"
-        setIsSearchPage(isSearch)
-    },[location])
+
 
   const {userData}=useContext(AuthContext)
 
@@ -75,37 +74,25 @@ function handleLogout() {
             </Link>
 
             {/* Search Bar */}
-          {isSearchPage?
-          (
+          
+          
               <div className="mx-4 hidden  md:block px-8" >
+              <form onSubmit={handleSearch}>
               <div className="relative" >
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                 <Input
                   type="text"
                   placeholder="Discover inspiring causes"
+                  ref={inputRef} 
                   
-                  autoFocus
                   className="w-full rounded-full border-gray-300 pl-10 pr-44 py-4  focus-visible:ring-[#AC6908] "
                 />
               </div>
+              </form>
             </div>
-          )
-          :
-          (
-              <div className="mx-4 hidden  md:block px-8" >
-              <div className="relative border-2 border-gray-300 rounded-full" onClick={(e)=>searchPage(e)}>
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                <div
-                  type="text"
-                  placeholder="Discover inspiring causes"
-                  className="w-full rounded-full text-gray-300 pl-8 pr-44 py-1   "
-                >
-                Discover inspiring causes
-                </div>
-              </div>
-            </div>
-          )
-          }
+          
+            
+         
 
             {/* Desktop Navigation */}
             <div className="flex items-center gap-3">
@@ -161,15 +148,17 @@ function handleLogout() {
               <div className="text-sm font-medium text-gray-600">SALAM!</div>
 
               <div ref={searchRef} className="relative mt-3">
-                <div
+                <form
                   className="flex cursor-pointer items-center rounded-md border bg-gray-50 px-3 py-2"
-                  onClick={() => setIsSearchOpen(!isSearchOpen)}
+                  onSubmit={handleSearch}
                 >
                   <Search className="mr-2 h-5 w-5 text-gray-400" />
-                  <span className="text-gray-500">I want to support...</span>
-                </div>
+                  <span className="text-gray-500">
+                    <input type="text" placeholder="Search for campaigns..." ref={inputRef} className="w-full bg-transparent focus:outline-none" />
+                  </span>
+                </form>
 
-                {isSearchOpen && (
+                {/* {isSearchOpen && (
                   <div className="absolute left-0 right-0 top-full z-10 mt-1 rounded-md border bg-white p-3 shadow-md">
                     <Input
                       type="text"
@@ -182,7 +171,7 @@ function handleLogout() {
                       <div className="py-1 text-sm text-gray-500">No recent searches</div>
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
 
               <div className="mt-3 flex items-center text-sm">

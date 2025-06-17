@@ -1,140 +1,84 @@
-import { useState, useEffect, useContext } from "react"
+import Footer from '@/components/footer/Footer'
+import { Navbar } from '@/components/header/Navbar'
+import UpperPage from '@/components/upperpage/UpperPage'
+import { AuthContext } from '@/context/auth-context'
+import React, { useContext, useEffect, useState } from 'react'
 import { motion } from "framer-motion"
 import { Heart, Share2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { AuthContext } from "@/context/auth-context"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
+const Couse = () => {
+  const [currentData, setCurrentData] = useState({});
+    const location = useLocation();
+    const couseData=location.pathname.split("/")[2]
+    // console.log(couseData);
+    
+     const {allCampaigns,allUserData,loading,recommendedCauses} = useContext(AuthContext)
 
-
-export default function FundraisingGrid() {
-  const {allCampaigns,allUserData,loading} = useContext(AuthContext)
-  const [hoveredCard, setHoveredCard] = useState(null)
-  // const newAllCampaigns=allCampaigns.find((el)=>el.status==="Active")
-  // console.log(typeof newAllCampaigns);
-  
-
-
-// const allCampaigns = [
-//     {
-//       id: 1,
-//       featureImageUrl: "https://pmedia.launchgood.com/261067/urgent_need_for_a_field_hospital_for_palestinian_patients_RADS%201446%20Cover%20Image%20-%202025-05-17T040928.885-493x370.png",
-//       logo: "/placeholder.svg?height=40&width=40",
-//       fundType: "MATW Project",
-//       tagline: "Give Qurbani in Gaza and Around the World",
-//       goalAmount: 98,
-//       daysLeft: 54,
-//       raised: 4555,
-//       goal: 13000,
-//       isZakatVerified: false,
-//     },
-//     {
-//       id: 2,
-//       featureImageUrl: "https://pmedia.launchgood.com/306812/give_qurbani_uplift_the_lives_of_orphans_and_widows_in_need_Add%20a%20heading%20%2811%29-493x370.png",
-//       logo: "/placeholder.svg?height=40&width=40",
-//       fundType: "Aldar Waqf City",
-//       tagline: "Provide Housing for Displaced Orphans and Widows in Syria",
-//       goalAmount: 623,
-//       daysLeft: 42,
-//       raised: 14522,
-//       goal: 50000,
-//       isZakatVerified: true,
-//     },
-//     {
-//       id: 3,
-//       featureImageUrl: "https://launchgood.s3.amazonaws.com/sponsor/14938/qurbani_to_gaza_and_beyond_with_matw_project_1000753009-493x370.jpg",
-//       logo: "/placeholder.svg?height=40&width=40",
-//       fundType: "The Noor Project",
-//       tagline: "Provide Meals & Life Essentials to Orphans in Pakistan",
-//       goalAmount: 1231,
-//       daysLeft: 164,
-//       raised: 49950,
-//       goal: 70000,
-//       isZakatVerified: true,
-//     },
-//     {
-//       id: 4,
-//       featureImageUrl: "https://pmedia.launchgood.com/267289/sponsor_300_refugee_orphans_now_photo_2025-04-17_20-14-21-493x370.jpg",
-//       logo: "/placeholder.svg?height=40&width=40",
-//       fundType: "Islamic Relief",
-//       tagline: "Emergency Response: Flood Relief in Bangladesh",
-//       goalAmount: 845,
-//       daysLeft: 21,
-//       raised: 32500,
-//       goal: 60000,
-//       isZakatVerified: true,
-//     },
-//     {
-//       id: 5,
-//       featureImageUrl: "https://pmedia.launchgood.com/262319/mothers_and_newborns_at_risk_in_syria_RADS%201446%20Cover%20Image%20-%202025-05-17T043631.564-493x370.png",
-//       logo: "/placeholder.svg?height=40&width=40",
-//       fundType: "Charity Water",
-//       tagline: "Clean Water Wells for Communities in Somalia",
-//       goalAmount: 1567,
-//       daysLeft: 78,
-//       raised: 87300,
-//       goal: 100000,
-//       isZakatVerified: false,
-//     },
-//     {
-//       id: 6,
-//       featureImageUrl: "https://hindudonations.com/HD/img/Bhumi_Puja.jpg",
-//       logo: "/placeholder.svg?height=40&width=40",
-//       fundType: "Penny Appeal",
-//       tagline: "Build a School for Orphans in Yemen",
-//       goalAmount: 732,
-//       daysLeft: 112,
-//       raised: 65800,
-//       goal: 120000,
-//       isZakatVerified: true,
-//     },
-//     {
-//       id: 7,
-//       featureImageUrl: "https://pmedia.launchgood.com/257719/sponsor_100_palestinian__lebanese_orphans_1446%20Cover%20Images%20%2860%29-493x370.png",
-//       logo: "/placeholder.svg?height=40&width=40",
-//       fundType: "Human Appeal",
-//       tagline: "Winter Emergency: Warm Clothing for Refugees",
-//       goalAmount: 421,
-//       daysLeft: 35,
-//       raised: 18750,
-//       goal: 40000,
-//       isZakatVerified: true,
-//     },
-//     {
-//       id: 8,
-//       featureImageUrl: "https://pmedia.launchgood.com/260675/support_free_education_for_syrias_forgotten_children_DJI_0628-490x370.JPG",
-//       logo: "/placeholder.svg?height=40&width=40",
-//       fundType: "Muslim Hands",
-//       tagline: "Feed the Fasting: Ramadan Food Packages",
-//       goalAmount: 1893,
-//       daysLeft: 15,
-//       raised: 93400,
-//       goal: 150000,
-//       isZakatVerified: true,
-//     },
-//   ]
- const funded=1000
-
- 
-
+     useEffect(() => {
+       recommendedCauses.filter((item) => item.category === couseData).map((item) => setCurrentData(item))
+       
+     })
+     const funded=1000
+    //  console.log(currentData);
+     
   return (
-    <div className="w-full  mx-auto px-4  md:px-20 md:pt-10 pt-40">
+    <>
+    <UpperPage/>
+    <Navbar/>
+      <div className=" flex items-center justify-center p-4">
+      <div className=" ">
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <div className="flex flex-col lg:flex-row">
+            {/* Left Content Section */}
+            <div className="flex-1 p-8 lg:p-12 xl:p-16">
+              <div className="">
+                <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight mb-6">
+                 {currentData.pageHeadline}
+                </h1>
+
+                <p className="text-gray-600 text-lg lg:text-xl mb-8 leading-relaxed">
+                  {currentData.pageSubHeadline}
+                </p>
+
+                <button className="bg-[#f5a800] hover:bg-[] text-white font-semibold px-8 py-4 rounded-full text-lg transition-colors duration-200 mb-4">
+                  Give Directly
+                </button>
+
+                
+              </div>
+            </div>
+
+            {/* Right Image Section */}
+            <div className="flex-1 relative min-h-[400px] lg:min-h-[600px]">
+              <img
+                src="/assets/Improve_the_lives_of_Ulama.jpg"
+                alt="Child"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+    </div>
+<div className="w-full  mx-auto px-4  md:px-20 md:pt-10 pt-40">
       <div className="flex items-center justify-center mb-6">
-        <div className="text-center">
+
+       <div className="text-center">
           <h2 className="text-5xl text-center font-bold py-4 darkPurpleClr">Featured Fundraisers</h2>
           {/* <p className="text-muted-foreground">Sponsored</p> */}
         </div>
-        {/* <Button variant="outline" className="rounded-full px-6 hover:bg-primary/5 transition-all duration-300">
-          Discover more
-        </Button> */}
-      </div>
-
-      
-{
-loading ? (
+         </div>
+    {loading ? (
   <div className="text-center py-12 mx-auto  w-full">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
                 <p className="text-gray-600">Loading campaigns...</p>
@@ -143,7 +87,7 @@ loading ? (
 <>
 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> 
   {/* {allCampaigns.map((campaign,index) => ( */}
-   {allCampaigns.filter((campaign) => campaign.status === "Active").sort((a, b) => a.ranking - b.ranking).map((campaign,index) => (
+   {allCampaigns.filter((campaign) => campaign.status === "Active" && campaign.category === couseData).sort((a, b) => a.ranking - b.ranking).map((campaign,index) => (
   
 
            <Card
@@ -244,12 +188,13 @@ loading ? (
     
 </>
 
-}    {/* {allCampaigns.map((campaign, index) => (
-          
-            
-      
-        ))} */}
-      
-    </div>
+} 
+</div>
+
+
+    <Footer/>
+    </>
   )
 }
+
+export default Couse

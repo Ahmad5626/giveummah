@@ -1,6 +1,6 @@
 
 // import { useNavigate } from "react-router-dom";
-import { initialSignInFormData, initialSignUpFormData,initialUpdateFormData } from "@/config";
+import { initialSignInFormData, initialSignUpFormData, initialUpdateFormData } from "@/config";
 import {
   getAuthenticatedUser,
   getData,
@@ -24,7 +24,7 @@ export default function AuthProvider({ children }) {
   const [signInFormdata, setSignInFormdata] = useState(initialSignInFormData);
   const [signUpFormdata, setSignUpFormdata] = useState(initialSignUpFormData);
   const [updateUserFormdata, setUpdateUserFormdata] = useState(initialUpdateFormData);
-  const [activeSection, setActiveSection] = useState("dashboard")
+  const [activeSection, setActiveSection] = useState("profile");
   const [allCampaigns, setAllCampaigns] = useState([]);
   const [userData, setUserData] = useState({});
   const [buttonData, setButtonData] = useState({});
@@ -32,8 +32,11 @@ export default function AuthProvider({ children }) {
   const [campaignDetails, setCampaignDetails] = useState({});
   const [userCampaignData, setUserCampaignData] = useState([]);
   const [recommendedCauses, setRecommendedCauses] = useState([]);
-   const [allUserData, setAllUserData]=useState([]) 
-   const [givingLevels, setGivingLevels] = useState([]);
+  const [allUserData, setAllUserData] = useState([])
+  const [givingLevels, setGivingLevels] = useState([]);
+  const [uploadingHero, setUploadingHero] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [givenAmountData, setGivenAmountData] = useState([])
   const navigator = useNavigate();
   // change signup form data
   function handleChangeSignUpFormdata(e) {
@@ -47,24 +50,37 @@ export default function AuthProvider({ children }) {
     setSignInFormdata({ ...signInFormdata, [name]: value });
   }
   // change update user data
-async function handleChangeUpdateUserFormdata(e) {
-  const { name, value, files } = e.target;
+  async function handleChangeUpdateUserFormdata(e) {
+    const { name, value, files } = e.target;
 
-  if (files && files[0]) {
-    const file = files[0];
-    const uploadedUrl = await uploadFile(file);
+    if (files && files.length > 0) {
+      const file = files[0];
+      try {
+        setUploadingHero(true);
+        const uploadedUrl = await uploadFile(file);
+        console.log("Uploaded Image URL:", uploadedUrl);
+        setUpdateUserFormdata(prev => {
+          const updated = {
+            ...prev,
+            [name]: uploadedUrl,
+          };
+          console.log("New Form Data:", updated);
+          return updated;
+        });
 
-    setUpdateUserFormdata({
-      ...updateUserFormdata,
-      [name]: uploadedUrl,
-    });
-  } else {
-    setUpdateUserFormdata({
-      ...updateUserFormdata,
-      [name]: value,
-    });
+      } catch (error) {
+        console.error("File upload failed:", error);
+      }
+      finally {
+      setUploadingHero(false)
+    }
+    } else {
+      setUpdateUserFormdata(prev => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   }
-}
 
   //   check if signup form is valid
   function checkIfSignUpFormIsValid() {
@@ -86,221 +102,243 @@ async function handleChangeUpdateUserFormdata(e) {
   }
 
   //   sumbit register form
-  const registerHandleSubmit = async(e) => {
+  const registerHandleSubmit = async (e) => {
     e.preventDefault();
-    const result =await registerService(signUpFormdata);
-    
+    const result = await registerService(signUpFormdata);
+
 
     if (result?.success) {
       toast.success("Registered successfully!");
       setActiveTab("signin"); // ✅ change tab after successful registration
-     
+
     } else {
-      toast.error(result?.message || "Registration failed");
+      toast.error(result.message || "Registration failed");
+
+
     }
   };
 
   // login form
-  const loginHandleSubmit = async(e) => {
+  const loginHandleSubmit = async (e) => {
     e.preventDefault();
-   const result = await loginUser(signInFormdata);
-   if(result?.success){
-    toast.success("Login successfully!");
-   localStorage.setItem("id", result.data.user._id);
-  
-    navigator("/");
-    window.location.reload();
-   } else{
-    toast.error(result?.message || "Login failed");
-   }
+    const result = await loginUser(signInFormdata);
+    if (result?.success) {
+      toast.success("Login successfully!");
+      localStorage.setItem("id", result.data.user._id);
+
+      navigator("/dashboard");
+      setActiveSection("profile");
+      window.location.reload();
+    } else {
+      toast.error(result?.message || "Login failed");
+    }
   };
 
   // update user
-const updateHandleUser =async(e)=>{
-  e.preventDefault();
-  const id = localStorage.getItem("id");
-  const result = await updateUser(updateUserFormdata);
-  if(result?.success){
-    toast.success("User updated successfully!");
-    // console.log(resultdata);
-    setActiveSection("dashboard");
+  async function getUserData() {
+    const userData = await getAuthenticatedUser();
+    if (userData) setUserData(userData);
   }
-  else{
-    toast.error(result?.message || "User update failed");
-    console.log(result);
-    
+  const updateHandleUser = async (e) => {
+    e.preventDefault();
+    const id = localStorage.getItem("id");
+    const result = await updateUser(updateUserFormdata);
+    if (result?.success) {
+      toast.success("User updated successfully!");
+      // console.log(resultdata);
+      setActiveSection("dashboard");
+      getUserData();
+    }
+    else {
+      toast.error(result?.message || "User update failed");
+      console.log(result);
+
+    }
   }
-}
-  // get login user Data
+  // get user Campaign
+  async function getSingleCampaignsData() {
+    const loignInstitutesData = await getAllCampaigns();
+    if (loignInstitutesData) setUserCampaignData(loignInstitutesData.data);
+  }
+
+  // get all Copmaign
+  async function getAllCampaignsData() {
+    setLoading(true);
+    const compaignData = await getAllCampaigns();
+    if (compaignData) setAllCampaigns(compaignData.data);
+    setLoading(false);
+  }
+
+  // get buttons data
+  async function getButtonsData() {
+    const data = await getButtons();
+    if (data) setButtonData(data);
+  }
+  // get all inspiring institutes
+
+  async function getAllInspiringInstitutesData() {
+    const institutesData = await getAllInspiringInstitutes();
+
+
+    if (institutesData) setInspiringInstitutesData(institutesData.data);
+  }
+
+  // get all recommended causes
+
+  async function getRecommendedCausesData() {
+    const RecommendedCauses = await getAllRecommendedCauses();
+
+
+    if (RecommendedCauses) setRecommendedCauses(RecommendedCauses.data);
+  }
+
+  // get all user
+  async function getLoginUserData() {
+    const getAllUserData = await getData();
+    if (getAllUserData) setAllUserData(getAllUserData.data);
+  }
   useEffect(() => {
-    (async () => {
-      const userData = await getAuthenticatedUser();
-      if (userData) setUserData(userData);
-    })();
-
-    (async () => {
-      const compaignData = await getAllCampaigns();
-      if (compaignData) setAllCampaigns(compaignData.data);
-    })();
-
-    (async () => {
-      const data = await getButtons();
-      if (data) setButtonData(data);
-    })();
-    (async () => {
-      const institutesData = await getAllInspiringInstitutes();
-     
-      
-      if (institutesData) setInspiringInstitutesData(institutesData.data);
-    })();
 
 
-    (async () => {
-      const loignInstitutesData = await getSingleCampaign();
-     
-      
-      if (loignInstitutesData) setUserCampaignData(loignInstitutesData.data);
-    })();
+    getUserData();
+    getSingleCampaignsData()
+    getAllCampaignsData()
+    getButtonsData()
+    getAllInspiringInstitutesData()
+    getRecommendedCausesData()
+    getLoginUserData()
 
 
-    (async () => {
-      const RecommendedCauses = await getAllRecommendedCauses();
-     
-      
-      if (RecommendedCauses) setRecommendedCauses(RecommendedCauses.data);
-    })();
-
-
-    (async () => {
-      const getAllUserData = await getData();
-     if (getAllUserData) setAllUserData(getAllUserData.data);
-    })();
   }, []);
- 
-  
+
+
 
 
   const [formData, setFormData] = useState(() => {
-      if (typeof window !== "undefined") {
-        const savedData = localStorage.getItem("campaignData")
-        return savedData
-          ? JSON.parse(savedData)
-          : {
-              // Step 1
-              fundType: "",
-              
-              // Step 2
-              goalAmount: "",
-              campaignTitle: "",
-              // Step 3
-              featureImage: null,
-              featureImageUrl: "", // For preview
-              tagline: "",
-              category: "",
-              location: "",
-              endDate: "",
-              // Step 4
-              story: "",
-              zakatVerified: false,
-              // Step 5
-              agreeAll: false,
-              agreePrivacy: false,
-              agreeTerms: false,
-              agreePayment: false,
-              isUrgent: false,
-              // Step 6 - Personal Info
-              email: "",
-              firstName: "",
-              lastName: "",
-              dateOfBirth: {
-                day: "",
-                month: "",
-                year: "",
-              },
-              phone: "",
-              address: {
-                country: "India",
-                street: "",
-                city: "",
-                state: "",
-                district: "",
-                postalCode: "",
-              },
-              governmentId: null,
-              governmentIdUrl: "", // For preview
-              supportingDocumentsId: null,
-              supportingDocumentsIdUrl: "",
-              // Bank Info
-              accountHolderName: "",
-              accountNumber: "",
-              bankName: "",
-              ifscCode: "",
-              // Documents
-              aadharImage: null,
-              aadharImageUrl: "", // For preview
-              panImage: null,
-              panImageUrl: "", // For preview
-              // Step 6 - References
-              masjidName: "",
-              nameOfImamSahab: "",
-              numberOfImamSahab: "",
-              emailOfImamSahab: "",
-              beneficiaryDateOfBirth: "",
-              gender: "",
-              maritalStatus: "",
-              emailId: "",
-              mobileNumber: "",
-              instituteName: "",
-              instituteBio: "",
-              anticipatedDonations: "",
-              spendingPlans: "",
-              state: "",
-              district: "",
-              addressDetails: "",
-              pincode: "",
-            }
-      }
-      return {}
-    })
-const navigate=useNavigate();
-   const createCampaign =async(e)=> {
-  
-     const result = await campaign(formData);
-     if(result?.success){
-      
-      localStorage.removeItem("campaignData");
-      navigate("/");
-      window.location.reload();
-      toast.success("Campaign created successfully!");
-      
-     }
-     else{
-      toast.error(result?.message || "Campaign creation failed");
-     }
+    if (typeof window !== "undefined") {
+      const savedData = localStorage.getItem("campaignData")
+      return savedData
+        ? JSON.parse(savedData)
+        : {
+          // Step 1
+          fundType: "",
+
+          // Step 2
+          goalAmount: "",
+          campaignTitle: "",
+          // Step 3
+          featureImage: null,
+          featureImageUrl: "", // For preview
+          tagline: "",
+          category: "",
+          location: "",
+          endDate: "",
+          // Step 4
+          story: "",
+          zakatVerified: false,
+          // Step 5
+          agreeAll: false,
+          agreePrivacy: false,
+          agreeTerms: false,
+          agreePayment: false,
+          isUrgent: false,
+          // Step 6 - Personal Info
+          email: "",
+          firstName: "",
+          lastName: "",
+          dateOfBirth: {
+            day: "",
+            month: "",
+            year: "",
+          },
+          phone: "",
+          address: {
+            country: "India",
+            street: "",
+            city: "",
+            state: "",
+            district: "",
+            postalCode: "",
+          },
+          governmentId: null,
+          governmentIdUrl: "", // For preview
+          // Only multiple here
+          supportingDocumentsId: [],     // array of File objects
+          supportingDocumentsUrl: [],    // array of uploaded URLs
+          // Bank Info
+          accountHolderName: "",
+          accountNumber: "",
+          bankName: "",
+          ifscCode: "",
+          // Documents
+          aadharImage: null,
+          aadharImageUrl: "", // For preview
+          panImage: null,
+          panImageUrl: "", // For preview
+          // Step 6 - References
+          masjidName: "",
+          nameOfImamSahab: "",
+          numberOfImamSahab: "",
+          emailOfImamSahab: "",
+          beneficiaryDateOfBirth: "",
+          gender: "",
+          maritalStatus: "",
+          emailId: "",
+          mobileNumber: "",
+          instituteName: "",
+          instituteBio: "",
+          anticipatedDonations: "",
+          spendingPlans: "",
+          state: "",
+          district: "",
+          addressDetails: "",
+          pincode: "",
+        }
     }
+    return {}
+  })
+  const navigate = useNavigate();
+  const createCampaign = async (e) => {
+
+    const result = await campaign(formData);
+    if (result?.success) {
+
+      localStorage.removeItem("campaignData");
+      navigate("/dashboard");
+      setActiveSection("fundraisers")
+      getSingleCampaignsData()
+      toast.success("Campaign created successfully!");
+
+    }
+    else {
+      toast.error(result?.message || "Campaign creation failed");
+    }
+  }
 
 
 
   // console.log(allUserData);
-  const handleCreateComment=async(formData,id)=>{
-    const data=await createComment(formData,id);
-    if(data?.success){
+  const handleCreateComment = async (formData, id) => {
+    const data = await createComment(formData, id);
+    if (data?.success) {
       console.log("Comment created successfully:", data);
       toast.success("Thanks for your comment!");
       return data; // return campaign data
-    }else{
-      console.warn(  data);
-      
+    } else {
+      console.warn(data);
+
       return data.err;
     }
 
     // payment 
-    
+
 
   }
-  
- 
-  
+
+  //  console.log(updateUserFormdata);
+
+
+
   return (
     <AuthContext.Provider
       value={{
@@ -339,7 +377,12 @@ const navigate=useNavigate();
         allUserData,
         handleCreateComment,
         givingLevels,
-        setGivingLevels
+        setGivingLevels,
+        loading,
+        givenAmountData,
+        setGivenAmountData,
+        uploadingHero,
+        setUploadingHero
       }}
     >
       {children}

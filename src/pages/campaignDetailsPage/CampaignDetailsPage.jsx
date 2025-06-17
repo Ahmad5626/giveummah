@@ -4,14 +4,18 @@ import React from 'react'
 // import CompaignDetails from '@/components/capmaignDetails/CapmaignDetails'
 import GivenOption from '@/components/capmaignDetails/GivenOption'
 import Footer from '@/components/footer/Footer'
+import UpperPage from '@/components/upperpage/UpperPage'
 const CampaignDetailsPage = () => {
   return (
-    <div>
+    <>
+    <UpperPage/>
+      <div>
       <Navbar/>
       {/* <CompaignDetails/> */}
       <GivenOption/>
       <Footer/>
     </div>
+    </>
   )
 }
 

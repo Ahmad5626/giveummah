@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button"
 
 
 
-import { useState } from "react"
+import { useState ,useRef, useEffect} from "react"
 import { Search } from "lucide-react"
+
 import Aurora from "@/components/background/Aurora"
 import CampaignCardSection from "@/components/homepage/campaignCardSection/CampaignCardSection"
 import RecommendedCauses from "@/components/homepage/RecommendedCauses/RecommendedCauses"
@@ -20,8 +21,36 @@ import DonationSlider from "@/components/homepage/donationTracker/DonationTracke
 import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
+import { useNavigate } from "react-router-dom"
 
 export default function Home() {
+  const searchRef = useRef(null);
+     const inputRef = useRef();
+const navigate=useNavigate()
+
+ const handleSearch = (e) => {
+    e.preventDefault();
+    const query = inputRef.current.value.trim();
+    if (query) {
+      navigate(`/search?query=${encodeURIComponent(query)}`);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsSearchOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  
+      
+   
+  }, []);
   const [activeCategory, setActiveCategory] = useState(null)
   const [selectedCategory, setSelectedCategory] = useState('Ulama');
 
@@ -125,14 +154,14 @@ export default function Home() {
       <Hero/>
         <div className="mt-2 flex flex-col items-center gap-4 lg:mt-10  ">
                 <div className="text-center: text-zinc-600 lg:text-left">
-                  <div className="flex justify-between items-center border-2 border-white rounded-md  pl-4 md:w-[1040px] bg-white searchShadow">
-                    <div className='flex items-center'>
+                  <form className="flex justify-between items-center border-2 border-white rounded-md  pl-4 md:w-[1040px] bg-white searchShadow" onSubmit={handleSearch}>
+                    <div className='flex items-center ' >
 
                       <Search className="mr-2 h-10 w-4" />
-                      <input type="text" placeholder="Search" className="text-zinc-600 placeholder:text-zinc-600 focus:outline-none" />
+                      <input type="text" placeholder="Search" ref={inputRef}  className="text-zinc-600 focus-visible:ring-[#AC6908] placeholder:text-zinc-600 focus:outline-none" />
                     </div>
-                    <Button className="cta text-white px-4 py-6 text-white text-sm cursor-pointer">Search</Button>
-                  </div>
+                    <Button type="submit" className="cta  px-4 py-6 text-white text-sm cursor-pointer">Search</Button>
+                  </form>
         <div className="max-w-7xl mx-auto pt-6">
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
                 {categories.map((category) => (

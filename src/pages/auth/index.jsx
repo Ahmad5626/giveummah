@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/header/Navbar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import GoogleLoginButton from "@/components/googlelogin/GoogleLoginButton";
+import FacebookLoginBtn from "@/components/facebookLoginBtn/FacebookLoginBtn";
 
 
 const Authpage = () => {
@@ -52,7 +53,7 @@ const Authpage = () => {
 
             <button className="flex-1 flex items-center justify-center border border-gray-300 rounded-full py-2">
               <img src="https://www.svgrepo.com/show/452196/facebook-1.svg" alt="Facebook" className="w-5 h-5 mr-2" />
-              <span className="text-sm">Facebook</span>
+              <span className="text-sm"><FacebookLoginBtn /></span>
             </button>
           </div>
 

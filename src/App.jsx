@@ -18,6 +18,8 @@ import SecurityCompliance from './pages/security&Compliance/Security&Compliance'
 import Search from './pages/search/Search'
 import Pay from './pages/pay/Pay'
 import Status from './pages/pay/Status'
+import Couse from './pages/cause/Couse'
+import FundraiserCampaigns from './pages/dashboard/Edit'
 
 
 
@@ -41,6 +43,8 @@ function App() {
       <Route path="/search" element={<Search />} />
       <Route path="/pay" element={<Pay />} />
       <Route path="/status/:merchantTx" element={<Status />} />
+      <Route path="/cause/:category" element={<Couse />} />
+      <Route path="/edit" element={<FundraiserCampaigns />} />
       {/* <Route path="/ckeditor" element={<TextEditor />} /> */}
       {/* <Route path="/show" element={<Show />} /> */}
     

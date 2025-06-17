@@ -1,31 +1,58 @@
 "use client"
 
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { AuthContext } from "@/context/auth-context"
 import { Link } from "react-router-dom"
 
 const RecommendedCauses = () => {
-  // const {recommendedCauses}=useContext(AuthContext)
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const {recommendedCauses}=useContext(AuthContext)
 
-  const recommendedCauses = [
-    { headline: "Livelihood for Ulama"},
-    { headline: "Construction Support for Madrasas" },
-    { headline: "Student Education"},
-    { headline: "Help Poor"},
-    { headline: "Help Orphans"},
-    { headline: "Medical Relief" },
-    { headline: "Construction Support for Masjids." },
-  ]
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1 >= recommendedCauses.length - 3 ? 0 : prevIndex + 1))
-  }
+  // const recommendedCauses = [
+  //   { headline: "Livelihood for Ulama"},
+  //   { headline: "Construction Support for Madrasas" },
+  //   { headline: "Student Education"},
+  //   { headline: "Help Poor"},
+  //   { headline: "Help Orphans"},
+  //   { headline: "Medical Relief" },
+  //   { headline: "Construction Support for Masjids." },
+  // ]
 
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? Math.max(0, recommendedCauses.length - 4) : prevIndex - 1))
-  }
+ const [currentIndex, setCurrentIndex] = useState(0)
+   const [itemsPerView, setItemsPerView] = useState(4)
+ 
+   useEffect(() => {
+     const handleResize = () => {
+       if (window.innerWidth < 640) {
+         setItemsPerView(1)
+       } else if (window.innerWidth < 768) {
+         setItemsPerView(2)
+       } else if (window.innerWidth < 1024) {
+         setItemsPerView(3)
+       } else {
+         setItemsPerView(4)
+       }
+     }
+ 
+     handleResize()
+     window.addEventListener("resize", handleResize)
+     return () => window.removeEventListener("resize", handleResize)
+   }, [])
+ 
+   const maxIndex = Math.max(0, recommendedCauses.length - itemsPerView)
+ 
+   const nextSlide = () => {
+     setCurrentIndex((prev) => Math.min(prev + 1, maxIndex))
+   }
+ 
+   const prevSlide = () => {
+     setCurrentIndex((prev) => Math.max(prev - 1, 0))
+   }
+ 
+   const goToSlide = (index) => {
+     setCurrentIndex(Math.min(index, maxIndex))
+   }
 
   return (
     <div className="w-full  mx-auto px-4 sm:px-6 lg:px-20 md:py-20 ">
@@ -33,16 +60,37 @@ const RecommendedCauses = () => {
 
       <div className="relative">
         {/* Cards Container */}
+      
+      {/* Slider Container */}
+      <div className="relative">
+        {/* Navigation Buttons */}
+        <button
+          onClick={prevSlide}
+          disabled={currentIndex === 0}
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        >
+          <ChevronLeft className="w-5 h-5 text-gray-600" />
+        </button>
+
+        <button
+          onClick={nextSlide}
+          disabled={currentIndex >= maxIndex}
+          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        >
+          <ChevronRight className="w-5 h-5 text-gray-600" />
+        </button>
+
+        {/* Cards Container */}
         <div className="overflow-hidden">
           <div
-            className="flex transition-transform duration-300 ease-in-out gap-4 sm:gap-6"
+            className="flex transition-transform duration-300 ease-in-out space-x-5"
             style={{
-              transform: `translateX(-${currentIndex * (100 / 4)}%)`,
+              transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
             }}
           >
-            {recommendedCauses.map((cause, index) => (
+              {recommendedCauses.map((cause, index) => (
               <div key={index} className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 xl:w-1/5">
-               <Link to={cause.url}>
+               <Link to={ `/cause/${cause.category}`}>
                  <div
                   className="relative h-48 sm:h-56 lg:h-64 rounded-2xl overflow-hidden cursor-pointer group"
                   style={{
@@ -92,24 +140,22 @@ const RecommendedCauses = () => {
           </div>
         </div>
 
-        {/* Navigation Arrows */}
-        <div className="flex justify-center sm:justify-start gap-4 mt-8">
-          <button
-            onClick={prevSlide}
-            className="w-12 h-12 border-2 border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 hover:bg-gray-50 transition-all duration-200"
-            disabled={currentIndex === 0}
-          >
-            <ChevronLeft className="w-5 h-5 text-gray-600" />
-          </button>
-
-          <button
-            onClick={nextSlide}
-            className="w-12 h-12 border-2 border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 hover:bg-gray-50 transition-all duration-200"
-            disabled={currentIndex >= recommendedCauses.length - 4}
-          >
-            <ChevronRight className="w-5 h-5 text-gray-600" />
-          </button>
+        {/* Dots Indicator */}
+        <div className="flex justify-center gap-2 mt-6">
+          {Array.from({ length: maxIndex + 1 }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-2 h-2 rounded-full transition-colors ${
+                index === currentIndex ? "bg-orange-500" : "bg-gray-300"
+              }`}
+            />
+          ))}
         </div>
+      </div>
+
+        {/* Navigation Arrows */}
+        
       </div>
     </div>
   )

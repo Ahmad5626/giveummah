@@ -5,10 +5,11 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 
 
 function GivenOption() {
-  const { allCampaigns, campaignDetails, setCampaignDetails, allUserData, givingLevels, setGivingLevels } = useContext(AuthContext)
+  const { allCampaigns, campaignDetails, setCampaignDetails, allUserData, givingLevels, setGivingLevels,givenAmountData, setGivenAmountData } = useContext(AuthContext)
   const { id } = useParams();
   const [allComments, setAllComments] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0)
+const navigate = useNavigate();
+
   // console.log(id);
   useEffect(() => {
     allCampaigns.map((campaign) => {
@@ -138,29 +139,47 @@ function GivenOption() {
   //   },
   // ]
 
-  const [currentReview, setCurrentReview] = useState(0)
-    const navigator=useNavigate()
 
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentReview((prev) => (prev + 1) % allComments.length)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [])
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1 >= allComments.length - 3 ? 0 : prevIndex + 1))
+  const handleTierClick = (tier) => {
+    setGivenAmountData(tier);
+navigate(`/donation/${id}`)
   }
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? Math.max(0, allComments.length - 4) : prevIndex - 1))
-  }
-
-  const handleTierClick=async (tierId) =>{
-    navigator(`/donation/${campaignDetails._id}`, { state: { tierId } });
-
-  }
+  // console.log(givenAmountData);
+  
+ const [currentIndex, setCurrentIndex] = useState(0)
+   const [itemsPerView, setItemsPerView] = useState(4)
+ 
+   useEffect(() => {
+     const handleResize = () => {
+       if (window.innerWidth < 640) {
+         setItemsPerView(1)
+       } else if (window.innerWidth < 768) {
+         setItemsPerView(1)
+       } else if (window.innerWidth < 1024) {
+         setItemsPerView(1)
+       } else {
+         setItemsPerView(1)
+       }
+     }
+ 
+     handleResize()
+     window.addEventListener("resize", handleResize)
+     return () => window.removeEventListener("resize", handleResize)
+   }, [])
+ 
+   const maxIndex = Math.max(0, allComments?.length - itemsPerView)
+ 
+   const nextSlide = () => {
+     setCurrentIndex((prev) => Math.min(prev + 1, maxIndex))
+   }
+ 
+   const prevSlide = () => {
+     setCurrentIndex((prev) => Math.max(prev - 1, 0))
+   }
+ 
+   const goToSlide = (index) => {
+     setCurrentIndex(Math.min(index, maxIndex))
+   }
 
   const funded = 1000
   return (
@@ -240,21 +259,35 @@ function GivenOption() {
                     <Share2 className="w-4 h-4" />
                     Share
                   </button>
+                  <Link to={`/donation/${campaignDetails._id}`}>
                   <button className="w-full bg-darkBrownClr text-white py-3 px-4 rounded-lg font-medium hover:bg-darkYollowClr transition-colors" >
-                    <Link to={`/donation/${campaignDetails._id}`}>
+                    
 
                       Donate
-                    </Link>
+                    
                   </button>
+                  </Link>
                 </div>
 
                 {/* Additional Info */}
                 <div className="space-y-3 text-sm">
-                  <div className="flex items-center gap-2">
-                    <Heart className="w-4 h-4 text-gray-400" />
-                    <span className="text-green-600">Zakat-verified</span>
-                    <Shield className="w-4 h-4 text-gray-400" />
+                  
+                    
+
+                    {campaignDetails.zakatVerified ? (
+                      <>
+                      <div className="flex items-center gap-2">
+                        <Heart className="w-4 h-4 text-gray-400" />
+                      <span className="text-green-600">Zakat-verified</span>
+                       <Shield className="w-4 h-4 text-gray-400" />
                   </div>
+                      </>
+                    ) : (
+                      <></>
+                    )
+                    }
+                    
+                   
 
                   <div className="flex items-center gap-2 text-gray-600">
                     <MapPin className="w-4 h-4" />
@@ -364,9 +397,14 @@ function GivenOption() {
                   </div>
 
                   {/* Donate Button */}
+                  <Link to={`/donation/${campaignDetails._id}`}>
                   <button className="w-full bg-darkBrownClr text-white py-3 px-4 rounded-lg font-medium hover:bg-darkYollowClr transition-colors">
-                    Donate Now
+                   
+
+                      Donate
+                    
                   </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -385,15 +423,26 @@ function GivenOption() {
                 Updates
               </h1>
               <div className="space-y-3 overflow-y-auto">
-                {updateData.map((supporter, index) => (
+                {campaignDetails.updates?.map((supporter, index) => (
                   <div key={index} className="flex items-center gap-3 shadow-sm bg-gray-100 p-3 rounded-xl">
 
                     <div className="flex-1 min-w-0 px-10 py-3  ">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium text-gray-900 truncate">{supporter.headline}</p>
+                      {/* <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium text-gray-900 truncate">{supporter.story}</p>
 
+                      </div> */}
+                      <p className="text-xs text-gray-500">{supporter.story}</p>
+
+                      <div className='my-10'>
+                        {supporter.images?.map((image, index) => (
+                          <img key={index} src={image} alt={`Update ${index + 1}`} className="w-64 h-64   object-fill mt-2" />
+                        ))}
                       </div>
-                      <p className="text-xs text-gray-500">{supporter.subHeadline}</p>
+                      <div className='mt-10 text-xl'>
+                       <a href={supporter.videoUrl}> {supporter.videoUrl}</a>
+                      </div>
+                      
+                   
                     </div>
                   </div>
                 ))}
@@ -408,7 +457,7 @@ function GivenOption() {
               <h1 className="text-2xl font-bold text-gray-900 mb-2">
                 Donors
               </h1>
-              <div className="bg-white rounded-lg shadow-sm p-6">
+              {/* <div className="bg-white rounded-lg shadow-sm p-6">
                 <div className="text-center mb-4">
                   <p className="text-gray-600 text-sm mb-3">Your share could raise over $77</p>
                   <button className="bg-gray-900 text-white px-6 py-2 rounded-full flex items-center justify-center gap-2 w-full hover:bg-gray-800 transition-colors">
@@ -416,7 +465,7 @@ function GivenOption() {
                     <Share2 size={16} />
                   </button>
                 </div>
-              </div>
+              </div> */}
 
               {/* Recent Supporters */}
               <div className="bg-white rounded-lg shadow-sm p-6">
@@ -470,14 +519,35 @@ function GivenOption() {
         <div className="bg-gray-50 rounded-lg p-6 relative overflow-hidden">
           <div className="relative">
             {/* Cards Container */}
-            <div className="overflow-hidden">
-              <div
-                className="flex transition-transform duration-300 ease-in-out gap-4 sm:gap-6"
-                style={{
-                  transform: `translateX(-${currentIndex * 100}%)`
-                }}
-              >
-                {allComments?.map((cause, index) => (
+           
+      {/* Slider Container */}
+      <div className="relative">
+        {/* Navigation Buttons */}
+        <button
+          onClick={prevSlide}
+          disabled={currentIndex === 0}
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        >
+          <ChevronLeft className="w-5 h-5 text-gray-600" />
+        </button>
+
+        <button
+          onClick={nextSlide}
+          disabled={currentIndex >= maxIndex}
+          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        >
+          <ChevronRight className="w-5 h-5 text-gray-600" />
+        </button>
+
+        {/* Cards Container */}
+        <div className="overflow-hidden">
+          <div
+            className="flex transition-transform duration-300 ease-in-out"
+            style={{
+              transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
+            }}
+          >
+             {allComments?.map((cause, index) => (
                   <div key={index} className="flex-shrink-0 w-full">
                     <div className="text-center">
                       <div className=''>
@@ -485,34 +555,30 @@ function GivenOption() {
                       </div>
 
                       <div className="text-center">
-                        {/* <p className="font-semibold text-gray-900">{allComments[currentReview].name}</p> */}
-                        {/* <p className="text-sm text-gray-600">{allComments[currentReview].location}</p> */}
-                        {/* <p className="text-xs text-gray-500 mt-1">{allComments[currentReview].date}</p> */}
+                        
                       </div>
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
+          </div>
+        </div>
+
+        {/* Dots Indicator */}
+        <div className="flex justify-center gap-2 mt-6">
+          {Array.from({ length: maxIndex + 1 }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-2 h-2 rounded-full transition-colors ${
+                index === currentIndex ? "bg-orange-500" : "bg-gray-300"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
 
             {/* Navigation Arrows */}
-            <div className="flex justify-center sm:justify-start gap-4 mt-8">
-              <button
-                onClick={prevSlide}
-                className="w-12 h-12 border-2 border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 hover:bg-gray-50 transition-all duration-200"
-                disabled={currentIndex === 0}
-              >
-                <ChevronLeft className="w-5 h-5 text-gray-600" />
-              </button>
-
-              <button
-                onClick={nextSlide}
-                className="w-12 h-12 border-2 border-gray-300 rounded-full flex items-center justify-center hover:border-gray-400 hover:bg-gray-50 transition-all duration-200"
-                disabled={currentIndex >= allComments?.length - 4}
-              >
-                <ChevronRight className="w-5 h-5 text-gray-600" />
-              </button>
-            </div>
+           
           </div>
 
 

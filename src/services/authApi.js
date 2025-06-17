@@ -15,7 +15,7 @@ const baseAPI = "https://give-v59n.onrender.com";
     return data;
   } catch (err) {
     console.error("Register error:", err);
-    return null;
+    return err;
   }
 }
  export async function loginUser(formData) {
