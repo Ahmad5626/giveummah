@@ -20,6 +20,8 @@ import Pay from './pages/pay/Pay'
 import Status from './pages/pay/Status'
 import Couse from './pages/cause/Couse'
 import FundraiserCampaigns from './pages/dashboard/Edit'
+import Resources from './pages/resources/Resources'
+import ZakatCalculator from './pages/zakat/zakat'
 
 
 
@@ -45,6 +47,8 @@ function App() {
       <Route path="/status/:merchantTx" element={<Status />} />
       <Route path="/cause/:category" element={<Couse />} />
       <Route path="/edit" element={<FundraiserCampaigns />} />
+      <Route path="/resources" element={<Resources />} />
+      <Route path="/zakatcalculator" element={<ZakatCalculator />} />
       {/* <Route path="/ckeditor" element={<TextEditor />} /> */}
       {/* <Route path="/show" element={<Show />} /> */}
     

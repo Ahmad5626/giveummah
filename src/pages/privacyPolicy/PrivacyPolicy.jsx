@@ -13,7 +13,7 @@ export default function PrivacyPolicy() {
    <UpperPage/>
      <div className="min-h-screen bg-gradient-to-br from-[#e3be50]/10 to-[#fe9f00]/10">
       {/* Header */}
-      <div className="bg-gradient-to-r from-darkBrownClr to-lightYollowClr text-white py-16">
+      <div className="pages-bg text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <div className="flex justify-center mb-4">
             <Shield size={48} className="text-white" />

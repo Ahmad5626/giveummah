@@ -12,7 +12,7 @@ export default function AboutUs() {
         <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 ">
       {/* Hero Section */}
 
-      <div className="bg-gradient-to-r from-darkBrownClr to-lightYollowClr text-white py-16" >
+      <div className="pages-bg text-white py-16" >
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">About GiveUmmah</h1>
           <p className="text-xl md:text-2xl opacity-90">Empowering Generosity, Transforming Lives</p>
@@ -23,7 +23,7 @@ export default function AboutUs() {
         {/* CEO Section */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-12">
           <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className=" bg-gradient-to-r from-darkBrownClr to-lightYollowClr rounded-full flex items-center justify-center text-white text-4xl font-bold">
+            <div className=" pages-bg rounded-full flex items-center justify-center text-white text-4xl font-bold">
               <img src="./assets/TariqWali.png">
 
               </img>
@@ -76,7 +76,7 @@ export default function AboutUs() {
         </div>
 
         {/* Mission Section */}
-        <div className="bg-gradient-to-r from-darkBrownClr to-lightYollowClr text-white rounded-2xl shadow-lg p-8 mb-12">
+        <div className="pages-bg text-white rounded-2xl shadow-lg p-8 mb-12">
           <div className="flex items-center gap-3 mb-6">
             <Target className="text-white" size={32} />
             <h2 className="text-3xl font-bold">Our Mission</h2>
@@ -187,7 +187,7 @@ export default function AboutUs() {
         </div>
 
         {/* Vision Section */}
-        <div className="bg-gradient-to-r from-darkBrownClr to-lightYollowClr text-white rounded-2xl shadow-lg p-8 mb-12">
+        <div className="pages-bg text-white rounded-2xl shadow-lg p-8 mb-12">
           <div className="flex items-center gap-3 mb-6">
             <Globe className="text-white" size={32} />
             <h2 className="text-3xl font-bold">Our Vision</h2>

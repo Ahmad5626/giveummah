@@ -70,9 +70,9 @@ const Footer = () => {
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
-                      Donate offline
-                    </a>
+                    <Link to="/resources" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
+                      Resources
+                    </Link>
                   </li>
                 </ul>
               </div>

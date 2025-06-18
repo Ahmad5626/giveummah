@@ -37,7 +37,7 @@ const Couse = () => {
             {/* Left Content Section */}
             <div className="flex-1 p-8 lg:p-12 xl:p-16">
               <div className="">
-                <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight mb-6">
+                <h1 className="text-4xl lg:text-xl xl:text-4xl font-bold text-gray-900 leading-tight mb-6">
                  {currentData.pageHeadline}
                 </h1>
 
@@ -54,7 +54,7 @@ const Couse = () => {
             </div>
 
             {/* Right Image Section */}
-            <div className="flex-1 relative min-h-[400px] lg:min-h-[600px]">
+            <div className="flex-1 relative min-h-[300px] lg:min-h-[300px]">
               <img
                 src="/assets/Improve_the_lives_of_Ulama.jpg"
                 alt="Child"

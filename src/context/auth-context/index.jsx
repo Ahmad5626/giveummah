@@ -10,6 +10,7 @@ import {
 } from "@/services/authApi";
 import getButtons from "@/services/buttons";
 import { campaign, createComment, getAllCampaigns, getSingleCampaign } from "@/services/campaign";
+import { createFundRequest } from "@/services/fundRequest";
 import getAllInspiringInstitutes from "@/services/institutes";
 import { getAllRecommendedCauses } from "@/services/recommendedCauses";
 import { uploadFile } from "@/services/uploadImg";
@@ -131,6 +132,9 @@ export default function AuthProvider({ children }) {
       window.location.reload();
     } else {
       toast.error(result?.message || "Login failed");
+      
+      
+      
     }
   };
 
@@ -338,6 +342,24 @@ export default function AuthProvider({ children }) {
   //  console.log(updateUserFormdata);
 
 
+  // fund request 
+  const handleSubmitFundRequest = async (e) => {
+    e.preventDefault();
+
+    const data = new FormData(e.target);
+    const formData = Object.fromEntries(data);
+    console.log(formData );
+    
+    const result = await createFundRequest(formData);
+    if (result?.success) {
+      toast.success("Fund request created successfully!");
+      
+    }
+    else {
+      toast.error(result?.message || "Fund request creation failed");
+    }
+  }
+
 
   return (
     <AuthContext.Provider
@@ -382,7 +404,8 @@ export default function AuthProvider({ children }) {
         givenAmountData,
         setGivenAmountData,
         uploadingHero,
-        setUploadingHero
+        setUploadingHero,
+        handleSubmitFundRequest
       }}
     >
       {children}

@@ -26,7 +26,7 @@ import { uploadFile } from "@/services/uploadImg"
 export default function Dashboard() {
   const { userCampaignData } = useContext(AuthContext)
   const { userData, updateHandleUser, Toaster, updateUserFormdata, handleChangeUpdateUserFormdata, setUpdateUserFormdata, setActiveSection,
-    activeSection, setUserData, uploadingHero, setUploadingHero } = useContext(AuthContext)
+    activeSection, setUserData, uploadingHero, setUploadingHero,handleSubmitFundRequest } = useContext(AuthContext)
 
 
 
@@ -455,6 +455,14 @@ export default function Dashboard() {
             >
               <User className="mr-2 h-4 w-4" />
               My Profile
+            </Button>
+              <Button
+              variant={activeSection === "donations" ? "default" : "ghost"}
+              className="w-full justify-start focus:bg-gray-200"
+              onClick={() => setActiveSection("applyForFund")}
+            >
+              <DollarSign className="mr-2 h-4 w-4" />
+             Apply for Fund
             </Button>
             <Button
               variant={activeSection === "donations" ? "default" : "ghost"}
@@ -2063,6 +2071,100 @@ export default function Dashboard() {
                 </div>
               </>
             )}
+
+               {/* Apply for Fund */}
+                {activeSection === "applyForFund" && (
+                  <>
+                    <div className="my-8">
+                       <div className="customContainer bg-white p-5 rounded-lg mx-auto shadow-sm" >
+                    <div className="flex items-center justify-between gap-2 border-b pb-3">
+                        
+                        <h2 className="flex items-center gap-2 text-2xl font-semibold border-neutral-200">
+                            Apply for Fund
+                        </h2>
+                      
+                    </div>
+
+                    
+                    <form className='space-y-3 my-4 flex flex-wrap justify-between items-center' onSubmit={handleSubmitFundRequest}  >
+                        <div className="w-full md:w-[48%] flex flex-col gap-2">
+                            <label className="font-semibold text-xs text-gray-500 ">Name </label>
+                            <input type="text" className="border rounded-lg px-3 py-2 text-sm w-full outline-none border-gray-200 bg-gray-100" placeholder="Enter Name" name="name"
+                            // value={institutesFormData.headline}
+                            // onChange={handleChangeInstitutes}
+                             />
+                        </div>
+                        {/* <div className="w-full md:w-[48%] flex flex-col gap-2 !mt-0">
+                            <label className="font-semibold text-xs text-gray-500 ">Campaign Type</label>
+                            
+                            <select className="border rounded-lg px-3 py-2 text-sm w-full outline-none border-gray-200 bg-gray-100" name="type">
+                                <option value="select">Selcet</option>
+                                <option value="personal">Personal</option>
+                                <option value="institute">Institute</option>
+                                
+                            </select>
+                        </div> */}
+                        <div className="w-full md:w-[48%] flex flex-col gap-2">
+                            <label className="font-semibold text-xs text-gray-500 ">Select Your Campaign</label>
+                            <select className="border rounded-lg px-3 py-2 text-sm w-full outline-none border-gray-200 bg-gray-100" name="campaignType">
+                                <option value="select">Selcet</option>
+                                 {userCampaignData
+                      .filter((campaign) => campaign.createdBy === userData._id)
+                      .map((campaign, index) => (
+                        <option key={index} value={campaign.campaignTitle}>
+                          {campaign.campaignTitle}
+                        </option>
+                      ))}
+                                
+                                
+                                
+                                
+                            </select>
+                        </div>
+
+                         <div className="w-full md:w-[48%] flex flex-col gap-2">
+                            <label className="font-semibold text-xs text-gray-500 ">Amount  </label>
+                            <input type="number" className="border rounded-lg px-3 py-2 text-sm w-full outline-none border-gray-200 bg-gray-100" placeholder="Enter Amount" name="amount"
+                            // value={institutesFormData.headline}
+                            // onChange={handleChangeInstitutes}
+                             />
+                        </div>
+                         <div className="w-full md:w-[48%] flex flex-col gap-2">
+                            <label className="font-semibold text-xs text-gray-500 ">Bank Name </label>
+                            <input type="text" className="border rounded-lg px-3 py-2 text-sm w-full outline-none border-gray-200 bg-gray-100" placeholder="Enter Bank Name" name="bankName"
+                            // value={institutesFormData.headline}
+                            // onChange={handleChangeInstitutes}
+                             />
+                        </div>
+                         <div className="w-full md:w-[48%] flex flex-col gap-2">
+                            <label className="font-semibold text-xs text-gray-500 ">Account Number </label>
+                            <input type="number" className="border rounded-lg px-3 py-2 text-sm w-full outline-none border-gray-200 bg-gray-100" placeholder="Enter Account Number" name="accountNumber"
+                            // value={institutesFormData.headline}
+                            // onChange={handleChangeInstitutes}
+                             />
+                        </div>
+                        <div className="w-full md:w-[48%] flex flex-col gap-2">
+                            <label className="font-semibold text-xs text-gray-500 ">IFSC </label>
+                            <input type="text" className="border rounded-lg px-3 py-2 text-sm w-full outline-none border-gray-200 bg-gray-100" placeholder="Enter IFSC" name="ifsc"
+                            // value={institutesFormData.headline}
+                            // onChange={handleChangeInstitutes}
+                             />
+                        </div>
+                        
+                        <div className='mt-4'>
+                        <button type="submit" className='px-8 py-3 cta bg-[#f7a500] hover:shadow-lg transition-all duration-300 hover:from-amber-600 hover:to-yellow-500  text-white p-2 px-5 rounded-lg font-semibold text-sm' >
+                            Send Request
+                        </button>
+                    </div>
+                        
+                    </form>
+                 
+                    
+                </div>
+                    </div>
+                  </>
+                )}
+
           </div>
         </div>
       </div>

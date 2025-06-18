@@ -37,7 +37,7 @@ const baseAPI = "https://give-v59n.onrender.com";
    return data; 
   } catch (err) {
     console.error("Login Error:", err);
-    return null;
+    return err;
   }
 }
 
