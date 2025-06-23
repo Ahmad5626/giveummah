@@ -199,7 +199,7 @@ export default function MultiStepForm() {
 
 
   const { userData } = useContext(AuthContext)
-  console.log(userData.instituteName);
+  
   // text editor start
   const [content, setContent] = useState("")
   // Detect user's location on load
@@ -563,7 +563,7 @@ export default function MultiStepForm() {
                       <Input
                         id="anticipated-donations"
                         type="text"
-                        defaultValue={userData.instituteName ? userData.instituteName : ""}
+                        defaultValue={ userData.instituteName}
 
                         value={formData.instituteName}
                         onChange={(e) => updateFormData("instituteName", e.target.value)}

@@ -30,6 +30,7 @@ export default function Dashboard() {
 
 
 
+
   // edit function 
 
 
@@ -213,7 +214,7 @@ export default function Dashboard() {
   const handleSaveEdit = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch(`https://give-v59n.onrender.com/v1/api/update-campaigns/${editedItem._id}`, {
+      const response = await fetch(`http://localhost:9000/v1/api/update-campaigns/${editedItem._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -1860,9 +1861,9 @@ export default function Dashboard() {
                                   <SelectValue placeholder="- Select -" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white">
-                                  <SelectItem value="male hover:bg-gray-200">Male</SelectItem>
-                                  <SelectItem value="female hover:bg-gray-200">Female</SelectItem>
-                                  <SelectItem value="other hover:bg-gray-200">Other</SelectItem>
+                                  <SelectItem value="male hover:bg-gray-200" className={"bg-white hover:bg-gray-200"}>Male</SelectItem>
+                                  <SelectItem value="female hover:bg-gray-200" className={"bg-white hover:bg-gray-200"}>Female</SelectItem>
+                                  <SelectItem value="other hover:bg-gray-200" className={"bg-white hover:bg-gray-200"}>Other</SelectItem>
                                 </SelectContent>
                               </Select>
                             </div>
@@ -1880,8 +1881,8 @@ export default function Dashboard() {
                                   <SelectValue placeholder="- Select -" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white">
-                                  <SelectItem value="single hover:bg-gray-200">Single</SelectItem>
-                                  <SelectItem value="married hover:bg-gray-200">Married</SelectItem>
+                                  <SelectItem value="single hover:bg-gray-200" className={"bg-white hover:bg-gray-200"}>Single</SelectItem>
+                                  <SelectItem value="married hover:bg-gray-200" className={"bg-white hover:bg-gray-200"}>Married</SelectItem>
 
                                 </SelectContent>
                               </Select>

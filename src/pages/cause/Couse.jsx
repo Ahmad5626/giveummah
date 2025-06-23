@@ -46,7 +46,7 @@ const Couse = () => {
                 </p>
 
                 <button className="bg-[#f5a800] hover:bg-[] text-white font-semibold px-8 py-4 rounded-full text-lg transition-colors duration-200 mb-4">
-                  Give Directly
+                  <Link to={ `${currentData.pageCta}`}>Give Directly</Link>
                 </button>
 
                 
@@ -56,7 +56,7 @@ const Couse = () => {
             {/* Right Image Section */}
             <div className="flex-1 relative min-h-[300px] lg:min-h-[300px]">
               <img
-                src="/assets/Improve_the_lives_of_Ulama.jpg"
+                src={currentData.pageImage}
                 alt="Child"
                 className="absolute inset-0 w-full h-full object-cover"
               />

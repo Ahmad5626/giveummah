@@ -35,7 +35,7 @@ const FacebookLoginBtn = () => {
           const accessToken = response.authResponse.accessToken;
 
           // Send token to your backend
-          fetch("https://give-v59n.onrender.com/auth/facebook-login", {
+          fetch("http://localhost:9000/auth/facebook-login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ accessToken }),

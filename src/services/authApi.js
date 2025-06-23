@@ -1,9 +1,8 @@
-const baseAPI = "https://give-v59n.onrender.com";
-// https://give-v59n.onrender.com
+import { baseUrl } from "@/utils/Constant";
        const token = localStorage.getItem("token");
  export async function registerService(formData) {
   try {
-    const res = await fetch(`${baseAPI}/auth/register`, {
+    const res = await fetch(`${baseUrl}/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -20,7 +19,7 @@ const baseAPI = "https://give-v59n.onrender.com";
 }
  export async function loginUser(formData) {
   try {
-    const res = await fetch(`${baseAPI}/auth/login`, {
+    const res = await fetch(`${baseUrl}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +50,7 @@ export async function getAuthenticatedUser() {
       return null;
     }
 
-    const res = await fetch(`${baseAPI}/auth/check-auth`, {
+    const res = await fetch(`${baseUrl}/auth/check-auth`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`, // ✅ Send token in Authorization header
@@ -75,7 +74,7 @@ export async function getAuthenticatedUser() {
 
 export async function updateUser(formData){
   try {
-    const res=await fetch (`${baseAPI}/auth/update-user`,{
+    const res=await fetch (`${baseUrl}/auth/update-user`,{
       method:"PUT",
       headers: {
         "Content-Type": "application/json",
@@ -101,7 +100,7 @@ export async function updateUser(formData){
 
 export  async function getData(){
          try{
-           const response=await fetch(`${baseAPI}/auth/get-user-data`)
+           const response=await fetch(`${baseUrl}/auth/get-user-data`)
            const data=await response.json()
           
            return data

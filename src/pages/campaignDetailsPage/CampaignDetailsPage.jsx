@@ -6,6 +6,8 @@ import GivenOption from '@/components/capmaignDetails/GivenOption'
 import Footer from '@/components/footer/Footer'
 import UpperPage from '@/components/upperpage/UpperPage'
 const CampaignDetailsPage = () => {
+  
+
   return (
     <>
     <UpperPage/>

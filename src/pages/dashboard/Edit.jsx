@@ -115,7 +115,7 @@ export default function FundraiserCampaigns() {
   const handleSaveEdit = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch(`https://give-v59n.onrender.com/v1/api/update-campaigns/${editedItem._id}`, {
+      const response = await fetch(`http://localhost:9000/v1/api/update-campaigns/${editedItem._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

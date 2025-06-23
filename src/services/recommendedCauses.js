@@ -1,8 +1,8 @@
-const baseAPI="https://give-v59n.onrender.com";
+import { baseUrl } from "@/utils/Constant";
 
 export const getAllRecommendedCauses=async()=>{
  try {
-    const res=await fetch(`${baseAPI}/v1/api/recommendedCauses/get-recommended-couses`,{
+    const res=await fetch(`${baseUrl}/v1/api/recommendedCauses/get-recommended-couses`,{
      method:"GET",
      headers:{
        "Content-Type": "application/json",

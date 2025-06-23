@@ -53,7 +53,7 @@ const SearchResults = () => {
 
   const fetchFilterOptions = async () => {
     try {
-      const response = await fetch("https://give-v59n.onrender.com/v1/api/filter-options")
+      const response = await fetch("http://localhost:9000/v1/api/filter-options")
       const data = await response.json()
       if (data.success) {
         setFilterOptions(data.filterOptions)
@@ -76,7 +76,7 @@ const SearchResults = () => {
         page: page.toString(),
       })
 
-      const response = await fetch(`https://give-v59n.onrender.com/v1/api/search?${queryParams}`)
+      const response = await fetch(`http://localhost:9000/v1/api/search?${queryParams}`)
       const data = await response.json()
 
       if (data.success) {

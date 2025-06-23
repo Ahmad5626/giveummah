@@ -1,8 +1,8 @@
-const baseAPI="https://give-v59n.onrender.com";
+import { baseUrl } from "@/utils/Constant";
 
 const getAllInspiringInstitutes=async()=>{
  try {
-    const res=await fetch(`${baseAPI}/v1/api/inspiringInstitutes/get-inspiring-institutes`,{
+    const res=await fetch(`${baseUrl}/v1/api/inspiringInstitutes/get-inspiring-institutes`,{
      method:"GET",
      headers:{
        "Content-Type": "application/json",

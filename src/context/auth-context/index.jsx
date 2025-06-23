@@ -39,6 +39,7 @@ export default function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false)
   const [givenAmountData, setGivenAmountData] = useState([])
   const navigator = useNavigate();
+  console.log(userData.instituteName);
   // change signup form data
   function handleChangeSignUpFormdata(e) {
     const { name, value } = e.target;
@@ -289,7 +290,7 @@ export default function AuthProvider({ children }) {
           maritalStatus: "",
           emailId: "",
           mobileNumber: "",
-          instituteName: "",
+          instituteName: userData.instituteName ,
           instituteBio: "",
           anticipatedDonations: "",
           spendingPlans: "",

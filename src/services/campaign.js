@@ -1,4 +1,4 @@
-  const baseAPI = "https://give-v59n.onrender.com";
+  import { baseUrl } from "@/utils/Constant";
  const token = localStorage.getItem("token");
   export const campaign=async(formData)=>{
     
@@ -7,7 +7,7 @@
       console.warn("No token found in localStorage");
       return null;
     }
-   const res=await fetch(`${baseAPI}/v1/api/create-campaign`,({
+   const res=await fetch(`${baseUrl}/v1/api/create-campaign`,({
      method:"POST",
        headers: {
     'Content-Type': 'application/json',
@@ -30,7 +30,7 @@
   }
 
   export const  getAllCampaigns=async()=>{
-    const res=await fetch(`${baseAPI}/v1/api/get-all-campaigns`,{
+    const res=await fetch(`${baseUrl}/v1/api/get-all-campaigns`,{
       method:"GET",
       headers: {
         'authorization': `Bearer ${token}`,
@@ -48,7 +48,7 @@
   }
 
  export const getSingleCampaign=async()=>{
-    const res=await fetch(`${baseAPI}/v1/api/get-login-user-campaigns`,{
+    const res=await fetch(`${baseUrl}/v1/api/get-login-user-campaigns`,{
       method:"GET",
       headers: {
         'authorization': `Bearer ${token}`,
@@ -67,7 +67,7 @@
 
   export const createComment=async(formData,id)=>{
  try {
-     const response =await fetch(`${baseAPI}/v1/api/create-comment/${id}`,{
+     const response =await fetch(`${baseUrl}/v1/api/create-comment/${id}`,{
       method:"POST",
       headers: {
         'Content-Type': 'application/json',

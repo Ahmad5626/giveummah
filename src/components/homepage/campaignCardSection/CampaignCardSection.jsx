@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Heart, Share2, Copy } from "lucide-react"
+import { Share2, Copy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,25 +10,80 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input"
 import { AuthContext } from "@/context/auth-context"
 import { Link } from "react-router-dom"
-
+import { baseUrl } from "@/utils/Constant"
 export default function FundraisingGrid() {
-  const { allCampaigns, allUserData, loading } = useContext(AuthContext)
+  const { allCampaigns, allUserData, loading, userData } = useContext(AuthContext)
   const [hoveredCard, setHoveredCard] = useState(null)
   const [HeartUserData, setHeartUserData] = useState([])
   const [sharePopup, setSharePopup] = useState({ open: false, campaign: null })
   const [copySuccess, setCopySuccess] = useState(false)
+  const [likedCampaigns, setLikedCampaigns] = useState(new Set())
 
   const funded = 1000
 
-  const handleHeartClick = (campaign) => {
-    const userData = allUserData.find((user) => user._id === campaign.createdBy)
-    const heartData = {
-      userData,
-      campaignData: campaign,
-      timestamp: new Date().toISOString(),
+  // Load user's liked campaigns on component mount
+
+
+ 
+
+  const handleHeartClick = async (campaign) => {
+    if (!userData?._id) {
+      alert("Please login to like campaigns")
+      return
     }
-    setHeartUserData((prev) => [...prev, heartData])
-    console.log("Heart clicked - Data stored:", heartData)
+
+    const isLiked = likedCampaigns.has(campaign._id)
+
+    try {
+      if (isLiked) {
+        // Remove like
+        const response = await fetch(`${baseUrl}/api/hearts`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: userData._id,
+            campaignId: campaign._id,
+          }),
+        })
+
+        if (response.ok) {
+          setLikedCampaigns((prev) => {
+            const newSet = new Set(prev)
+            newSet.delete(campaign._id)
+            return newSet
+          })
+          console.log("Like removed successfully")
+        }
+      } else {
+        // Add like
+        const heartData = {
+          userId: userData._id,
+          campaignId: campaign._id,
+          userData,
+          campaignData: campaign,
+          timestamp: new Date().toISOString(),
+        }
+
+        const response = await fetch(`${baseUrl}/api/hearts`,  {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(heartData),
+        })
+
+        if (response.ok) {
+          setLikedCampaigns((prev) => new Set([...prev, campaign._id]))
+          setHeartUserData((prev) => [...prev, heartData])
+          console.log("Heart clicked - Data stored:", heartData)
+        }
+      }
+    } catch (error) {
+      console.error("Error handling heart click:", error)
+      alert("Error updating like status")
+    }
   }
 
   const handleShareClick = (campaign) => {
@@ -156,7 +211,20 @@ export default function FundraisingGrid() {
                           handleHeartClick(campaign)
                         }}
                       >
-                        <Heart className="h-5 w-5" />
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden="true"
+                          data-slot="icon"
+                          className={`w-6 h-6 transition-colors duration-200 ${
+                            likedCampaigns.has(campaign._id)
+                              ? "fill-red-600 text-red-600"
+                              : "fill-transparent stroke-neutral-600 stroke-2"
+                          }`}
+                        >
+                          <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"></path>
+                        </svg>
                       </Button>
                       <Button
                         variant="ghost"

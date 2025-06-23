@@ -158,8 +158,8 @@ const Authpage = () => {
                       <SelectValue placeholder="- Select -" />
                     </SelectTrigger>
                     <SelectContent className="bg-white">
-                      <SelectItem value="Individual">Individual</SelectItem>
-                      <SelectItem value="Institute"> Institute</SelectItem>
+                      <SelectItem value="Individual" className={"bg-white hover:bg-gray-200"}>Individual</SelectItem>
+                      <SelectItem value="Institute" className={"bg-white hover:bg-gray-200"}> Institute</SelectItem>
 
                     </SelectContent>
                   </Select>

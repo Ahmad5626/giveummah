@@ -1,8 +1,8 @@
-const baseAPI = "https://give-v59n.onrender.com";
+import { baseUrl } from "@/utils/Constant";
 
 const getButtons = async () => {
     try {
-        const res = await fetch(`${baseAPI}/v1/api/buttons/get-all-buttons`,{
+        const res = await fetch(`${baseUrl}/v1/api/buttons/get-all-buttons`,{
             method:"GET",
             headers: {
                 "Content-Type": "application/json",

@@ -14,7 +14,7 @@ const GoogleLoginButton = () => {
      <GoogleOAuthProvider clientId="997164635674-7u4c5gel97v61hkmq30jmikv3tbea7e9.apps.googleusercontent.com">
       <GoogleLogin
   onSuccess={(credentialResponse) => {
-    fetch("https://give-v59n.onrender.com/auth/google-login", {
+    fetch("http://localhost:9000/auth/google-login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
