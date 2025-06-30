@@ -27,10 +27,11 @@ import { baseUrl } from "@/utils/Constant";
       body: JSON.stringify(formData),
     });
 
-    const data = await res.json(); 
+    const data = await res.json();
+    
     // console.log("login user dara:", data.user);
    
-   if (data.data.token) {
+   if (data?.data?.token) {
       localStorage.setItem("token", data.data.token);
     }
    return data; 

@@ -140,6 +140,7 @@ export default function FundraisingGrid() {
             {allCampaigns
               .filter((campaign) => campaign.status === "Active")
               .sort((a, b) => a.ranking - b.ranking)
+              .slice(0, 12)
               .map((campaign, index) => (
                 <Card
                   className="new-card h-full overflow-hidden  transition-all duration-300 pt-0 pb-2 rounded-lg border-transparent cursor-pointer"

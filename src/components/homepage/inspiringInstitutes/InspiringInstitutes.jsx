@@ -84,10 +84,10 @@ export default function InspiringInstitutes() {
 
   return (
     <div className="bg-[url('./assets/inspiring.png')]">
-  <div className="w-full max-w-7xl mx-auto px-4 py-8 ">
+  <div className="w-full  mx-auto px-4 sm:px-6 lg:px-20 md:py-20 ">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Inspiring Institutes</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2 text-center sm:text-left">Inspiring Institutes</h2>
         {/* <button className="flex items-center gap-2 text-orange-500 hover:text-orange-600 transition-colors font-medium">
           View all
           <ArrowRight className="w-4 h-4" />

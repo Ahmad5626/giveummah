@@ -6,7 +6,7 @@ import { X, Upload, ImageIcon, Trash, Save, Heart, Share2 } from "lucide-react"
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { AuthContext } from "@/context/auth-context"
-
+import { baseUrl } from "@/utils/Constant"
 export default function FundraiserCampaigns() {
   const { userCampaignData, userData } = useContext(AuthContext)
   const [showEditModal, setShowEditModal] = useState(false)
@@ -115,7 +115,7 @@ export default function FundraiserCampaigns() {
   const handleSaveEdit = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch(`http://localhost:9000/v1/api/update-campaigns/${editedItem._id}`, {
+      const response = await fetch(`${baseUrl}/v1/api/update-campaigns/${editedItem._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

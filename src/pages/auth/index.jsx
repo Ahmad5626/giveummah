@@ -145,6 +145,8 @@ const Authpage = () => {
                     onChange={handleChangeSignUpFormdata}
                   />
                 </div>
+                <p className="text-[11px] text-gray-500">Password must be 8+ characters, include uppercase, number, and special character.</p>
+
                 <div className="space-y-2">
                   <Label htmlFor="maritalStatus">Registered Type </Label>
                   <Select defaultValue=""

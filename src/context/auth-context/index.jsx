@@ -39,10 +39,11 @@ export default function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false)
   const [givenAmountData, setGivenAmountData] = useState([])
   const navigator = useNavigate();
-  console.log(userData.instituteName);
+  
   // change signup form data
   function handleChangeSignUpFormdata(e) {
     const { name, value } = e.target;
+   
     setSignUpFormdata({ ...signUpFormdata, [name]: value });
   }
 
@@ -85,14 +86,17 @@ export default function AuthProvider({ children }) {
   }
 
   //   check if signup form is valid
-  function checkIfSignUpFormIsValid() {
-    return (
-      signUpFormdata &&
-      signUpFormdata.fullName !== "" &&
-      signUpFormdata.userEmail !== "" &&
-      signUpFormdata.password !== ""
-    );
-  }
+function checkIfSignUpFormIsValid() {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  return (
+    signUpFormdata &&
+    signUpFormdata.fullName !== "" &&
+    signUpFormdata.userEmail !== "" &&
+    signUpFormdata.password !== "" &&
+    passwordRegex.test(signUpFormdata.password)
+  );
+}
 
   //   check if signin form is valid
   function checkIfSignInFormIsValid() {
@@ -104,27 +108,32 @@ export default function AuthProvider({ children }) {
   }
 
   //   sumbit register form
-  const registerHandleSubmit = async (e) => {
-    e.preventDefault();
-    const result = await registerService(signUpFormdata);
+const registerHandleSubmit = async (e) => {
+  e.preventDefault();
 
+  try {
+    const result = await registerService(signUpFormdata);
+    console.log(result);
 
     if (result?.success) {
       toast.success("Registered successfully!");
       setActiveTab("signin"); // ✅ change tab after successful registration
-
     } else {
       toast.error(result.message || "Registration failed");
-
-
     }
-  };
+  } catch (error) {
+    // ✅ This handles unexpected server errors or non-JSON responses
+    const message = error?.response?.data?.message || error.message || "Something went wrong";
+    toast.error(message);
+  }
+};
 
   // login form
   const loginHandleSubmit = async (e) => {
     e.preventDefault();
     const result = await loginUser(signInFormdata);
-    if (result?.success) {
+   try {
+     if (result?.success) {
       toast.success("Login successfully!");
       localStorage.setItem("id", result.data.user._id);
 
@@ -132,11 +141,14 @@ export default function AuthProvider({ children }) {
       setActiveSection("profile");
       window.location.reload();
     } else {
-      toast.error(result?.message || "Login failed");
+      toast.error(result.message || "Login failed");
       
-      
-      
-    }
+   }
+   } catch (error) {
+    const message = error?.response?.data?.message || error.message || "Something went wrong";
+    toast.error(message);
+   }
+
   };
 
   // update user

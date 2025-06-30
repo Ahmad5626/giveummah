@@ -24,7 +24,7 @@ export default function FundraisingSection() {
       <main className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-12">
           {/* Left Section */}
-          <div className="flex flex-col justify-center space-y-6 p-10  bg-[#F4F4F4]">
+          <div className="flex flex-col justify-center space-y-6 px-10 py-6  bg-[#F4F4F4]">
             <h1 className="text-4xl md:text-4xl  font-bold text-gray-900 leading-tight">
               Fundraise with Faith, Give with Impact – For the Ummah, By the Ummah!
 
@@ -34,8 +34,8 @@ export default function FundraisingSection() {
 
             </p>
             <h4>Your Cause, Our Ummah’s Responsibility.</h4>
-            <div className="pt-4">
-              <Button className="rounded-full px-8 py-6 text-base bg-gray-900 hover:bg-gray-800 text-white cta text-white">
+            <div className="">
+              <Button className="rounded-full px-8 py-2 text-base bg-gray-900 hover:bg-gray-800 text-white cta text-white">
                 <Link to={buttonData.fundraiseWithFaithButton}>
 
                 Start fundraising today
@@ -43,7 +43,7 @@ export default function FundraisingSection() {
               </Button>
               
             </div>
-            <div className="pt-6">
+            <div className="">
               <img
                 src="./assets/image-1.png"
                 alt="Fundraising dashboard illustration"

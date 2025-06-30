@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-
+import { baseUrl } from "@/utils/Constant";
 const FacebookLoginBtn = () => {
   useEffect(() => {
     // Load Facebook SDK
@@ -35,7 +35,7 @@ const FacebookLoginBtn = () => {
           const accessToken = response.authResponse.accessToken;
 
           // Send token to your backend
-          fetch("http://localhost:9000/auth/facebook-login", {
+          fetch( `${baseUrl}/auth/facebook-login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ accessToken }),

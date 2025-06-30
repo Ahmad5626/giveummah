@@ -2,6 +2,7 @@ import React from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
+import { baseUrl } from "@/utils/Constant";
 // import jwtDecode from "jwt-decode";
 
 const GoogleLoginButton = () => {
@@ -14,7 +15,7 @@ const GoogleLoginButton = () => {
      <GoogleOAuthProvider clientId="997164635674-7u4c5gel97v61hkmq30jmikv3tbea7e9.apps.googleusercontent.com">
       <GoogleLogin
   onSuccess={(credentialResponse) => {
-    fetch("http://localhost:9000/auth/google-login", {
+    fetch(  `${baseUrl}/auth/google-login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

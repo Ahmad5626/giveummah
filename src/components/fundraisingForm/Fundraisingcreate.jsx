@@ -464,23 +464,30 @@ export default function MultiStepForm() {
                 onValueChange={(value) => updateFormData("fundType", value)}
                 className="space-y-4"
               >
-                <Card className="border border-[#C3CCDA] rounded-lg py-2 px-4 hover:border-emerald-400 cursor-pointer">
-                  <div className="space-x-2">
-                    <div className="flex items-center space-x-2">
+                <Card className="border border-[#C3CCDA] rounded-lg py-2 px-4 hover:border-darkBrownClr cursor-pointer">
+                  <Label htmlFor="Personal" className="space-x-2 block cursor-pointer">
+                    <div className="flex items-start gap-4">
                       <RadioGroupItem value="Personal" id="Personal" className="mt-1" />
-
-                      <Label htmlFor="Personal" className="text-lg font-medium">
-                        Myself or someone else
-                      </Label>
+                      <div htmlFor="Personal" className="text-lg font-medium">
+                        <p>Myself or someone else</p>
+                        <p className="text-gray-600">Funds raised will go to a Personal bank account.</p>
+                      </div>
                     </div>
-
-                    <div className="flex-1">
-                      <p className="text-gray-600 pl-4">Funds raised will go to a Personal bank account.</p>
+                  </Label>
+                </Card>
+                <Card className="border border-[#C3CCDA] rounded-lg py-2 px-4 hover:border-darkBrownClr cursor-pointer">
+                  <Label htmlFor="Institute" className="space-x-2 block cursor-pointer    ">
+                    <div className="flex items-start gap-4">
+                      <RadioGroupItem value="Institute" id="Institute" className="mt-1 " />
+                      <div htmlFor="Institute" className="text-lg font-medium">
+                        <p>My Institute</p>
+                        <p className="text-gray-600">Funds raised will go to an Institute bank account.</p>
+                      </div>
                     </div>
-                  </div>
+                  </Label>
                 </Card>
 
-                <Card className="border border-[#C3CCDA] rounded-lg py-2 px-4 hover:border-emerald-400 cursor-pointer">
+                {/* <Card className="border border-[#C3CCDA] rounded-lg py-2 px-4 hover:border-darkBrownClr cursor-pointer">
                   <div className="flex items-start space-x-2">
                     <div className="space-x-2">
                       <div className="flex items-center space-x-2">
@@ -490,10 +497,10 @@ export default function MultiStepForm() {
                         </Label>
                       </div>
 
-                      <p className="text-gray-600 pl-4">Funds raised will go to an Institute bank account.</p>
+                      <p className="text-gray-600 pl-4"></p>
                     </div>
                   </div>
-                </Card>
+                </Card> */}
               </RadioGroup>
             </>
           )}

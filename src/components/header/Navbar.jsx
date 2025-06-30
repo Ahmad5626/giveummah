@@ -1,28 +1,34 @@
 import { useState, useRef, useEffect, useContext } from "react";
-import { Heart, Search, Settings, X, Globe, Home, ChevronDown } from "lucide-react";
+import { Heart, Search, Settings, X, Globe, Home, ChevronDown, Menu } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link,  useNavigate } from "react-router-dom";
-import { Menu  } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+
 import { AuthContext } from "@/context/auth-context";
 import { Toaster, toast } from "sonner";
 import img from "../../assets/logo.png"
 import AnimatedButton from "../animatedButton";
-export function Navbar({position}) {
+export function Navbar({ position }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [checkLogin, setCheckLogin] = useState(false);
   const searchRef = useRef(null);
   const menuRef = useRef(null);
-   const inputRef = useRef();
-const navigate=useNavigate()
+  const inputRef = useRef();
+  const navigate = useNavigate()
 
- const handleSearch = (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
-    const query = inputRef.current.value.trim();
-    if (query) {
-      navigate(`/search?query=${encodeURIComponent(query)}`);
+    // const query = inputRef.current.value.trim();
+    // if (query) {
+    //   navigate(`/search?query=${encodeURIComponent(query)}`);
+    // }
+    const formData = new FormData(e.target);
+    const searchQuery = formData.get("query");
+    if (!searchQuery) {
+      return;
     }
+    navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
   };
 
   useEffect(() => {
@@ -36,75 +42,74 @@ const navigate=useNavigate()
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  
-      
-   
+
+
+
   }, []);
 
 
 
-  const {userData}=useContext(AuthContext)
+  const { userData } = useContext(AuthContext)
 
-useEffect(() => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    setCheckLogin(true);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setCheckLogin(true);
+    }
+  }, []);
+
+  function handleLogout() {
+    toast.success("Logout successfully!");
+    localStorage.removeItem("token");
+
+    setCheckLogin(false);
   }
-}, []);
-
-function handleLogout() {
-  toast.success("Logout successfully!");
-  localStorage.removeItem("token");
-
-  setCheckLogin(false);
-}
 
   return (
     <>
-    <Toaster position="top-center" />
-      <header className={ `${position} top-0 z-40 w-full `}>
+      <Toaster position="top-center" />
+      <header className={`${position} top-0 z-40 w-full `}>
         <div className="container mx-auto px-4 md:px-20 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
-              
+
               <span className="md:text-3xl font-bold text-purple-500">
-              <img src={img} className="w-40 md:w-50"></img>
+                <img src={img} className="w-40 md:w-60"></img>
               </span>
             </Link>
 
             {/* Search Bar */}
-          
-          
-              <div className="mx-4 hidden  md:block px-8" >
+
+
+            <div className="mx- hidden  md:block px-8" >
               <form onSubmit={handleSearch}>
-              <div className="relative" >
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                <Input
-                  type="text"
-                  placeholder="Discover inspiring causes"
-                  ref={inputRef} 
-                  
-                  className="w-full rounded-full border-gray-300 pl-10 pr-44 py-4  focus-visible:ring-[#AC6908] "
-                />
-              </div>
+                <div className="relative" >
+                  <Search className="absolute left-3 top-1/2 h-4 w-8 -translate-y-1/2 text-gray-400" />
+                  <Input
+                    type="text"
+                    placeholder="Discover inspiring causes"
+                    name="query"
+                    className=" rounded-full border-gray-300 border-1 lg:w-[500px] pl-10 py-4 placeholder:font-bold  md:text-[16px] focus-visible:ring-[#AC6908] cursor-pointer"
+                  />
+                </div>
               </form>
             </div>
-          
-            
-         
+
+
+
 
             {/* Desktop Navigation */}
             <div className="flex items-center gap-3">
-            {/* <AnimatedButton /> */}
-              <Button asChild className="rounded-full  border-2 border-[#AC6908] text-[#AC6908] hover:bg-gray-300 text-[10px] md:text-[13px] bg-gray-100 py-2 md:px-8 m-0">
-               <Link to="/fundraisingForm" className="p-0 m-0"> Start fundraising </Link>
+              {/* <AnimatedButton /> */}
+              <Button asChild className="rounded-full  border-2 border-[#AC6908] text-[#AC6908] hover:bg-gray-300 text-[10px] md:text-[16px] bg-gray-100 py-2 md:px-8 m-0">
+                <Link to="/fundraisingForm" className="p-0 m-0"> Start fundraising </Link>
               </Button>
 
               {/* <div className="">
                 {userData.fullName}
               </div> */}
-            
+
               <Button
                 variant="ghost"
                 size="icon"
@@ -112,10 +117,10 @@ function handleLogout() {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
                 {isMenuOpen ? (
-                  <X className="h-5 w-5" />
+                  <X className="size-7" />
                 ) : (
-                  <div className="flex flex-col gap-1 ">
-                    <Menu className=""/>
+                  <div className="flex flex-col gap-1  ">
+                    <Menu className=" size-7" />
                   </div>
                 )}
                 <span className="sr-only">Menu</span>
@@ -125,14 +130,15 @@ function handleLogout() {
 
           {/* Mobile Search */}
           <div className="mt-4 md:hidden">
-            <div className="relative">
+            <form className="relative" onSubmit={handleSearch} >
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
               <Input
                 type="text"
                 placeholder="Discover inspiring causes"
-                className="w-full rounded-full border-gray-200 pl-10 pr-4 focus-visible:ring-purple-500"
+                name="query"
+                className="w-full rounded-full border-gray-200 pl-10 pr-4 focus-visible:ring-[#AC6908]"
               />
-            </div>
+            </form>
           </div>
         </div>
       </header>
@@ -154,7 +160,7 @@ function handleLogout() {
                 >
                   <Search className="mr-2 h-5 w-5 text-gray-400" />
                   <span className="text-gray-500">
-                    <input type="text" placeholder="Search for campaigns..." ref={inputRef} className="w-full bg-transparent focus:outline-none" />
+                    <input type="text" placeholder="Search for campaigns..." name="query" className="w-full bg-transparent focus:outline-none focus-visible:ring-[#AC6908]" />
                   </span>
                 </form>
 
@@ -193,7 +199,7 @@ function handleLogout() {
                 Support
               </Link> */}
 
-                {/* <div className="flex items-center justify-between py-2 text-sm font-medium text-gray-900">
+              {/* <div className="flex items-center justify-between py-2 text-sm font-medium text-gray-900">
                   <div className="flex items-center">
                     <div className="mr-2 flex h-4 w-4 items-center justify-center rounded-full text-gray-400">
                       <span className="text-xs">$</span>
@@ -207,8 +213,8 @@ function handleLogout() {
                 Sign up
               </Link>
               <Link to="/auth" className="block py-2 text-sm font-medium text-gray-900" onClick={handleLogout}>
-              {checkLogin? 'Logout' : 'Login'}
-                
+                {checkLogin ? 'Logout' : 'Login'}
+
               </Link>
             </div>
 

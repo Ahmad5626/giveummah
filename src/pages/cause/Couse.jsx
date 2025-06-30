@@ -35,7 +35,7 @@ const Couse = () => {
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
           <div className="flex flex-col lg:flex-row">
             {/* Left Content Section */}
-            <div className="flex-1 p-8 lg:p-12 xl:p-16">
+            <div className="flex-1 p-8 lg:p-12 xl:p-16 md:w-[1200px] ">
               <div className="">
                 <h1 className="text-4xl lg:text-xl xl:text-4xl font-bold text-gray-900 leading-tight mb-6">
                  {currentData.pageHeadline}

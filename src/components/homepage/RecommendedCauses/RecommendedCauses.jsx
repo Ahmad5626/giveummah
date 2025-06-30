@@ -20,7 +20,7 @@ const RecommendedCauses = () => {
   // ]
 
  const [currentIndex, setCurrentIndex] = useState(0)
-   const [itemsPerView, setItemsPerView] = useState(4)
+   const [itemsPerView, setItemsPerView] = useState(5)
  
    useEffect(() => {
      const handleResize = () => {
@@ -29,9 +29,9 @@ const RecommendedCauses = () => {
        } else if (window.innerWidth < 768) {
          setItemsPerView(2)
        } else if (window.innerWidth < 1024) {
-         setItemsPerView(3)
-       } else {
          setItemsPerView(4)
+       } else {
+         setItemsPerView(5)
        }
      }
  
@@ -89,7 +89,7 @@ const RecommendedCauses = () => {
             }}
           >
               {recommendedCauses.map((cause, index) => (
-              <div key={index} className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 xl:w-1/5">
+              <div key={index} className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/5 xl:w-1/6">
                <Link to={ `/cause/${cause.category}`}>
                  <div
                   className="relative h-48 sm:h-56 lg:h-64 rounded-2xl overflow-hidden cursor-pointer group"

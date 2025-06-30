@@ -21,7 +21,7 @@ import { getAuthenticatedUser } from "@/services/authApi"
 import { Link } from "react-router-dom"
 import UpperPage from "@/components/upperpage/UpperPage"
 import { uploadFile } from "@/services/uploadImg"
-
+import { baseUrl } from "@/utils/Constant"
 
 export default function Dashboard() {
   const { userCampaignData } = useContext(AuthContext)
@@ -214,7 +214,7 @@ export default function Dashboard() {
   const handleSaveEdit = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch(`http://localhost:9000/v1/api/update-campaigns/${editedItem._id}`, {
+      const response = await fetch(`${baseUrl}/v1/api/update-campaigns/${editedItem._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -447,15 +447,7 @@ export default function Dashboard() {
               onClick={() => setActiveSection("fundraisers")}
             >
               <ListOrdered className="mr-2 h-4 w-4" />
-              Fundraisers
-            </Button>
-            <Button
-              variant={activeSection === "profile" ? "default" : "ghost"}
-              className="w-full justify-start focus:bg-gray-200"
-              onClick={() => setActiveSection("profile")}
-            >
-              <User className="mr-2 h-4 w-4" />
-              My Profile
+             My Campaigns
             </Button>
               <Button
               variant={activeSection === "donations" ? "default" : "ghost"}
@@ -465,6 +457,15 @@ export default function Dashboard() {
               <DollarSign className="mr-2 h-4 w-4" />
              Apply for Fund
             </Button>
+            <Button
+              variant={activeSection === "profile" ? "default" : "ghost"}
+              className="w-full justify-start focus:bg-gray-200"
+              onClick={() => setActiveSection("profile")}
+            >
+              <User className="mr-2 h-4 w-4" />
+              My Profile
+            </Button>
+            
             <Button
               variant={activeSection === "donations" ? "default" : "ghost"}
               className="w-full justify-start focus:bg-gray-200"
@@ -664,21 +665,21 @@ export default function Dashboard() {
                                   className="rounded-full px-6 py-2 text-white bg-[#fea000] hover:bg-[#e69000] transition-all duration-300"
                                   onClick={(e) => handleManageClick(campaign, e)}
                                 >
-                                  Manage
+                                  Edit 
                                 </motion.button>
                               </div>
                             </div>
                           </Link>
 
-                          <div className="flex justify-between p-4 border-t">
-                            <div className="flex gap-2">
+                          <div className="flex justify-between p-4 ">
+                            {/* <div className="flex gap-2">
                               <button className="p-2 rounded-full hover:bg-gray-100">
                                 <Heart className="h-5 w-5" />
                               </button>
                               <button className="p-2 rounded-full hover:bg-gray-100">
                                 <Share2 className="h-5 w-5" />
                               </button>
-                            </div>
+                            </div> */}
                             {campaign.zakatVerified && (
                               <div className="flex items-center text-[#fea000] border border-green-200 bg-green-50 px-2 py-1 rounded-full gap-1">
                                 Zakat-verified

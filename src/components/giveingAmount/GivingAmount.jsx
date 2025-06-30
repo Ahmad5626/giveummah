@@ -3,6 +3,8 @@
 import { AuthContext } from "@/context/auth-context"
 import { useContext, useEffect, useState } from "react"
 import { Link, useLocation, useParams } from "react-router-dom"
+import { SelectTrigger, Select, SelectValue, SelectContent, SelectItem } from "../ui/select"
+import { toast } from "sonner"
 
 const GivingAmount = () => {
   const { id } = useParams()
@@ -143,6 +145,11 @@ const GivingAmount = () => {
   }
 
   const handleGiveNow = () => {
+    const token = localStorage.getItem("token")
+    if(!token) {
+      toast.error("Please login to give now!")
+      return
+    }
     const total = calculateTotal()
     console.log("Total Amount:", total)
     console.log("Base Amount:", getDisplayAmount())
@@ -230,6 +237,28 @@ const GivingAmount = () => {
                   />
                 </div>
               </div>
+            </div>
+
+            <div className="">
+            <p className="text-lg  py-3 font-bold"> Define the giving types</p>
+              
+
+               <Select
+                      
+                    >
+                      <SelectTrigger className="w-full h-14">
+                        <SelectValue placeholder="Select your giving type" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white ">
+                        <SelectItem value="Zakat" className={"hover:bg-gray-200"}>Zakat</SelectItem>
+                        <SelectItem value="Sadaqah" className={"hover:bg-gray-200"}>Sadaqah</SelectItem>
+                        <SelectItem value="Sadaqah Jariah" className={"hover:bg-gray-200"}>Sadaqah Jariah</SelectItem>
+                        <SelectItem value="Imdad / Hadi" className={"hover:bg-gray-200"}>Imdad / Hadi</SelectItem>
+                        <SelectItem value="General donation" className={"hover:bg-gray-200"}>General donation</SelectItem>
+                        <SelectItem value="Bank Interest ( Ribba )" className={"hover:bg-gray-200"}>Bank Interest ( Ribba )</SelectItem>
+                        <SelectItem value="Where most needed" className={"hover:bg-gray-200"}>Where most needed</SelectItem>
+                      </SelectContent>
+                    </Select>
             </div>
 
             {/* Giving Levels */}

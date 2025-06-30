@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import { baseUrl } from '@/utils/Constant';
 function App() {
     const [amount, setAmount] = useState('');
 
   const pay = async () => {
     const redirectUrl = window.location.origin + '/status';
-    const { data } = await axios.post('http://localhost:9000/api/payment', {
+    const { data } = await axios.post(`$${baseUrl}/v1/api/payment`, {
       amount: parseFloat(amount),
       redirectUrl: redirectUrl,
       callbackUrl: redirectUrl,
