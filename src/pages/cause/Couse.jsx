@@ -46,7 +46,8 @@ const Couse = () => {
                 </p>
 
                 <button className="bg-[#f5a800] hover:bg-[] text-white font-semibold px-8 py-4 rounded-full text-lg transition-colors duration-200 mb-4">
-                  <Link to={ `${currentData.pageCta}`}>Give Directly</Link>
+                  {/* <Link to={ `${currentData.pageCta}`}>Give Directly</Link> */}
+                  <Link to="https://giveummah.com/campaignDetails/685ce50500936cb379876a8e">Give Directly</Link>
                 </button>
 
                 

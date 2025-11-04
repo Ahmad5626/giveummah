@@ -17,7 +17,7 @@ import { uploadFile } from "@/services/uploadImg";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
-
+import { baseUrl } from "@/utils/Constant";
 export const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
@@ -38,6 +38,9 @@ export default function AuthProvider({ children }) {
   const [uploadingHero, setUploadingHero] = useState(false)
   const [loading, setLoading] = useState(false)
   const [givenAmountData, setGivenAmountData] = useState([])
+  const [paymentData, setPaymentData] = useState([])
+
+  
   const navigator = useNavigate();
   
   // change signup form data
@@ -94,6 +97,7 @@ function checkIfSignUpFormIsValid() {
     signUpFormdata.fullName !== "" &&
     signUpFormdata.userEmail !== "" &&
     signUpFormdata.password !== "" &&
+    
     passwordRegex.test(signUpFormdata.password)
   );
 }
@@ -214,6 +218,20 @@ const registerHandleSubmit = async (e) => {
     const getAllUserData = await getData();
     if (getAllUserData) setAllUserData(getAllUserData.data);
   }
+
+  // payment data
+   const  getAllPayments= async () => {
+    try {
+      const response = await fetch(`${baseUrl}/v1/api/payments/get-all-payments`)
+      const data = await response.json()
+// console.log(data);
+
+      setPaymentData(data.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  
   useEffect(() => {
 
 
@@ -224,7 +242,7 @@ const registerHandleSubmit = async (e) => {
     getAllInspiringInstitutesData()
     getRecommendedCausesData()
     getLoginUserData()
-
+getAllPayments()
 
   }, []);
 
@@ -371,6 +389,39 @@ const registerHandleSubmit = async (e) => {
     else {
       toast.error(result?.message || "Fund request creation failed");
     }
+
+
+      try {
+      const data =await fetch(`${baseUrl}/v1/api/sendMail/send-fund-request-mail`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      
+        body: JSON.stringify({
+            campaignName: formData.campaignType,
+    creatorName:formData.name,
+    fundingGoal:formData.fundingGoal,
+    amountRaised:formData.amountRaised,
+    requestedAmount:formData.amount,
+    requestDate:(new Date()).toDateString(),
+    acountNumber:formData.accountNumber,
+    email: `razaira01@gmailcom`,
+    
+         
+          
+        }),
+      }).then((res) => { 
+        if (res.ok) {
+         console.log("Email sent successfully");
+         
+        }
+        toast.success("Message sent successfully");
+      })
+    } catch (error) {
+      console.log(error);
+      
+    }
   }
 
 
@@ -418,7 +469,8 @@ const registerHandleSubmit = async (e) => {
         setGivenAmountData,
         uploadingHero,
         setUploadingHero,
-        handleSubmitFundRequest
+        handleSubmitFundRequest,
+        paymentData
       }}
     >
       {children}

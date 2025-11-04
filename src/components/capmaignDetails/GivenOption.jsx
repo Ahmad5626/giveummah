@@ -108,14 +108,14 @@ function GivenOption() {
   //   }
   // ]
   const recentSupporters = [
-    { name: "Anonymous", amount: "$25.00", time: "2 hours ago" },
-    { name: "Anonymous", amount: "$100.00", time: "3 hours ago" },
-    { name: "Anonymous", amount: "$50.00", time: "4 hours ago" },
-    { name: "Anonymous", amount: "$75.00", time: "5 hours ago" },
-    { name: "Bella", amount: "$30.00", time: "6 hours ago" },
-    { name: "Anonymous", amount: "$200.00", time: "7 hours ago" },
-    { name: "Anonymous", amount: "$150.00", time: "8 hours ago" },
-    { name: "Anonymous", amount: "$25.00", time: "9 hours ago" },
+    { name: "Anonymous", amount: "₹25.00", time: "2 hours ago" },
+    { name: "Anonymous", amount: "₹100.00", time: "3 hours ago" },
+    { name: "Anonymous", amount: "₹50.00", time: "4 hours ago" },
+    { name: "Anonymous", amount: "₹75.00", time: "5 hours ago" },
+    { name: "Bella", amount: "₹30.00", time: "6 hours ago" },
+    { name: "Anonymous", amount: "₹200.00", time: "7 hours ago" },
+    { name: "Anonymous", amount: "₹150.00", time: "8 hours ago" },
+    { name: "Anonymous", amount: "₹25.00", time: "9 hours ago" },
   ]
 
 
@@ -275,17 +275,17 @@ navigate(`/donation/${id}`)
 
                 {/* Fundraising Progress */}
                 <div className="mb-6">
-                  <div className="text-3xl md:text-4xl font-bold text-darkBrownClr mb-2">₹{campaignDetails.goalAmount}</div>
-                  <div className="text-sm text-gray-600 mb-4">funded of {funded}</div>
+                  <div className="text-3xl md:text-4xl font-bold text-darkBrownClr mb-2">₹ {campaignDetails.donerAmount?.map((item) => item.amount).flat().reduce((total, amount) => total + amount, 0)}</div>
+                  <div className="text-sm text-gray-600 mb-4">funded of {campaignDetails.goalAmount}</div>
 
                   {/* Progress Bar */}
                   <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
-                    <div className="bg-gradient-to-r from-[#000000] to-[#f8bb26] h-2 rounded-full" style={{ width: `${Math.min((funded / campaignDetails.goalAmount) * 100, 100)}%` }}></div>
+                    <div className="bg-gradient-to-r from-[#000000] to-[#f8bb26] h-2 rounded-full" style={{ width: `${Math.min((campaignDetails.donerAmount?.map((item) => item.amount).flat().reduce((total, amount) => total + amount, 0) / campaignDetails.goalAmount) * 100, 100)}%` }}></div>
                   </div>
 
                   <div className="flex justify-between text-sm text-gray-600">
                     <span>
-                      <strong>1696</strong> Donors
+                      <strong>{campaignDetails.donerAmount?.length}</strong> Donors
                     </span>
 
                     <span>
@@ -460,7 +460,7 @@ navigate(`/donation/${id}`)
       </div>
 
       {/* second box */}
-      <div className="min-h-screen bg-gray-50">
+      <div className=" bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Main Content */}
@@ -518,14 +518,14 @@ navigate(`/donation/${id}`)
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <h3 className="font-semibold text-gray-900 mb-4">Recent supporters</h3>
                 <div className="space-y-3 max-h-80 overflow-y-auto">
-                  {recentSupporters.map((supporter, index) => (
+                  {campaignDetails?.donerAmount?.map((supporter, index) => (
                     <div key={index} className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
                         <Heart size={14} className="text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <p className="text-sm font-medium text-gray-900 truncate">{supporter.name}</p>
+                          <p className="text-sm font-medium text-gray-900 truncate">{supporter.donorName}</p>
                           <p className="text-sm font-semibold text-gray-900">{supporter.amount}</p>
                         </div>
                         <p className="text-xs text-gray-500">{supporter.time}</p>
@@ -562,7 +562,7 @@ navigate(`/donation/${id}`)
       {/* review box */}
 
       <div className="mt-8 max-w-5xl mx-auto bg-[#f8f8f8] p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-bold text-gray-900 mb-6">Words of support</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-6">Dua Wall</h2>
         <div className="bg-gray-50 rounded-lg p-6 relative overflow-hidden">
           <div className="relative">
             {/* Cards Container */}
@@ -570,31 +570,12 @@ navigate(`/donation/${id}`)
       {/* Slider Container */}
       <div className="relative">
         {/* Navigation Buttons */}
-        <button
-          onClick={prevSlide}
-          disabled={currentIndex === 0}
-          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-        >
-          <ChevronLeft className="w-5 h-5 text-gray-600" />
-        </button>
+        
 
-        <button
-          onClick={nextSlide}
-          disabled={currentIndex >= maxIndex}
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-        >
-          <ChevronRight className="w-5 h-5 text-gray-600" />
-        </button>
-
-        {/* Cards Container */}
-        <div className="overflow-hidden">
-          <div
-            className="flex transition-transform duration-300 ease-in-out"
-            style={{
-              transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
-            }}
-          >
-             {allComments?.map((cause, index) => (
+                 
+               
+                <div className="space-y-3 max-h-80 overflow-y-auto">
+                  {allComments?.map((cause, index) => (
                   <div key={index} className="flex-shrink-0 w-full">
                     <div className="text-center">
                       <div className=''>
@@ -607,21 +588,12 @@ navigate(`/donation/${id}`)
                     </div>
                   </div>
                 ))}
-          </div>
-        </div>
+                </div>
+            
 
-        {/* Dots Indicator */}
-        <div className="flex justify-center gap-2 mt-6">
-          {Array.from({ length: maxIndex + 1 }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                index === currentIndex ? "bg-orange-500" : "bg-gray-300"
-              }`}
-            />
-          ))}
-        </div>
+      
+
+     
       </div>
 
             {/* Navigation Arrows */}

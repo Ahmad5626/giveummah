@@ -14,7 +14,7 @@ const AnimatedButton = () => {
     className="group relative inline-flex items-center justify-center text-base rounded-xl bg-gray-900 px-2 md:px-4 py-2 md:font-semibold text-white text-[10px] md:text-sm transition-all duration-200 hover:bg-gray-800 hover:shadow-lg hover:-translate-y-0.5 hover:shadow-gray-600/30"
     title="payment"
     href="#"
-    >Start fundraising<svg
+    >Start  Donating <svg
       aria-hidden="true"
       viewBox="0 0 10 10"
       height="10"

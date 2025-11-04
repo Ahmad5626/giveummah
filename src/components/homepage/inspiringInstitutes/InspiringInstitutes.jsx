@@ -83,7 +83,7 @@ export default function InspiringInstitutes() {
   }
 
   return (
-    <div className="bg-[url('./assets/inspiring.png')]">
+    <div className="bg-[url('/assets/inspiring.png')]">
   <div className="w-full  mx-auto px-4 sm:px-6 lg:px-20 md:py-20 ">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
@@ -123,7 +123,8 @@ export default function InspiringInstitutes() {
           >
             {inspiringInstitutesData.map((institute) => (
               <div key={institute._id} className="flex-shrink-0 px-2" style={{ width: `${100 / itemsPerView}%` }}>
-               <Link to={institute.url} >
+               <Link to="/campaignDetails/6858f205e720a63f47739199" >
+               {/* <Link to={institute.url} > */}
                  <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
                   {/* Image */}
                   <div className="aspect-[4/3] overflow-hidden">

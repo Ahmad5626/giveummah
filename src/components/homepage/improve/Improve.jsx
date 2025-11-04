@@ -15,13 +15,13 @@ export default function Improve() {
           <h2 className="text-6xl font-extrabold mb-4 bg-gradient-to-r from-[#CF9F3B] to-[#FEE976] text-transparent bg-clip-text">
            Honor Their Knowledge - Uplift Their Lives: Fair Wages for Our Ulama
           </h2>
-          <p className="text-[white] mb-6">
+          <p className="text-[white] text-2xl mb-6">
            While our Ulama dedicate their lives to teaching Quran, many can't afford basic needs. Please help us raise teacher salaries from ₹10,000 to 30,000 today.
 
           </p>
           <Button className="bg-black text-white hover:bg-gray-800 bg-gradient-to-b from-[#CF9F3B] to-[#FEE976] text-[balck] font-bold font-sans rounded-full  px-8 py-6 mt-6">
-            <Link to={buttonData.honorTheirButton}>
-
+            {/* <Link to={buttonData.honorTheirButton}> */}
+<Link to="/campaignDetails/6858f205e720a63f47739199">
             Donate Now
             </Link>
           </Button>

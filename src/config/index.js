@@ -10,6 +10,9 @@ export const initialSignUpFormData = {
   userEmail: "",
   password: "",
   RegisteredType: "",
+  PANCardNo: "",
+  mobileNumber: "",
+  signUpFormdata: "",
   
 };
 export const initialUpdateFormData = {

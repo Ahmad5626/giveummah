@@ -1,6 +1,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React, { useContext, useEffect, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { AuthContext } from "../../context/auth-context";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -9,11 +10,12 @@ import { Navbar } from "@/components/header/Navbar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import GoogleLoginButton from "@/components/googlelogin/GoogleLoginButton";
 import FacebookLoginBtn from "@/components/facebookLoginBtn/FacebookLoginBtn";
+import { Link, Navigate } from "react-router-dom";
 
 
 const Authpage = () => {
 
-
+  const [showPassword, setShowPassword] = useState(false);
   const {
     signInFormdata,
     setSignInFormdata,
@@ -83,15 +85,24 @@ const Authpage = () => {
                   />
                 </div>
 
-                <div>
+                <div className="relative">
                   <Label>Password</Label>
                   <Input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     placeholder="Enter your password"
                     value={signInFormdata.password}
                     onChange={handleChangeSignInFormdata}
+                    className="pr-10" // padding-right for icon space
                   />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-[50px] transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
                 </div>
 
                 {/* <div className="text-right">
@@ -107,6 +118,12 @@ const Authpage = () => {
                 >
                   Log in
                 </Button>
+                <div className="text-right" >
+                  <Link to="/forgot-password" className="text-right text-sm text-gray-500 hover:underline cursor-pointer"
+                  >
+                    Forgot your password?
+                  </Link>
+                </div>
               </form>
             </TabsContent>
 
@@ -135,15 +152,41 @@ const Authpage = () => {
                   />
                 </div>
 
-                <div>
+                <div className="relative">
                   <Label>Password</Label>
                   <Input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     placeholder="Create a password"
                     value={signUpFormdata.password}
                     onChange={handleChangeSignUpFormdata}
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-[50px] transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+
+
+                <div className="relative">
+                  <Label>Confirm Password</Label>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    name="confromPassword"
+                    placeholder="Confirm your password"
+                    value={signUpFormdata.confromPassword}
+                    onChange={handleChangeSignUpFormdata}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-[50px] transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
                 </div>
                 <p className="text-[11px] text-gray-500">Password must be 8+ characters, include uppercase, number, and special character.</p>
 
@@ -160,8 +203,8 @@ const Authpage = () => {
                       <SelectValue placeholder="- Select -" />
                     </SelectTrigger>
                     <SelectContent className="bg-white">
-                      <SelectItem value="Individual" className={"bg-white hover:bg-gray-200"}>Individual</SelectItem>
-                      <SelectItem value="Institute" className={"bg-white hover:bg-gray-200"}> Institute</SelectItem>
+                      <SelectItem value="Individual" className="bg-white hover:bg-gray-200">Individual</SelectItem>
+                      <SelectItem value="Institute" className="bg-white hover:bg-gray-200"> Institute</SelectItem>
 
                     </SelectContent>
                   </Select>

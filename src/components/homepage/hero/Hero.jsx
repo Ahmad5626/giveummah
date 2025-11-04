@@ -46,7 +46,7 @@ function Hero() {
       <div className="relative z-10 text-center max-w-4xl px-6">
         <h1 className="text-5xl md:text-7xl  font-[700] mb-6   build ">
      
-        Build the Future of India
+        Build the Future of Deen
            {/* <span className="bg-gradient-to-r from-black to-amber-500 bg-clip-text text-transparent build "> Build the Future</span> <span className="bg-gradient-to-r from-black to-amber-500 bg-clip-text text-transparent build">of India</span> */}
         </h1>
           
@@ -65,7 +65,8 @@ function Hero() {
         <h2 className="text-2xl md:text-3xl font-medium mb-8">Make a Difference Today!</h2>
         {/* cta */}
         <button className=" cta px-8 py-3  text-white font-medium rounded-full hover:shadow-lg transition-all duration-300 hover:from-amber-600 hover:to-yellow-500">
-        <Link to={buttonData.heroSectionButton}>
+        {/* <Link to={buttonData.heroSectionButton}> */}
+        <Link to="campaignDetails/6858f205e720a63f47739199">
 
           Contribute Now
         </Link>

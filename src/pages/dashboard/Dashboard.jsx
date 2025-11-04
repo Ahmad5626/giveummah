@@ -22,11 +22,14 @@ import { Link } from "react-router-dom"
 import UpperPage from "@/components/upperpage/UpperPage"
 import { uploadFile } from "@/services/uploadImg"
 import { baseUrl } from "@/utils/Constant"
+import { toDate } from "date-fns"
 
 export default function Dashboard() {
   const { userCampaignData } = useContext(AuthContext)
   const { userData, updateHandleUser, Toaster, updateUserFormdata, handleChangeUpdateUserFormdata, setUpdateUserFormdata, setActiveSection,
     activeSection, setUserData, uploadingHero, setUploadingHero,handleSubmitFundRequest } = useContext(AuthContext)
+
+console.log(userData.donerAmount);
 
 
 
@@ -260,147 +263,15 @@ export default function Dashboard() {
 
 
 
-  // Mock user data
-  const userDonationData = {
-    name: "Ahmad Raza",
-    email: "razaira01@gmail.com",
-    organization: "Ahmad Raza's Organization",
-    orgId: "#71580",
-    country: "IN",
-    currency: "INR",
-    totalRaised: "₹0.00",
-    dateRange: "Apr 21 to May 20, IST",
-    mobile: "08207869386",
-  }
+
   const [progress, setProgress] = useState(3)
   useEffect(() => {
     const timer = setTimeout(() => setProgress(20), 4)
     return () => clearTimeout(timer)
   }, [])
 
-  // const allCampaigns = [
-  //     {
-  //       id: 1,
-  //       aadharImageUrl: "https://pmedia.launchgood.com/261067/urgent_need_for_a_field_hospital_for_palestinian_patients_RADS%201446%20Cover%20Image%20-%202025-05-17T040928.885-493x370.png",
-  //       logo: "/placeholder.svg?height=40&width=40",
-  //       fundType: "MATW Project",
-  //       tagline: "Give Qurbani in Gaza and Around the World",
-  //       goalAmount: 98,
-  //       daysLeft: 54,
-  //       raised: 4555,
-  //       goal: 13000,
-  //       isZakatVerified: false,
-  //     },
-  //     {
-  //       id: 2,
-  //       aadharImageUrl: "https://pmedia.launchgood.com/307480/give_qurbani_for_orphans_widows__displaced_in_syria__lebanon_IMG_5565-555x370.JPG",
-  //       logo: "/placeholder.svg?height=40&width=40",
-  //       fundType: "Aldar Waqf City",
-  //       tagline: "Provide Housing for Displaced Orphans and Widows in Syria",
-  //       goalAmount: 623,
-  //       daysLeft: 42,
-  //       raised: 14522,
-  //       goal: 50000,
-  //       isZakatVerified: true,
-  //     },
-  //     {
-  //       id: 3,
-  //       aadharImageUrl: "https://launchgood.s3.amazonaws.com/sponsor/14938/qurbani_to_gaza_and_beyond_with_matw_project_1000753009-493x370.jpg",
-  //       logo: "/placeholder.svg?height=40&width=40",
-  //       fundType: "The Noor Project",
-  //       tagline: "Provide Meals & Life Essentials to Orphans in Pakistan",
-  //       goalAmount: 1231,
-  //       daysLeft: 164,
-  //       raised: 49950,
-  //       goal: 70000,
-  //       isZakatVerified: true,
-  //     },
-  //     {
-  //       id: 4,
-  //       aadharImageUrl: "https://pmedia.launchgood.com/307292/qurbani_for_gaza_hope_with_every_sacrifice_WhatsApp%20Image%202025-05-13%20at%2017.19.55-493x370.jpeg",
-  //       logo: "/placeholder.svg?height=40&width=40",
-  //       fundType: "Islamic Relief",
-  //       tagline: "Emergency Response: Flood Relief in Bangladesh",
-  //       goalAmount: 845,
-  //       daysLeft: 21,
-  //       raised: 32500,
-  //       goal: 60000,
-  //       isZakatVerified: true,
-  //     },
-  //     {
-  //       id: 5,
-  //       aadharImageUrl: "https://pmedia.launchgood.com/262319/mothers_and_newborns_at_risk_in_syria_RADS%201446%20Cover%20Image%20-%202025-05-17T043631.564-493x370.png",
-  //       logo: "/placeholder.svg?height=40&width=40",
-  //       fundType: "Charity Water",
-  //       tagline: "Clean Water Wells for Communities in Somalia",
-  //       goalAmount: 1567,
-  //       daysLeft: 78,
-  //       raised: 87300,
-  //       goal: 100000,
-  //       isZakatVerified: false,
-  //     },
-  //     {
-  //       id: 6,
-  //       aadharImageUrl: "https://pmedia.launchgood.com/307099/water_for_sindh_pakistan_LG%20B%201-1-493x370.jpg",
-  //       logo: "/placeholder.svg?height=40&width=40",
-  //       fundType: "Penny Appeal",
-  //       tagline: "Build a School for Orphans in Yemen",
-  //       goalAmount: 732,
-  //       daysLeft: 112,
-  //       raised: 65800,
-  //       goal: 120000,
-  //       isZakatVerified: true,
-  //     },
-  //     {
-  //       id: 7,
-  //       aadharImageUrl: "https://pmedia.launchgood.com/257719/sponsor_100_palestinian__lebanese_orphans_1446%20Cover%20Images%20%2860%29-493x370.png",
-  //       logo: "/placeholder.svg?height=40&width=40",
-  //       fundType: "Human Appeal",
-  //       tagline: "Winter Emergency: Warm Clothing for Refugees",
-  //       goalAmount: 421,
-  //       daysLeft: 35,
-  //       raised: 18750,
-  //       goal: 40000,
-  //       isZakatVerified: true,
-  //     },
-  //     {
-  //       id: 8,
-  //       aadharImageUrl: "https://pmedia.launchgood.com/260675/support_free_education_for_syrias_forgotten_children_DJI_0628-490x370.JPG",
-  //       logo: "/placeholder.svg?height=40&width=40",
-  //       fundType: "Muslim Hands",
-  //       tagline: "Feed the Fasting: Ramadan Food Packages",
-  //       goalAmount: 1893,
-  //       daysLeft: 15,
-  //       raised: 93400,
-  //       goal: 150000,
-  //       isZakatVerified: true,
-  //     },
-  //   ]
+  
 
-  // Mock donations data
-  const donations = [
-    {
-      id: 1,
-      fundraiser: "Education for Children",
-      amount: "₹100",
-      date: "May 15, 2025",
-      status: "Completed",
-    },
-    {
-      id: 2,
-      fundraiser: "Clean Water Initiative",
-      amount: "₹50",
-      date: "May 10, 2025",
-      status: "Completed",
-    },
-    {
-      id: 3,
-      fundraiser: "Medical Supplies Drive",
-      amount: "₹75",
-      date: "May 5, 2025",
-      status: "Completed",
-    },
-  ]
 
   const handleLogout = () => {
     toast({
@@ -543,7 +414,7 @@ export default function Dashboard() {
                                 d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm7.75-8a8.01 8.01 0 0 0 0-4h-3.82a28.81 28.81 0 0 1 0 4h3.82zm-.82 2h-3.22a14.44 14.44 0 0 1-.95 3.51A8.03 8.03 0 0 0 16.93 14zm-8.85-2h3.84a24.61 24.61 0 0 0 0-4H8.08a24.61 24.61 0 0 0 0 4zm.25 2c.41 2.4 1.13 4 1.67 4s1.26-1.6 1.67-4H8.33zm-6.08-2h3.82a28.81 28.81 0 0 1 0-4H2.25a8.01 8.01 0 0 0 0 4zm.82 2a8.03 8.03 0 0 0 4.17 3.51c-.42-.96-.74-2.16-.95-3.51H3.07zm13.86-8a8.03 8.03 0 0 0-4.17-3.51c.42.96.74 2.16.95 3.51h3.22zm-8.6 0h3.34c-.41-2.4-1.13-4-1.67-4S8.74 3.6 8.33 6zM3.07 6h3.22c.2-1.35.53-2.55.95-3.51A8.03 8.03 0 0 0 3.07 6z" />
                             </svg> {userData.Address ? userData.Address : "Address"}
                           </p>
-                          <p className="pt-8 text-sm">{userData.instituteBio ? userData.instituteBio : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic"}</p>
+                          <p className="pt-8 text-sm">{userData.instituteBio ? userData.instituteBio : ""}</p>
 
                           {/* <div className="pt-12 pb-8">
                     <button className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded-full">
@@ -640,25 +511,25 @@ export default function Dashboard() {
                                 <span className="text-sm font-bold">{campaign.fundType}</span>
                               </div>
                               <h3 className="text-lg font-semibold line-clamp-2 h-14">{campaign.campaignTitle}</h3>
-                              <div className="flex justify-between text-sm text-gray-500 py-2">
-                                <span>43 Donors</span>
-                                <span>
-                                  {Math.max(Math.ceil((new Date(campaign.endDate) - new Date()) / (1000 * 60 * 60 * 24)), 0)} days
-                                  left
-                                </span>
-                              </div>
+                              <div className="flex justify-between text-sm text-muted-foreground py-2 ">
+                      <span>{campaign.donerAmount.length} Donors</span>
+                      <span>
+                        {Math.max(Math.ceil((new Date(campaign.endDate) - new Date()) / (1000 * 60 * 60 * 24)), 0)} days
+                        left
+                      </span>
+                    </div>
                               <div className="w-full bg-gray-200 rounded-full h-2 my-2">
                                 <div
-                                  className="bg-gradient-to-r from-[#000000] to-[#f8bb26] h-2 rounded-full"
-                                  style={{ width: `${Math.min((funded / campaign.goalAmount) * 100, 100)}%` }}
-                                ></div>
+                        className="bg-gradient-to-r from-[#000000] to-[#f8bb26] h-2 rounded-full"
+                        style={{ width: `${Math.min((campaign.donerAmount.map((item) => item.amount).flat().reduce((total, amount) => total + amount, 0) / campaign.goalAmount) * 100, 100)}%` }}
+                      ></div>
                               </div>
 
                               <div className="flex justify-between items-end mt-4">
-                                <div>
-                                  <p className="text-2xl font-bold">₹{campaign.goalAmount}</p>
-                                  <p className="text-sm text-gray-500">funded of ₹{funded}</p>
-                                </div>
+                               <div>
+                        <p className="text-2xl font-bold">₹ {campaign.donerAmount.map((item) => item.amount).flat().reduce((total, amount) => total + amount, 0)}</p>
+                        <p className="text-sm text-muted-foreground">funded of ₹ {campaign.goalAmount}</p>
+                      </div>
                                 <motion.button
                                   whileHover={{ scale: 1.05 }}
                                   whileTap={{ scale: 0.95 }}
@@ -1795,14 +1666,15 @@ export default function Dashboard() {
                                   <p className="mb-2 text-sm text-blue-600 font-semibold">Uploading ...</p></>
                               ) : (
                                 <>
-                                  <Input id="dob" type={"file"}
+                                  <Input id="dob" type="file"
                                     name="profileImage"
 
                                     onChange={handleChangeUpdateUserFormdata}
                                   />
+                                  <img src={updateUserFormdata.profileImage} alt="Profile" />
                                 </>
-                              )
-                              }
+                              )}
+                              
                             </div>
                           </div>
 
@@ -1846,6 +1718,14 @@ export default function Dashboard() {
 
                               />
                             </div>
+                             <div className="space-y-2 md:col-span-2">
+                              <Label htmlFor="address"> Bio</Label>
+                              <Textarea id="address" placeholder="About your Institute ..."
+                                name="instituteBio"
+                                value={updateUserFormdata.instituteBio}
+                                onChange={handleChangeUpdateUserFormdata}
+                              />
+                            </div>
 
                             <div className="space-y-2 ">
                               <Label htmlFor="gender" className="flex items-center">
@@ -1862,9 +1742,9 @@ export default function Dashboard() {
                                   <SelectValue placeholder="- Select -" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white">
-                                  <SelectItem value="male hover:bg-gray-200" className={"bg-white hover:bg-gray-200"}>Male</SelectItem>
-                                  <SelectItem value="female hover:bg-gray-200" className={"bg-white hover:bg-gray-200"}>Female</SelectItem>
-                                  <SelectItem value="other hover:bg-gray-200" className={"bg-white hover:bg-gray-200"}>Other</SelectItem>
+                                  <SelectItem value="male hover:bg-gray-200" className="bg-white hover:bg-gray-200">Male</SelectItem>
+                                  <SelectItem value="female hover:bg-gray-200" className="bg-white hover:bg-gray-200">Female</SelectItem>
+                                  <SelectItem value="other hover:bg-gray-200" className="bg-white hover:bg-gray-200">Other</SelectItem>
                                 </SelectContent>
                               </Select>
                             </div>
@@ -1882,8 +1762,8 @@ export default function Dashboard() {
                                   <SelectValue placeholder="- Select -" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-white">
-                                  <SelectItem value="single hover:bg-gray-200" className={"bg-white hover:bg-gray-200"}>Single</SelectItem>
-                                  <SelectItem value="married hover:bg-gray-200" className={"bg-white hover:bg-gray-200"}>Married</SelectItem>
+                                  <SelectItem value="single hover:bg-gray-200" className="bg-white hover:bg-gray-200">Single</SelectItem>
+                                  <SelectItem value="married hover:bg-gray-200" className="bg-white hover:bg-gray-200">Married</SelectItem>
 
                                 </SelectContent>
                               </Select>
@@ -1984,14 +1864,15 @@ export default function Dashboard() {
                                   <p className="mb-2 text-sm text-blue-600 font-semibold">Uploading ...</p></>
                               ) : (
                                 <>
-                                  <Input id="dob" type={"file"}
+                                  <Input id="dob" type="file"
                                     name="profileImage"
 
                                     onChange={handleChangeUpdateUserFormdata}
                                   />
+                                  <img src={updateUserFormdata.profileImage} alt="Profile" />
                                 </>
-                              )
-                              }
+                              )}
+                              
                             </div>
                           </div>
 
@@ -2023,31 +1904,36 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent className="overflow-auto w-[500px] md:w-full" >
                     <div className="rounded-md border ">
-                      <div className="grid grid-cols-5 bg-muted p-4 font-medium ">
+                      <div className="grid grid-cols-4 bg-muted p-4 font-medium ">
                         <div>ID</div>
                         <div>Fundraiser</div>
                         <div>Amount</div>
                         <div>Date</div>
-                        <div>Status</div>
+                        {/* <div>Status</div> */}
                       </div>
-                      {donations.length > 0 ? (
-                        donations.map((donation) => (
-                          <div key={donation.id} className="grid grid-cols-5 p-4 border-t">
-                            <div>#{donation.id}</div>
+                      
+                      {userData.donerAmount.length >= 0 ? (
+                        userData.donerAmount?.map((donation, index) => (
+                          
+                              <div key={donation.id} className="grid grid-cols-4 p-4 border-t">
+                            <div>{index+ 1}</div>
                             <div>{donation.fundraiser}</div>
                             <div>{donation.amount}</div>
-                            <div>{donation.date}</div>
-                            <div>
-                              <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
-                                {donation.status}
-                              </span>
-                            </div>
+                            <div>{ new Date(donation.date).toLocaleDateString("en-IN") }</div>
+                            
                           </div>
+                          
+                        
                         ))
                       ) : (
                         <div className="p-4 text-center text-muted-foreground">No donations found</div>
                       )}
                     </div>
+                    {/* <div>
+                              <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
+                                {donation.status}
+                              </span>
+                            </div> */}
                   </CardContent>
                 </Card>
 
@@ -2060,11 +1946,11 @@ export default function Dashboard() {
                       <div className="grid gap-4 md:grid-cols-2">
                         <div className="rounded-lg border p-4 text-center">
                           <h3 className="text-lg font-medium">Total Donated</h3>
-                          <p className="text-3xl font-bold mt-2">₹225</p>
+                          <p className="text-3xl font-bold mt-2">{userData.donerAmount.reduce((total, donation) => total + donation.amount, 0)}</p>
                         </div>
                         <div className="rounded-lg border p-4 text-center">
                           <h3 className="text-lg font-medium">Donations</h3>
-                          <p className="text-3xl font-bold mt-2">{donations.length}</p>
+                          <p className="text-3xl font-bold mt-2">{userData.donerAmount.length}</p>
                         </div>
 
                       </div>
@@ -2109,7 +1995,7 @@ export default function Dashboard() {
                         <div className="w-full md:w-[48%] flex flex-col gap-2">
                             <label className="font-semibold text-xs text-gray-500 ">Select Your Campaign</label>
                             <select className="border rounded-lg px-3 py-2 text-sm w-full outline-none border-gray-200 bg-gray-100" name="campaignType">
-                                <option value="select">Selcet</option>
+                                <option value="select">Select</option>
                                  {userCampaignData
                       .filter((campaign) => campaign.createdBy === userData._id)
                       .map((campaign, index) => (
@@ -2123,9 +2009,23 @@ export default function Dashboard() {
                                 
                             </select>
                         </div>
+                           <div className="w-full md:w-[48%] flex flex-col gap-2">
+                            <label className="font-semibold text-xs text-gray-500 ">Funding Goal  </label>
+                            <input type="number" className="border rounded-lg px-3 py-2 text-sm w-full outline-none border-gray-200 bg-gray-100" placeholder="Enter Funding Goal" name="fundingGoal"
+                            // value={institutesFormData.headline}
+                            // onChange={handleChangeInstitutes}
+                             />
+                        </div>
+                           <div className="w-full md:w-[48%] flex flex-col gap-2">
+                            <label className="font-semibold text-xs text-gray-500 ">Amount Raised  </label>
+                            <input type="number" className="border rounded-lg px-3 py-2 text-sm w-full outline-none border-gray-200 bg-gray-100" placeholder="Enter Amount Raised" name="amountRaised"
+                            // value={institutesFormData.headline}
+                            // onChange={handleChangeInstitutes}
+                             />
+                        </div>
 
                          <div className="w-full md:w-[48%] flex flex-col gap-2">
-                            <label className="font-semibold text-xs text-gray-500 ">Amount  </label>
+                            <label className="font-semibold text-xs text-gray-500 ">Requested Amount  </label>
                             <input type="number" className="border rounded-lg px-3 py-2 text-sm w-full outline-none border-gray-200 bg-gray-100" placeholder="Enter Amount" name="amount"
                             // value={institutesFormData.headline}
                             // onChange={handleChangeInstitutes}

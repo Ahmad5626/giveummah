@@ -2,7 +2,7 @@
 
 import { useState, useEffect, use, useContext, useRef } from "react"
 import JoditEditor from "jodit-react";
-import { ArrowLeft, ArrowRight, Check, Calendar, Upload } from "lucide-react"
+import { ArrowLeft, ArrowRight, Check, Calendar, Upload, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
@@ -199,7 +199,7 @@ export default function MultiStepForm() {
 
 
   const { userData } = useContext(AuthContext)
-  
+
   // text editor start
   const [content, setContent] = useState("")
   // Detect user's location on load
@@ -254,6 +254,7 @@ export default function MultiStepForm() {
   const [currentStep, setCurrentStep] = useState(0)
   const [filteredLocations, setFilteredLocations] = useState([])
   const [showLocationDropdown, setShowLocationDropdown] = useState(false)
+  const [loader, setLoader] = useState(false)
   const totalSteps = 8
 
   // Save form data to localStorage whenever it changes
@@ -289,9 +290,9 @@ export default function MultiStepForm() {
     //   [field]: value,
     // })
     setFormData(prev => ({
-    ...prev,
-    [key]: value,
-  }));
+      ...prev,
+      [key]: value,
+    }));
   }
 
   const updateNestedFormData = (parent, field, value) => {
@@ -353,6 +354,7 @@ export default function MultiStepForm() {
 
   // Handle file uploads
   const handleFileUpload = async (field, e) => {
+    setLoader(true)
     const files = e.target.files;
 
     if (!files || files.length === 0) return;
@@ -399,6 +401,7 @@ export default function MultiStepForm() {
         updateFormData("governmentIdUrl", uploadedUrl);
       }
     }
+    setLoader(false)
 
     // Reset input so user can re-upload
     e.target.value = "";
@@ -420,10 +423,10 @@ export default function MultiStepForm() {
       case 3:
         return true
       case 4:
-        return true
+        return formData.email && formData.firstName && formData.lastName && formData.dateOfBirth.day &&formData.dateOfBirth.month &&formData.dateOfBirth.year && formData.phone && formData.address.country && formData.address.state && formData.address.city && formData.address.pincode && formData.address.street && formData.accountHolderName &&formData.accountNumber && formData.bankName && formData.ifscCode && formData.aadharImageUrl && formData.panImageUrl && formData.governmentIdUrl
       case 5:
         // For step 5, we'll allow proceeding even if not all fields are filled
-        return true
+        return formData.masjidName && formData.numberOfImamSahab && formData.numberOfImamSahab && formData.emailOfImamSahab
       case 6:
         return formData.agreePrivacy && formData.agreeTerms && formData.agreePayment
       default:
@@ -487,20 +490,6 @@ export default function MultiStepForm() {
                   </Label>
                 </Card>
 
-                {/* <Card className="border border-[#C3CCDA] rounded-lg py-2 px-4 hover:border-darkBrownClr cursor-pointer">
-                  <div className="flex items-start space-x-2">
-                    <div className="space-x-2">
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="Institute" id="Institute" className="mt-1" />
-                        <Label htmlFor="Institute" className="text-lg font-medium">
-                          My Institute
-                        </Label>
-                      </div>
-
-                      <p className="text-gray-600 pl-4"></p>
-                    </div>
-                  </div>
-                </Card> */}
               </RadioGroup>
             </>
           )}
@@ -570,7 +559,7 @@ export default function MultiStepForm() {
                       <Input
                         id="anticipated-donations"
                         type="text"
-                        defaultValue={ userData.instituteName}
+                        defaultValue={userData.instituteName}
 
                         value={formData.instituteName}
                         onChange={(e) => updateFormData("instituteName", e.target.value)}
@@ -594,12 +583,12 @@ export default function MultiStepForm() {
                         <SelectValue placeholder="Select your role" />
                       </SelectTrigger>
                       <SelectContent className="bg-white ">
-                        <SelectItem value="Teacher/Alim" className={"hover:bg-gray-200"}>Teacher/Alim</SelectItem>
-                        <SelectItem value="Zimedar/Ameer" className={"hover:bg-gray-200"}>Zimedar/Ameer</SelectItem>
-                        <SelectItem value="Imam" className={"hover:bg-gray-200"}>Imam</SelectItem>
-                        <SelectItem value="Trustee" className={"hover:bg-gray-200"}>Trustee</SelectItem>
-                        <SelectItem value="Operations" className={"hover:bg-gray-200"}>Operations</SelectItem>
-                        <SelectItem value="Other" className={"hover:bg-gray-200"}>Other</SelectItem>
+                        <SelectItem value="Teacher/Alim" className="hover:bg-gray-200">Teacher/Alim</SelectItem>
+                        <SelectItem value="Zimedar/Ameer" className="hover:bg-gray-200">Zimedar/Ameer</SelectItem>
+                        <SelectItem value="Imam" className="hover:bg-gray-200">Imam</SelectItem>
+                        <SelectItem value="Trustee" className="hover:bg-gray-200">Trustee</SelectItem>
+                        <SelectItem value="Operations" className="hover:bg-gray-200">Operations</SelectItem>
+                        <SelectItem value="Other" className="hover:bg-gray-200">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -677,18 +666,29 @@ export default function MultiStepForm() {
                         </Button>
                       </div>
                     ) : (
+
                       <>
-                        <input
-                          id="feature-image"
-                          type="file"
-                          multiple
-                          className="hidden"
-                          onChange={(e) => handleFileUpload("featureImage", e)}
-                        />
-                        <Label htmlFor="feature-image" className="cursor-pointer flex flex-col items-center">
-                          <Upload className="h-12 w-12 text-gray-400 mb-2" />
-                          <span className="text-gray-600">Click to upload or drag and drop</span>
-                        </Label>
+                        {loader ?
+                          <div className="">  <Loader2 className="w-8 h-8 mx-auto text-center mb-4 text-blue-500 animate-spin" />
+                            <p className="mb-2 text-sm text-blue-600 font-semibold">Uploading ...</p>
+                          </div>
+                          :
+
+                          <>
+                            <input
+                              id="feature-image"
+                              type="file"
+                              multiple
+                              className="hidden"
+                              onChange={(e) => handleFileUpload("featureImage", e)}
+                            />
+                            <Label htmlFor="feature-image" className="cursor-pointer flex flex-col items-center">
+                              <Upload className="h-12 w-12 text-gray-400 mb-2" />
+                              <span className="text-gray-600">Click to upload or drag and drop</span>
+                            </Label>
+                          </>
+                        }
+
                       </>
                     )}
                   </div>
@@ -721,7 +721,7 @@ export default function MultiStepForm() {
                     </SelectTrigger>
                     <SelectContent className="bg-white">
                       {categories.map((category) => (
-                        <SelectItem key={category} value={category} className={"hover:bg-gray-200"}>
+                        <SelectItem key={category} value={category} className="hover:bg-gray-200">
                           {category}
                         </SelectItem>
                       ))}
@@ -1026,7 +1026,7 @@ export default function MultiStepForm() {
                             </SelectTrigger>
                             <SelectContent className={"bg-white"}>
                               {countries.map((country) => (
-                                <SelectItem key={country} value={country} className={"hover:bg-gray-200"}>
+                                <SelectItem key={country} value={country} className="hover:bg-gray-200">
                                   {country}
                                 </SelectItem>
                               ))}
@@ -1341,68 +1341,68 @@ export default function MultiStepForm() {
 
 
                         <div>
-          <Label htmlFor="government-id" className="text-sm text-gray-500">
-            Upload supporting documents
-          </Label>
-          <div className="border border-gray-300 rounded-lg p-4 mt-1">
-            {formData.supportingDocumentsUrl && formData.supportingDocumentsUrl.length > 0 ? (
-              <div className="grid grid-cols-2 gap-4">
-                {formData.supportingDocumentsUrl.map((url, index) => (
-                  <div key={index} className="relative border p-2 rounded">
-                    {url.endsWith(".pdf") ? (
-                      <iframe
-                        src={url}
-                        title={`PDF-${index}`}
-                        className="w-full h-40 border"
-                      />
-                    ) : (
-                      <img
-                        src={url}
-                        alt={`Document ${index}`}
-                        className="w-full max-h-40 object-contain"
-                      />
-                    )}
+                          <Label htmlFor="government-id" className="text-sm text-gray-500">
+                            Upload supporting documents
+                          </Label>
+                          <div className="border border-gray-300 rounded-lg p-4 mt-1">
+                            {formData.supportingDocumentsUrl && formData.supportingDocumentsUrl.length > 0 ? (
+                              <div className="grid grid-cols-2 gap-4">
+                                {formData.supportingDocumentsUrl.map((url, index) => (
+                                  <div key={index} className="relative border p-2 rounded">
+                                    {url.endsWith(".pdf") ? (
+                                      <iframe
+                                        src={url}
+                                        title={`PDF-${index}`}
+                                        className="w-full h-40 border"
+                                      />
+                                    ) : (
+                                      <img
+                                        src={url}
+                                        alt={`Document ${index}`}
+                                        className="w-full max-h-40 object-contain"
+                                      />
+                                    )}
 
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      className="absolute top-1 right-1 bg-red-500 text-white"
-                      onClick={() => {
-                        // ❌ Don't use splice — it mutates the array
-                        // ✅ Use filter to remove by index
-                        const updatedUrls = formData.supportingDocumentsUrl.filter((_, i) => i !== index);
-                        const updatedFiles = formData.supportingDocumentsId.filter((_, i) => i !== index);
+                                    <Button
+                                      variant="destructive"
+                                      size="sm"
+                                      className="absolute top-1 right-1 bg-red-500 text-white"
+                                      onClick={() => {
+                                        // ❌ Don't use splice — it mutates the array
+                                        // ✅ Use filter to remove by index
+                                        const updatedUrls = formData.supportingDocumentsUrl.filter((_, i) => i !== index);
+                                        const updatedFiles = formData.supportingDocumentsId.filter((_, i) => i !== index);
 
-                        updateFormData("supportingDocumentsUrl", updatedUrls);
-                        updateFormData("supportingDocumentsId", updatedFiles);
-                      }}
-                    >
-                      Remove
-                    </Button>
-                  </div>
-        ))}
-      </div>
-    ) : (
-      <div className="flex items-center justify-center">
-        <input
-          id="supporting-documents"
-          type="file"
-          multiple
-          accept="image/*,.pdf"
-          className="hidden"
-          onChange={(e) => handleFileUpload("supportingDocumentsId", e)}
-        />
-        <Label
-          htmlFor="supporting-documents"
-          className="flex items-center space-x-2 cursor-pointer text-emerald-600"
-        >
-          <Upload className="h-5 w-5" />
-          <span>Upload Files</span>
-        </Label>
-      </div>
-    )}
-  </div>
-</div>
+                                        updateFormData("supportingDocumentsUrl", updatedUrls);
+                                        updateFormData("supportingDocumentsId", updatedFiles);
+                                      }}
+                                    >
+                                      Remove
+                                    </Button>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              <div className="flex items-center justify-center">
+                                <input
+                                  id="supporting-documents"
+                                  type="file"
+                                  multiple
+                                  accept="image/*,.pdf"
+                                  className="hidden"
+                                  onChange={(e) => handleFileUpload("supportingDocumentsId", e)}
+                                />
+                                <Label
+                                  htmlFor="supporting-documents"
+                                  className="flex items-center space-x-2 cursor-pointer text-emerald-600"
+                                >
+                                  <Upload className="h-5 w-5" />
+                                  <span>Upload Files</span>
+                                </Label>
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -1623,13 +1623,13 @@ export default function MultiStepForm() {
                   </div>
                 </div>
                 <div className="">
-                    <div className="border p-4 rounded-md">
-                      <p className="text-sm text-gray-500">Acount Number</p>
-                      <p className="font-medium">{formData.accountNumber || ""}</p>
-                    </div>
-                    
-                  
+                  <div className="border p-4 rounded-md">
+                    <p className="text-sm text-gray-500">Acount Number</p>
+                    <p className="font-medium">{formData.accountNumber || ""}</p>
                   </div>
+
+
+                </div>
 
                 <div className="space-y-4 mt-8">
                   <h3 className="text-xl font-bold">Campaign Details</h3>
@@ -1681,8 +1681,8 @@ export default function MultiStepForm() {
             onClick={(e) => handleNext(e)}
             disabled={!isStepValid()}
             className={`flex items-center gap-2 px-8 py-6 text-lg ${currentStep === totalSteps - 1
-                ? "text-white bg-emerald-500 hover:bg-emerald-600"
-                : "bg-gray-300 hover:bg-[black] hover:text-white"
+              ? "text-white bg-emerald-500 hover:bg-emerald-600"
+              : "bg-gray-300 hover:bg-[black] hover:text-white"
               }`}
           >
             {currentStep === totalSteps - 1 ? (

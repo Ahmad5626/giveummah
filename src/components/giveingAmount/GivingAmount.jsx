@@ -4,11 +4,26 @@ import { AuthContext } from "@/context/auth-context"
 import { useContext, useEffect, useState } from "react"
 import { Link, useLocation, useParams } from "react-router-dom"
 import { SelectTrigger, Select, SelectValue, SelectContent, SelectItem } from "../ui/select"
+import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner"
-
+import { baseUrl } from "@/utils/Constant"
+import { campaign } from "@/services/campaign"
+import { registerService, updateUser } from "@/services/authApi"
+import { Heart } from "lucide-react"
+const token = localStorage.getItem("token")
 const GivingAmount = () => {
   const { id } = useParams()
   const {
+    signUpFormdata,
+    setSignUpFormdata,
+    handleChangeSignUpFormdata,
+    handleChangeSignInFormdata,
+    checkIfSignInFormIsValid,
+    checkIfSignUpFormIsValid,
+    registerHandleSubmit,
     allCampaigns,
     campaignDetails,
     setCampaignDetails,
@@ -17,8 +32,11 @@ const GivingAmount = () => {
     givingLevels,
     setGivingLevels,
     givenAmountData,
+    userData,
+    paymentData,
+    updateHandleUser, Toaster, updateUserFormdata, handleChangeUpdateUserFormdata,
   } = useContext(AuthContext)
-  console.log(givenAmountData)
+
 
   // Calculate initial tip based on default amount
   const initialAmount = givenAmountData
@@ -38,6 +56,12 @@ const GivingAmount = () => {
   const [showCustomAmount, setShowCustomAmount] = useState(false)
   const [showHelpSection, setShowHelpSection] = useState(true) // Show help section by default
   const [sliderValue, setSliderValue] = useState(10) // Default to 10%
+  const [selectedGivingType, setSelectedGivingType] = useState("common")
+
+  if (supportMessage !== "") {
+    console.log("sdjknfkjsh");
+
+  }
 
   // Common amount options
   const commonAmounts = [50, 100, 200, 500, 1000]
@@ -144,19 +168,126 @@ const GivingAmount = () => {
     return (selectedTip || Number.parseFloat(customTip) || 0).toFixed(2)
   }
 
-  const handleGiveNow = () => {
+
+  const handleGiveNow = async () => {
     const token = localStorage.getItem("token")
-    if(!token) {
-      toast.error("Please login to give now!")
-      return
+ 
+      
+    if (!token && !handleAnonymous) {
+    
+
+      if (signUpFormdata.fullName === "" || signUpFormdata.userEmail === "" || signUpFormdata.mobileNumber === "" || signUpFormdata.PANCardNo === "") {
+        toast.error("Please fill all the details!")
+
+        
+        return
+      }
+   
     }
-    const total = calculateTotal()
-    console.log("Total Amount:", total)
-    console.log("Base Amount:", getDisplayAmount())
-    console.log("Tip Amount:", getCurrentTipAmount())
-    console.log("Tip Percentage:", getTipPercentage().toFixed(2) + "%")
-    handleCreateComment({ comment: supportMessage }, campaignDetails._id)
+     if (token ) {
+const hasNoUserData = !userData?.PANCardNo && !userData?.mobileNumber;
+  const hasEmptyFormData = !updateUserFormdata?.mobileNumber || !updateUserFormdata?.PANCardNo;
+
+  if (hasNoUserData && hasEmptyFormData) {
+    toast.error("Please fill the Mobile Number and PAN Card Number!");
+    return;
   }
+     }
+
+
+
+ 
+
+
+    try {
+      const result = await registerService(signUpFormdata);
+      // const updateResult = await updateUserService(updateUserFormdata);
+      console.log(result);
+
+      if (result?.success) {
+        console.log("Registration successful!");
+
+      } else {
+        console.log("Registration successful!");
+      }
+    } catch (error) {
+      // ✅ This handles unexpected server errors or non-JSON responses
+      const message = error?.response?.data?.message || error.message || "Something went wrong";
+      toast.error(message);
+    }
+    console.log("no ");
+
+    const total = calculateTotal()
+    // console.log("Total Amount:", total)
+    // console.log("Base Amount:", getDisplayAmount())
+    // console.log("Tip Amount:", getCurrentTipAmount())
+    // console.log("Tip Percentage:", getTipPercentage().toFixed(2) + "%")
+    // console.log("given Type :", selectedGivingType);
+    // console.log("user data:", userData.userEmail);
+
+    if (supportMessage !== "") {
+      handleCreateComment({ comment: supportMessage }, campaignDetails._id)
+      console.log("Comment created successfully:", supportMessage);
+    }
+
+    try {
+
+
+       const result = await updateUser(updateUserFormdata);
+    console.log(result);
+
+    if (result?.success) {
+      toast.success("User updated successfully!");
+      
+      
+    } else {
+      toast.error(result?.message || "User update failed");
+      console.log(result);
+    }
+
+
+      const response = await fetch(`${baseUrl}/v1/api/payments/create-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+
+          amount: total,
+          fundType: selectedGivingType,
+          donorName: userData.fullName,
+          donorPan: userData.PANCardNo,
+          userId: userData._id,
+          userEmail: userData.userEmail,
+          phone: userData.mobileNumber,
+          campaignName: campaignDetails.campaignTitle,
+          id: campaignDetails._id,
+          newUserName: signUpFormdata.fullName,
+          newUserEmail: signUpFormdata.userEmail,
+          donationAmount: getDisplayAmount(),
+          tipAmount: getCurrentTipAmount()
+
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.success && data.data.redirectUrl) {
+        // Redirect to PhonePe payment page
+        window.location.href = data.data.redirectUrl
+      } else {
+        alert("Payment initiation failed. Please try again.")
+      }
+    } catch (error) {
+      console.error("Payment error:", error)
+      alert("Something went wrong. Please try again.")
+    }
+  }
+
+
+
+  const [handleAnonymous, setHandleAnonymous] = useState(false)
+
 
   const location = useLocation()
   const state = location.state
@@ -180,7 +311,7 @@ const GivingAmount = () => {
   return (
     <>
       {/* <UpperPage/> */}
-      <div className="max-w-7xl mx-auto mt-10 p-10 md:py-10 md:px-0 bg-white">
+      <div className=" mx-auto mt-10 p-10 md:py-10 md:px-10 bg-white">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - Donation Form */}
           <div className="lg:col-span-1 space-y-6">
@@ -240,25 +371,27 @@ const GivingAmount = () => {
             </div>
 
             <div className="">
-            <p className="text-lg  py-3 font-bold"> Define the giving types</p>
-              
+              <p className="text-lg  py-3 font-bold"> Define the giving types</p>
 
-               <Select
-                      
-                    >
-                      <SelectTrigger className="w-full h-14">
-                        <SelectValue placeholder="Select your giving type" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white ">
-                        <SelectItem value="Zakat" className={"hover:bg-gray-200"}>Zakat</SelectItem>
-                        <SelectItem value="Sadaqah" className={"hover:bg-gray-200"}>Sadaqah</SelectItem>
-                        <SelectItem value="Sadaqah Jariah" className={"hover:bg-gray-200"}>Sadaqah Jariah</SelectItem>
-                        <SelectItem value="Imdad / Hadi" className={"hover:bg-gray-200"}>Imdad / Hadi</SelectItem>
-                        <SelectItem value="General donation" className={"hover:bg-gray-200"}>General donation</SelectItem>
-                        <SelectItem value="Bank Interest ( Ribba )" className={"hover:bg-gray-200"}>Bank Interest ( Ribba )</SelectItem>
-                        <SelectItem value="Where most needed" className={"hover:bg-gray-200"}>Where most needed</SelectItem>
-                      </SelectContent>
-                    </Select>
+
+              <Select
+                value={selectedGivingType}
+                onValueChange={(value) => setSelectedGivingType(value)}
+
+              >
+                <SelectTrigger className="w-full h-14">
+                  <SelectValue placeholder="Select your giving type" />
+                </SelectTrigger>
+                <SelectContent className="bg-white ">
+                  <SelectItem value="Zakat" className="hover:bg-gray-200">Zakat</SelectItem>
+                  <SelectItem value="Sadaqah" className="hover:bg-gray-200">Sadaqah</SelectItem>
+                  <SelectItem value="Sadaqah Jariah" className="hover:bg-gray-200">Sadaqah Jariah</SelectItem>
+                  <SelectItem value="Imdad / Hadi" className="hover:bg-gray-200">Imdad / Hadi</SelectItem>
+                  <SelectItem value="General donation" className="hover:bg-gray-200">General donation</SelectItem>
+                  <SelectItem value="Bank Interest ( Ribba )" className="hover:bg-gray-200">Bank Interest ( Ribba )</SelectItem>
+                  <SelectItem value="Where most needed" className="hover:bg-gray-200">Where most needed</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Giving Levels */}
@@ -270,11 +403,10 @@ const GivingAmount = () => {
                   <div
                     key={level._id}
                     onClick={() => handleLevelSelect(level)}
-                    className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                      selectedLevel?._id === level._id
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-gray-300 hover:border-gray-400"
-                    }`}
+                    className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${selectedLevel?._id === level._id
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-gray-300 hover:border-gray-400"
+                      }`}
                   >
                     <div className="flex justify-between items-start mb-2">
                       <h4 className="text-xl font-bold text-gray-800">₹{level.amount}</h4>
@@ -295,8 +427,7 @@ const GivingAmount = () => {
                   </h2>
 
                   <p className="text-sm text-gray-600 mb-4">
-                    Because Giveummah doesn't charge a platform fee, we rely on the generosity of donors like you to
-                    help make people. 💛
+                    Giveummah charges no platform fee and 100% of your donation goes to the cause. A small tip covers essential platform costs. This allows us to sustain and grow our services, ultimately helping us support more users across the Ummah. 💛
                   </p>
 
                   {/* Enhanced Progress Bar */}
@@ -378,36 +509,104 @@ const GivingAmount = () => {
                     </button>
                   )}
 
-                  {/* Quick Percentage Buttons */}
-                  {/* <div className="flex flex-wrap gap-2 mt-4">
-                    {[0, 5, 10, 15, 20].map((percent) => (
-                      <button
-                        key={percent}
-                        onClick={() => {
-                          const baseAmount = selectedLevel ? selectedLevel.amount : Number.parseFloat(customAmount) || 0
-                          const newTip = (baseAmount * (percent / 100)).toFixed(2)
-                          setTip(Number.parseFloat(newTip))
-                          setCustomTip(newTip)
-                          setSelectedTip(null)
-                          setSliderValue(percent)
-                        }}
-                        className={`px-3 py-1 border rounded-lg text-xs font-medium transition-all ${
-                          Math.abs(sliderValue - percent) < 0.1
-                            ? "border-orange-400 bg-orange-100 text-orange-700"
-                            : "border-gray-300 text-gray-600 hover:border-orange-300"
-                        }`}
-                      >
-                        {percent}%
-                      </button>
-                    ))}
-                  </div> */}
+                  
                 </div>
               </div>
             )}
+            <div className="">
 
+              {token && (
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <h3 className="font-semibold text-gray-900  text-xl">Preferences</h3>
+                  <p className="my-3 text-sm">Your donation will appear as:</p>
+                  <div className="space-y-3 max-h-80 overflow-y-auto">
+
+
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                        <Heart size={14} className="text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm font-medium text-gray-900 truncate">{userData.fullName}</p>
+                          <p className="text-sm font-semibold text-gray-900">₹{getDisplayAmount()}</p>
+                        </div>
+                        <p className="text-xs text-gray-500">
+                          a few moments ago
+                        </p>
+                      </div>
+                    </div>
+
+
+
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="">
+
+              {token && (
+                <>
+                    {!userData.PANCardNo  && !userData.mobileNumber  ? (
+                    <>
+                      <form className="bg-white rounded-lg shadow-sm p-6" >
+                        <div className="space-y-2">
+                          <Label htmlFor="mobile" className="flex items-center">
+                            Mobile Number <span className="text-red-500 ml-1">*</span>
+                          </Label>
+                          <Input id="mobile"
+                            type="number"
+                            name="mobileNumber"
+                            value={updateUserFormdata.mobileNumber}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              const regex = /^[6-9]\d{0,9}$/; // Allow typing up to 10 digits starting with 6-9
+
+                              if (value === '' || regex.test(value)) {
+                                handleChangeUpdateUserFormdata(e); // Update state
+
+                              }
+                            }}
+                            maxLength={10}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                                <Label htmlFor="panCard">PAN Card No.</Label>
+                                <Input id="panCard"
+                                  name="PANCardNo"
+                                  value={updateUserFormdata.PANCardNo}
+                                  onChange={handleChangeUpdateUserFormdata}
+                                />
+                              </div>
+
+                        {/* <div className="mt-4">
+                          <Button type="submit" className="w-full" updateHandleUser>
+                            Update
+                          </Button>
+                        </div> */}
+                      </form>
+                    </>
+                    ):
+                    <div className="bg-white rounded-lg shadow-sm p-6">
+
+                      <p className="my-3 text-md ">Pan Card: <span className="font-bold"> {userData.PANCardNo}</span></p>
+                      <p className="my-3 text-sm">Phone Number: <span className="font-bold">{userData.mobileNumber}</span> </p>
+                    </div>
+                    
+                    }
+                 
+                </>
+                
+              )}
+            </div>
+
+                 
             {/* Words of Support Section */}
             <div className="mb-8">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Words of support</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2"> Dua Wall
+
+              </h3>
               <p className="text-sm text-gray-600 mb-4">
                 Leave a message for this organizer.
                 <br />
@@ -427,7 +626,67 @@ const GivingAmount = () => {
                 </div>
               </div>
             </div>
+            {/* user data */}
+            {!token && !handleAnonymous && (
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">User Infromation</h3>
 
+
+                <form className="space-y-4">
+                  <div>
+                    <Label>Full Name</Label>
+                    <Input
+                      type="text"
+                      name="fullName"
+                      placeholder="Enter your name"
+                      value={signUpFormdata.fullName}
+                      onChange={handleChangeSignUpFormdata}
+                    />
+                  </div>
+
+                  <div>
+                    <Label>Email</Label>
+                    <Input
+                      type="text"
+                      name="userEmail"
+                      placeholder="Enter your email"
+                      value={signUpFormdata.userEmail}
+                      onChange={handleChangeSignUpFormdata}
+                    />
+                  </div>
+                  <div>
+                    <Label>Number</Label>
+                    <Input
+                      type="text"
+                      name="mobileNumber"
+                      placeholder="Enter your Number "
+                      value={signUpFormdata.mobileNumber}
+                      onChange={handleChangeSignUpFormdata}
+                    />
+                  </div>
+                  <div>
+                    <Label>Pan Number</Label>
+                    <Input
+                      type="text"
+                      name="PANCardNo"
+                      placeholder="Enter your Pan Number"
+                      value={signUpFormdata.PANCardNo}
+                      onChange={handleChangeSignUpFormdata}
+                    />
+                  </div>
+
+
+
+
+                </form>
+              </div>
+            )}
+            {!token && (
+              <div className="flex items-center gap-2">
+                <Input type="checkbox" className="w-4 h-4" name="Anonymous" onChange={(e) => setHandleAnonymous(e.target.checked)} />
+                <Label>Donate Anonymously</Label>
+              </div>
+            )}
             {/* Give Button */}
             <div className="space-y-4">
               <button
@@ -456,6 +715,7 @@ const GivingAmount = () => {
                 </p>
               </div>
             </div>
+
           </div>
 
           {/* Right Column - Review Section */}
@@ -463,20 +723,20 @@ const GivingAmount = () => {
             {/* Zakat Verification */}
             {campaignDetails.zakatVerified && (
               <div className="bg-gray-100 p-4 rounded-lg">
-              <div className="flex items-center space-x-2 mb-3">
-                <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                <div className="flex items-center space-x-2 mb-3">
+                  <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <span className="font-semibold text-gray-800">Zakat-verified campaign</span>
                 </div>
-                <span className="font-semibold text-gray-800">Zakat-verified campaign</span>
-              </div>
 
-              {/* <label className="flex items-start space-x-3 cursor-pointer">
+                {/* <label className="flex items-start space-x-3 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={isZakat}
@@ -489,9 +749,9 @@ const GivingAmount = () => {
                   The organizer will use your donation as Zakat funds.
                 </div>
               </label> */}
-            </div>
+              </div>
             )}
-            
+
 
             {/* Review Section */}
             <div className="space-y-4 bg-gray-100 rounded-lg p-6">

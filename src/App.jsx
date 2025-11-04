@@ -22,6 +22,10 @@ import Couse from './pages/cause/Couse'
 import FundraiserCampaigns from './pages/dashboard/Edit'
 import Resources from './pages/resources/Resources'
 import ZakatCalculator from './pages/zakat/zakat'
+import PaymentForm from './components/payment/PaymentForm'
+import PaymentSuccess from './components/payment/PaymentSuccess'
+import RefundPolicy from './pages/refundPolicy/RefundPolicy'
+import ForgetPassword from './pages/auth/ForgetPassword'
 
 
 
@@ -40,6 +44,7 @@ function App() {
       <Route path="/donation/:id" element={<Donation />} />
       <Route path="/about" element={<About />} />
       <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+      <Route path="/refundpolicy" element={<RefundPolicy />} />
       <Route path="/terms&conditions" element={<TermsConditions />} />
       <Route path="/security&compliance" element={<SecurityCompliance />} />
       <Route path="/search" element={<Search />} />
@@ -49,6 +54,9 @@ function App() {
       <Route path="/edit" element={<FundraiserCampaigns />} />
       <Route path="/resources" element={<Resources />} />
       <Route path="/zakatcalculator" element={<ZakatCalculator />} />
+      <Route path="/donate" element={<PaymentForm />} />
+       <Route path="/forgot-password" element={<ForgetPassword />} />
+      <Route path="/payment-success/:merchantOrderId" element={<PaymentSuccess />} />
       {/* <Route path="/ckeditor" element={<TextEditor />} /> */}
       {/* <Route path="/show" element={<Show />} /> */}
     

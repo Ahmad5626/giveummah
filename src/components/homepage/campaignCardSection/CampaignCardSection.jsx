@@ -22,9 +22,10 @@ export default function FundraisingGrid() {
   const funded = 1000
 
   // Load user's liked campaigns on component mount
+  console.log(allCampaigns.map((campaign) => campaign.donerAmount.map((item) => item.amount)).flat().reduce((total, amount) => total + amount, 0));
 
 
- 
+
 
   const handleHeartClick = async (campaign) => {
     if (!userData?._id) {
@@ -66,7 +67,7 @@ export default function FundraisingGrid() {
           timestamp: new Date().toISOString(),
         }
 
-        const response = await fetch(`${baseUrl}/api/hearts`,  {
+        const response = await fetch(`${baseUrl}/api/hearts`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -142,6 +143,9 @@ export default function FundraisingGrid() {
               .sort((a, b) => a.ranking - b.ranking)
               .slice(0, 12)
               .map((campaign, index) => (
+
+
+
                 <Card
                   className="new-card h-full overflow-hidden  transition-all duration-300 pt-0 pb-2 rounded-lg border-transparent cursor-pointer"
                   key={index}
@@ -173,23 +177,34 @@ export default function FundraisingGrid() {
                       <h3 className="text-lg font-semibold  line-clamp-2 h-14">{campaign.campaignTitle}</h3>
                     </Link>
                     <div className="flex justify-between text-sm text-muted-foreground py-2 ">
-                      <span>43 Donors</span>
-                      <span>
-                        {Math.max(Math.ceil((new Date(campaign.endDate) - new Date()) / (1000 * 60 * 60 * 24)), 0)} days
-                        left
-                      </span>
+
+                      <p className="text-xl font-bold">
+                        ₹ {
+                          Math.round(
+                            campaign.donerAmount
+                              .map((item) => item.amount)
+                              .flat()
+                              .reduce((total, amount) => total + amount, 0)
+                          )
+                        } Raised
+                      </p>
+                      <p className="text-sm text-muted-foreground"> ₹ {campaign.goalAmount} Goal</p>
+
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2 my-2">
                       <div
                         className="bg-gradient-to-r from-[#000000] to-[#f8bb26] h-2 rounded-full"
-                        style={{ width: `${Math.min((funded / campaign.goalAmount) * 100, 100)}%` }}
+                        style={{ width: `${Math.min((campaign.donerAmount.map((item) => item.amount).flat().reduce((total, amount) => total + amount, 0) / campaign.goalAmount) * 100, 100)}%` }}
                       ></div>
                     </div>
 
-                    <div className="flex justify-between items-end ">
-                      <div>
-                        <p className="text-2xl font-bold">₹{campaign.goalAmount}</p>
-                        <p className="text-sm text-muted-foreground">funded of ₹{funded}</p>
+                    <div className=" justify-between items-end ">
+                      <div className="flex gap-2 justify-between my-4">
+                        <span>{campaign.donerAmount.length} Donors</span>
+                        <span>
+                          {Math.max(Math.ceil((new Date(campaign.endDate) - new Date()) / (1000 * 60 * 60 * 24)), 0)} days
+                          left
+                        </span>
                       </div>
                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                         <Link
@@ -218,11 +233,10 @@ export default function FundraisingGrid() {
                           fill="currentColor"
                           aria-hidden="true"
                           data-slot="icon"
-                          className={`w-6 h-6 transition-colors duration-200 ${
-                            likedCampaigns.has(campaign._id)
+                          className={`w-6 h-6 transition-colors duration-200 ${likedCampaigns.has(campaign._id)
                               ? "fill-red-600 text-red-600"
                               : "fill-transparent stroke-neutral-600 stroke-2"
-                          }`}
+                            }`}
                         >
                           <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"></path>
                         </svg>

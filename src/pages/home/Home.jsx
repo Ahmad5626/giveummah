@@ -129,8 +129,8 @@ const navigate=useNavigate()
       )
     },
      {
-      id: 'temple ',
-      name: 'Temple ',
+      id: 'Ulama ',
+      name: 'Ulama ',
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 14l9-5-9-5-9 5 9 5z" />
@@ -200,11 +200,7 @@ const navigate=useNavigate()
       <div className=" bg-gray-100 py-8 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Generosity of the Ummah</h1>
-          <div className="text-4xl md:text-5xl font-bold text-green-500 mb-2"> ₹ 2,438 INR</div>
-          <p className="text-gray-600 text-sm md:text-base">raised in the past hour</p>
-        </div>
+        
 
         {/* Donation Slider */}
         <DonationSlider />

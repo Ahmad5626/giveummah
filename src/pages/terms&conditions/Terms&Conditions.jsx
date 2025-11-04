@@ -32,8 +32,7 @@ export default function TermsConditions() {
           </div>
           <p className="text-gray-700 leading-relaxed">
             Please read these Terms of Use of website and Terms and Conditions carefully before using www.giveummah.com
-            (hereafter referred as 'website' or the 'Site' or the 'Platform'). This agreement sets forth the legally
-            binding terms and conditions for your use of the site, www.giveummah.com or giveummah. By using the
+            (hereafter referred as 'website' or the 'Site' or the 'Platform').The Website is owned and operated by GiveUmmah Foundation. By using the
             service/services in any manner, including, but not limited to, visiting or browsing the site or contributing
             content, information, or other materials or services to the site, payments, you agree to be bound by this
             agreement. These Terms of Use and associated Terms and Conditions apply to all who access this website,
@@ -280,6 +279,23 @@ export default function TermsConditions() {
               donation has not been made for any monetary returns like equity or profit share, neither it is to be
               considered as loan to the cause creator.
             </li>
+            <li>
+              Tip usage: Giveummah charges no platform fee and 100% of your donation goes to the cause. The platform provide users with the option to provide a tip. This payment is voluntary and is not required to use the core services of GiveUmmah. All tips are final and non-refundable, and are received by GiveUmmah to support the maintenance and development of the platform.
+            </li>
+            <li>
+              “Beneficiary” means the individual, family, group, charity or other recipient identified in a Campaign as the party for whose benefit the donations are sought through the Services. The Beneficiary may be the Campaign Organizer itself, or it may be a third party, as identified in the Campaign.
+
+
+            </li>
+            <li>
+              “Campaign / fundraiser” means a cause, goal, or event for which a Campaign Organizer seeks donations through the Services.
+
+            </li>
+            <li>
+              “Campaign Organizer” means an individual or organization who creates, launches or manages a Campaign. The Campaign Organizer may be the Beneficiary itself, or it may be a third party, as identified in the Campaign.
+
+            </li>
+            <li>“Donor” means an individual or organization who donates to a Campaign.</li>
           </ol>
         </div>
 
@@ -340,7 +356,7 @@ export default function TermsConditions() {
             <h2 className="text-2xl font-bold text-[#000000]">Contact Information</h2>
           </div>
           <p className="text-gray-700 leading-relaxed mb-4">
-            This Website is operated by (GiveUmmah) Dangiwacha, Rafiabad, district Baramulla, Jammu and Kashmir, 193303
+            This Website is operated by (GiveUmmah Foundation ) Dangiwacha, Rafiabad, district Baramulla, Jammu and Kashmir, 193303
             India.
           </p>
           <p className="text-gray-700 leading-relaxed">

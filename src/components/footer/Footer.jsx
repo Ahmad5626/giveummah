@@ -31,8 +31,7 @@ const Footer = () => {
                     <img src={logo}></img>
                   </h2>
                   <p className="text-gray-700 text-sm leading-relaxed">
-                    Give Ummah is an innovative crowdfunding platform designed to empower individuals and institutes to
-                    raise funds for those in need.
+                    GiveUmmah is an innovative crowdfunding platform designed to empower Ummah ( individuals and institutes ) to raise funds for those in need.
                   </p>
                 </div>
 
@@ -59,21 +58,33 @@ const Footer = () => {
               <div className="md:pt-25 ">
                 <h3 className="text-lg font-semibold text-gray-800 mb-6">Ways to Give</h3>
                 <ul className="space-y-4">
-                  <li>
-                    <a href="#" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
-                      Featured Fundraisers
-                    </a>
+                <li>
+                    <Link to="/about" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
+                      About Us
+                    </Link>
                   </li>
                   <li>
-                    <a href="#" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
+                    <Link to="/campaignDetails/6858f205e720a63f47739199" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
+                      Featured Fundraisers
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to='/search?query=' className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
+                    
                       Discover
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <Link to="/resources" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
                       Resources
                     </Link>
                   </li>
+                  <li>
+                    <Link to="https://blog.giveummah.com" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
+                      Blog
+                    </Link>
+                  </li>
+                  
                 </ul>
               </div>
 
@@ -81,11 +92,7 @@ const Footer = () => {
               <div className="md:pt-25 ">
                 <h3 className="text-lg font-semibold text-gray-800 mb-6">About GiveUmmah</h3>
                 <ul className="space-y-4">
-                  <li>
-                    <Link to="/about" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
-                      About Us
-                    </Link>
-                  </li>
+                  
                   <li>
                     <Link to="/privacypolicy" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
                       Privacy Policy
@@ -99,6 +106,11 @@ const Footer = () => {
                   <li>
                     <Link to="/security&compliance" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
                       Security & Compliance
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/refundpolicy" className="text-gray-700 hover:text-orange-600 transition-colors duration-200 text-sm">
+                      Refund Policy
                     </Link>
                   </li>
                 </ul>
@@ -153,7 +165,8 @@ const Footer = () => {
         {/* Copyright Section */}
         <div className="button-footer py-4 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
-            <p className="text-black text-sm font-medium">Copyright 2025 Amanah Technology private limited | All Rights Reserved</p>
+            {/* <p className="text-black text-sm font-medium">Copyright 2025 Amanah Technology private limited | All Rights Reserved</p> */}
+            <p className="text-black text-sm font-medium">Copyright 2025 GiveUmmah Foundation | ”Registered u/s 12A & 80G of Income Tax Act” | All Rights Reserved</p>
           </div>
         </div>
       </div>

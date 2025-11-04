@@ -103,7 +103,7 @@ export function Navbar({ position }) {
             <div className="flex items-center gap-3">
               {/* <AnimatedButton /> */}
               <Button asChild className="rounded-full  border-2 border-[#AC6908] text-[#AC6908] hover:bg-gray-300 text-[10px] md:text-[16px] bg-gray-100 py-2 md:px-8 m-0">
-                <Link to="/fundraisingForm" className="p-0 m-0"> Start fundraising </Link>
+                <Link to="/fundraisingForm" className="p-0 m-0"> Start a Campaign </Link>
               </Button>
 
               {/* <div className="">
@@ -212,10 +212,10 @@ export function Navbar({ position }) {
               <Link to="/auth" className="block py-2 text-sm font-medium text-gray-900">
                 Sign up
               </Link>
-              <Link to="/auth" className="block py-2 text-sm font-medium text-gray-900" onClick={handleLogout}>
+              <a href="/auth" className="block py-2 text-sm font-medium text-gray-900" onClick={handleLogout}>
                 {checkLogin ? 'Logout' : 'Login'}
 
-              </Link>
+              </a>
             </div>
 
             <div className="h-px w-full bg-gray-200"></div>

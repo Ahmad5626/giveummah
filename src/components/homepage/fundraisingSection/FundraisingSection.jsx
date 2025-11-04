@@ -30,22 +30,24 @@ export default function FundraisingSection() {
 
             </h1>
             <p className="text-gray-700 text-lg">
-            GiveUmmah is the free crowdfunding platform for Indians for students, teachers, schools, emergencies or personal need with no platform fees. Launch your campaign in minutes and receive 100% donations directly. Start today!
+            GiveUmmah is the free crowdfunding platform for Muslims in India for students, mosques, madrasas, schools, emergencies or personal need with *no platform fees*. Launch your campaign in minutes and receive 100% donations directly. 
+Start today!
 
             </p>
             <h4>Your Cause, Our Ummah’s Responsibility.</h4>
             <div className="">
               <Button className="rounded-full px-8 py-2 text-base bg-gray-900 hover:bg-gray-800 text-white cta text-white">
-                <Link to={buttonData.fundraiseWithFaithButton}>
+                {/* <Link to={buttonData.fundraiseWithFaithButton}> */}
+                <Link to="/fundraisingForm">
 
-                Start fundraising today
+               Start Fundraising Today
                 </Link>
               </Button>
               
             </div>
             <div className="">
               <img
-                src="./assets/image-1.png"
+                src="./assets/zakat.jpg"
                 alt="Fundraising dashboard illustration"
                
                
@@ -64,7 +66,7 @@ export default function FundraisingSection() {
             </div>
 
             <p className="text-gray-700 text-lg">
-             When the Ummah unites, miracles happen. GiveUmmah brings us closer—ensuring **every donation is verified, every need is genuine, and every contribution makes a difference. Your generosity uplifts sacred institutions worldwide. Compliance ( url to compliance )
+             When the Ummah unites, miracles happen. GiveUmmah brings us closer—ensuring **every donation is verified, every need is genuine, and every contribution makes a difference. Your generosity uplifts sacred institutions In India. Compliance ( url to compliance )
             
             </p>
 

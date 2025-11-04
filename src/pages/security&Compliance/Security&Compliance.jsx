@@ -283,7 +283,7 @@ export default function SecurityCompliance() {
             sure to screen beneficiaries for accounts raising funds on behalf of someone else.
           </p>
           <p className="text-gray-700 leading-relaxed">
-            GiveUmmah, a crowdfunding platform, addresses Anti-Money Laundering (AML) through several measures,
+            GiveUmmah, a donation platform, addresses Anti-Money Laundering (AML) through several measures,
             including verifying organizers and contributors. They require campaign organizers to verify their identity
             through KYC procedures, such as mobile number verification and identification documents. Contributors are
             also restricted to using standard payment methods and may need to provide their PAN for cash payments above
